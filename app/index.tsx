@@ -33,9 +33,9 @@ export default function LandingPage() {
     { icon: "logo-whatsapp" as keyof typeof Ionicons.glyphMap, route: "/whatsapp", label: "WhatsApp", path: "/whatsapp" },
     { icon: "home" as keyof typeof Ionicons.glyphMap, route: "/(tabs)", label: "Home", path: "/(tabs)" },
     { icon: "cube" as keyof typeof Ionicons.glyphMap, route: "/cube", label: "Cube", path: "/cube" },
-    { icon: "paper-plane" as keyof typeof Ionicons.glyphMap, route: "/paper-plane", label: "Paper", path: "/paper-plane" },
+    // { icon: "paper-plane" as keyof typeof Ionicons.glyphMap, route: "/paper-plane", label: "Paper", path: "/paper-plane" },
     // { icon: "feather" as keyof typeof Ionicons.glyphMap, route: "/feather", label: "Feather", path: "/feather" },
-    // { icon: "shield-checkmark" as keyof typeof Ionicons.glyphMap, route: "/shield", label: "Shield", path: "/shield" },
+    { icon: "book-outline" as keyof typeof Ionicons.glyphMap, route: "/blogs", label: "Blogs", path: "/blogs" },
   ];
 
   const handleIconPress = (route: string, label: string) => {
