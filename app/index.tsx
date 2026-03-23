@@ -52,11 +52,11 @@ export default function LandingPage() {
       {/* Status bar handling */}
       <StatusBar barStyle="light-content" backgroundColor="#064e3b" />
 
-      <View style={tw`flex-1 bg-white`}>
+      <View style={[tw`flex-1`, { backgroundColor: '#064e3b' }]}>
         {/* Main Content - Scrollable */}
         <ScrollView
           style={tw`flex-1`}
-          contentContainerStyle={tw`pb-32`} // Space for bottom nav
+          contentContainerStyle={tw`flex-grow pb-32`}
           showsVerticalScrollIndicator={false}
         >
           {/* New Premium Landing Hero Component */}
