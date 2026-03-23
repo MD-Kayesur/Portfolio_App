@@ -1,4 +1,3 @@
-
 import {
   Pressable,
   Text,
@@ -12,6 +11,7 @@ import { useRouter, usePathname } from "expo-router";
 import { useAuth } from "@clerk/clerk-expo";
 import { useState } from "react";
 import SafeScreen from "@/components/SafeScreen";
+import SplashScreen from "@/components/SplashScreen";
 import tw from 'twrnc';
 
 export default function LandingPage() {
@@ -19,6 +19,7 @@ export default function LandingPage() {
   const { isSignedIn } = useAuth();
   const pathname = usePathname();
   const [activeIcon, setActiveIcon] = useState<string | null>(null);
+  const [showSplash, setShowSplash] = useState(true);
 
   const handleGetStarted = () => {
     if (isSignedIn) {
@@ -33,8 +34,6 @@ export default function LandingPage() {
     { icon: "logo-whatsapp" as keyof typeof Ionicons.glyphMap, route: "/whatsapp", label: "WhatsApp", path: "/whatsapp" },
     { icon: "home" as keyof typeof Ionicons.glyphMap, route: "/(tabs)", label: "Home", path: "/(tabs)" },
     { icon: "cube" as keyof typeof Ionicons.glyphMap, route: "/cube", label: "Cube", path: "/cube" },
-    // { icon: "paper-plane" as keyof typeof Ionicons.glyphMap, route: "/paper-plane", label: "Paper", path: "/paper-plane" },
-    // { icon: "feather" as keyof typeof Ionicons.glyphMap, route: "/feather", label: "Feather", path: "/feather" },
     { icon: "book-outline" as keyof typeof Ionicons.glyphMap, route: "/blogs", label: "Blogs", path: "/blogs" },
   ];
 
@@ -52,6 +51,9 @@ export default function LandingPage() {
 
   return (
     <SafeScreen>
+      {/* Dynamic Splash Screen Component */}
+      {showSplash && <SplashScreen onComplete={() => setShowSplash(false)} />}
+
       {/* Status bar handling */}
       <StatusBar barStyle="dark-content" backgroundColor="white" />
 
@@ -201,9 +203,3 @@ export default function LandingPage() {
     </SafeScreen>
   );
 }
-
-
-
-
-
-
