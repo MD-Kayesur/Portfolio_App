@@ -29,7 +29,7 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
         const animations = characters.map((_, index) => {
             return Animated.loop(
                 Animated.sequence([
-                    Animated.delay(index * 150), // Shorter delay for a tighter ripple
+                    Animated.delay(index * 150),
                     Animated.timing(bounceValues[index], {
                         toValue: 1,
                         duration: 350,
@@ -72,7 +72,7 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
                 { opacity }
             ]}
         >
-            {/* Static Profile Image (No Shadow) */}
+            {/* Static Profile Image (Larger size as requested) */}
             <View style={styles.imageContainer}>
                 <Image
                     source={require("../assets/images/kayes.jpg")}
@@ -108,18 +108,18 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
 const styles = StyleSheet.create({
     overlay: {
         ...StyleSheet.absoluteFillObject,
-        backgroundColor: '#a855f7',
+        backgroundColor: '#fca5a5', // red-300
         zIndex: 999,
         alignItems: 'center',
         justifyContent: 'center',
     },
     imageContainer: {
-        marginBottom: 70,
+        marginBottom: 40, // Reduced from 80 for a tighter gap
     },
     image: {
-        width: 180,
-        height: 180,
-        borderRadius: 90,
+        width: 240, // Increased size from 180
+        height: 240, // Increased size from 180
+        borderRadius: 120, // Half of 240 for circle
     },
     textContainer: {
         flexDirection: 'row',
@@ -128,12 +128,12 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
     },
     bouncingText: {
-        fontSize: 42, // Adjusted to fit 'MD_Kayesur' (10 letters) comfortably
-        color: '#ffffff',
-        fontWeight: '900', // Black font weight for strong impact
+        fontSize: 48,
+        color: '#7f1d1d', // red-900
+        fontWeight: '900',
         textTransform: 'uppercase',
-        textShadowColor: 'rgba(0,0,0,0.3)',
-        textShadowOffset: { width: 0, height: 6 },
+        textShadowColor: 'rgba(0,0,0,0.15)',
+        textShadowOffset: { width: 0, height: 5 },
         textShadowRadius: 1,
     },
 });
