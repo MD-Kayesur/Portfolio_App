@@ -5,7 +5,7 @@ import {
   View,
   ScrollView,
   Platform,
-  StatusBar
+  StatusBar,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter, usePathname } from "expo-router";
@@ -15,6 +15,7 @@ import SafeScreen from "@/components/SafeScreen";
 import SplashScreen from "@/components/SplashScreen";
 import LandingHero from "@/components/LandingHero";
 import tw from 'twrnc';
+import { BlurView } from 'expo-blur';
 
 export default function LandingPage() {
   const router = useRouter();
@@ -55,46 +56,37 @@ export default function LandingPage() {
         {/* Main Content - Scrollable */}
         <ScrollView
           style={tw`flex-1`}
-          contentContainerStyle={tw`flex-grow`}
+          contentContainerStyle={tw`pb-32`} // Space for bottom nav
           showsVerticalScrollIndicator={false}
         >
           {/* New Premium Landing Hero Component */}
           <LandingHero />
         </ScrollView>
 
-        {/* Bottom Navigation - Fixed for mobile, different for web */}
+        {/* Bottom Navigation */}
         {Platform.OS === 'web' ? (
-          // Web Navigation - Horizontal at bottom
-          <View style={tw`border-t border-gray-200 py-4`}>
-            <ScrollView
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={tw`px-4 items-center justify-center gap-6`}
-            >
+          // Web Navigation
+          <View style={tw`border-t border-gray-100 py-3 bg-white/60 absolute bottom-0 left-0 right-0`}>
+            <View style={tw`flex-row items-center justify-center gap-6 px-4`}>
               {pageIcons.map((page, index) => (
                 <Pressable
                   key={index}
                   onPress={() => handleIconPress(page.route, page.label)}
                   style={({ pressed }) => [
-                    tw`items-center  p-2 rounded-xl transition-all duration-200`,
-                    isActive(page) && tw`bg-red-50`,
+                    tw`items-center p-2 rounded-2xl transition-all duration-200`,
+                    isActive(page) && tw`bg-red-50/80`,
                     pressed && tw`opacity-70`
                   ]}
                 >
-                  <View style={tw`relative`}>
-                    <Ionicons
-                      name={page.icon}
-                      size={page.label === "Home" ? 28 : 24}
-                      color={isActive(page) ? "#dc2626" : "#6b7280"}
-                    />
-                    {isActive(page) && (
-                      <View style={tw`absolute -bottom-1 left-1/2 w-1.5 h-1.5 bg-red-600 rounded-full -ml-0.75`} />
-                    )}
-                  </View>
+                  <Ionicons
+                    name={page.icon}
+                    size={28}
+                    color={isActive(page) ? "#dc2626" : "#4b5563"}
+                  />
                   <Text
                     numberOfLines={1}
                     style={[
-                      tw`text-xs mt-2 font-medium`,
+                      tw`text-[10px] mt-1 font-bold`,
                       isActive(page) ? tw`text-red-600` : tw`text-gray-500`
                     ]}
                   >
@@ -102,39 +94,42 @@ export default function LandingPage() {
                   </Text>
                 </Pressable>
               ))}
-            </ScrollView>
+            </View>
           </View>
         ) : (
-          // Mobile Navigation - Compact at bottom
-          <View style={tw`border-t border-gray-200 pt-3 pb-6 px-4`}>
-            <ScrollView
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              contentContainerStyle={tw`items-center justify-between w-full gap-2`}
-            >
+          // Mobile Navigation - Glassmorphism Style
+          <BlurView
+            intensity={95}
+            tint="light"
+            style={[
+              tw`absolute bottom-0 left-0 right-0 border-t border-white/20 pt-2 pb-6 px-2`,
+              { backgroundColor: 'rgba(255,255,255,0.3)', overflow: 'hidden' }
+            ]}
+          >
+            <View style={tw`flex-row items-center justify-between w-full`}>
               {pageIcons.map((page, index) => (
                 <Pressable
                   key={index}
                   onPress={() => handleIconPress(page.route, page.label)}
                   style={({ pressed }) => [
-                    tw`flex-1 items-center p-2 min-w-16`,
+                    tw`items-center justify-center py-1 flex-1`,
                     pressed && tw`opacity-70`
                   ]}
                 >
                   <View style={[
-                    tw`w-12 h-12 rounded-full items-center justify-center mb-1`,
-                    isActive(page) ? tw`bg-red-100` : tw`bg-gray-100`
+                    tw`w-12 h-12 rounded-full items-center justify-center mb-0.5`,
+                    isActive(page) ? tw`bg-red-50/50` : tw`bg-transparent`
                   ]}>
                     <Ionicons
                       name={page.icon}
-                      size={page.label === "Home" ? 24 : 20}
-                      color={isActive(page) ? "#dc2626" : "#6b7280"}
+                      size={26}
+                      color={isActive(page) ? "#dc2626" : "#4b5563"}
                     />
                   </View>
                   <Text
                     numberOfLines={1}
                     style={[
-                      tw`text-xs font-medium`,
+                      tw`text-[10px] font-bold`,
                       isActive(page) ? tw`text-red-600` : tw`text-gray-500`
                     ]}
                   >
@@ -142,8 +137,8 @@ export default function LandingPage() {
                   </Text>
                 </Pressable>
               ))}
-            </ScrollView>
-          </View>
+            </View>
+          </BlurView>
         )}
       </View>
     </SafeScreen>

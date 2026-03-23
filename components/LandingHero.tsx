@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     View,
     Text,
@@ -18,6 +18,43 @@ import tw from 'twrnc';
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 const LandingHero = () => {
+
+//typing animation code start
+
+
+    const titles = ['FrontEnd Developer', 'Full Stack Developer', 'App Developer', 'MERN Stack Developer'];
+    const [displayText, setDisplayText] = useState('');
+    const [titleIndex, setTitleIndex] = useState(0);
+    const [isDeleting, setIsDeleting] = useState(false);
+    const [typingSpeed, setTypingSpeed] = useState(150);
+
+    useEffect(() => {
+        const handleTyping = () => {
+            const currentTitle = titles[titleIndex];
+            if (isDeleting) {
+                setDisplayText(prev => prev.substring(0, prev.length - 1));
+                setTypingSpeed(80); // Faster deleting
+            } else {
+                setDisplayText(prev => currentTitle.substring(0, prev.length + 1));
+                setTypingSpeed(150); // Standard typing
+            }
+
+            if (!isDeleting && displayText === currentTitle) {
+                // Pause at the end before deleting
+                setTimeout(() => setIsDeleting(true), 1500);
+            } else if (isDeleting && displayText === '') {
+                // Move to next title after deleting
+                setIsDeleting(false);
+                setTitleIndex((prev) => (prev + 1) % titles.length);
+            }
+        };
+
+        const timer = setTimeout(handleTyping, typingSpeed);
+        return () => clearTimeout(timer);
+    }, [displayText, isDeleting, titleIndex]);
+
+//typing animation code end
+
     const handleDownloadCV = async () => {
         try {
             const cvUrl = "https://raw.githubusercontent.com/MD-Kayesur/Portfolio_App/main/assets/images/My_Resume%20(1).pdf";
@@ -44,9 +81,13 @@ const LandingHero = () => {
                         <Text style={tw`text-purple-400 text-xl font-bold mr-2`}>
                             i am
                         </Text>
-                        <Text style={tw`text-white text-xl font-bold`}>
-                            FrontEnd Developer|
-                        </Text>
+                        <View style={tw`flex-row items-center`}>
+                            <Text style={tw`text-white text-xl font-bold`}>
+                                {displayText}
+                            </Text>
+                            {/* Blinking Cursor */}
+                            <View style={[styles.cursor, tw`bg-purple-400 ml-1`]} />
+                        </View>
                     </View>
 
                     <Text style={tw`text-gray-200 text-base md:text-lg mb-8 leading-relaxed max-w-xl`}>
@@ -117,6 +158,11 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         borderTopLeftRadius: 70,
     },
+    cursor: {
+        width: 3,
+        height: 24,
+        opacity: 1,
+    }
 });
 
 export default LandingHero;
