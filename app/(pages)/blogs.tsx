@@ -60,11 +60,7 @@ export default function BlogList() {
   };
 
   const renderBlogItem = ({ item }: { item: any }) => (
-    <TouchableOpacity
-      style={styles.blogCard}
-      activeOpacity={0.7}
-      onPress={() => handleBlogPress(item._id)}
-    >
+    <View style={styles.blogCard}>
       {/* Blog Image */}
       <Image
         source={{ uri: item.media }}
@@ -98,13 +94,17 @@ export default function BlogList() {
           </View>
         )}
 
-        {/* Read More Button */}
-        <View style={styles.readMoreButton}>
+        {/* Read More Button - ONLY CLICKABLE AREA */}
+        <TouchableOpacity
+          style={styles.readMoreButton}
+          onPress={() => handleBlogPress(item._id)}
+          activeOpacity={0.6}
+        >
           <Text style={styles.readMoreText}>Read More</Text>
           <Ionicons name="arrow-forward" size={16} color="#6366f1" />
-        </View>
+        </TouchableOpacity>
       </View>
-    </TouchableOpacity>
+    </View>
   );
 
   return (
