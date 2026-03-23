@@ -1,13 +1,18 @@
 import GymCard from "@/components/gymCard/GymCard";
-import { View } from "react-native";
+import { ScrollView, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function AboutPage() {
     return (
         <SafeAreaView className="flex-1 bg-white">
-            <View className="flex-1 items-center justify-center">
-                <GymCard />
-            </View>
+            <ScrollView
+                contentContainerStyle={{ flexGrow: 1 }}
+                showsVerticalScrollIndicator={false}
+            >
+                <View className="flex-1 items-center justify-center py-6">
+                    <GymCard />
+                </View>
+            </ScrollView>
         </SafeAreaView>
     );
 }
