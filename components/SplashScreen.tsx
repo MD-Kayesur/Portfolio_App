@@ -20,41 +20,47 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
     const text = "MD_Kayesur";
     const characters = text.split("");
 
-    // Animation values
-    const moveX = useRef(new Animated.Value(-SCREEN_WIDTH)).current;
-    const waveAnim = useRef(new Animated.Value(0)).current;
+    // Create an array of Animated values for each character
+    const bounceValues = useRef(characters.map(() => new Animated.Value(0))).current;
     const opacity = useRef(new Animated.Value(1)).current;
 
     useEffect(() => {
-        // 1. Horizontal movement - very slow sweep across the screen for "continuous" feel
-        Animated.timing(moveX, {
-            toValue: SCREEN_WIDTH + 400,
-            duration: 7000, // Even slower travers for better visibility of the wave
-            useNativeDriver: true,
-        }).start(() => {
-            onComplete();
+        // Start cascading bounce animations for each character
+        const animations = characters.map((_, index) => {
+            return Animated.loop(
+                Animated.sequence([
+                    Animated.delay(index * 150), // Shorter delay for a tighter ripple
+                    Animated.timing(bounceValues[index], {
+                        toValue: 1,
+                        duration: 350,
+                        useNativeDriver: true,
+                    }),
+                    Animated.timing(bounceValues[index], {
+                        toValue: 0,
+                        duration: 350,
+                        useNativeDriver: true,
+                    }),
+                ])
+            );
         });
 
-        // 2. High-speed, high-frequency wave ripple (continuous undulation)
-        Animated.loop(
-            Animated.timing(waveAnim, {
-                toValue: 1,
-                duration: 900, // Faster ripple for "continuous" liquid energy
-                useNativeDriver: true,
-            })
-        ).start();
+        // Run all animations in parallel
+        animations.forEach(anim => anim.start());
 
-        // 3. Overall splash screen fade out at the very end
-        Animated.timing(opacity, {
-            toValue: 0,
-            duration: 1000,
-            delay: 6000,
-            useNativeDriver: true,
-        }).start();
+        // Final fade out and complete splash
+        const timeout = setTimeout(() => {
+            Animated.timing(opacity, {
+                toValue: 0,
+                duration: 800,
+                useNativeDriver: true,
+            }).start(() => {
+                onComplete();
+            });
+        }, 5500);
 
         return () => {
-            moveX.stopAnimation();
-            waveAnim.stopAnimation();
+            clearTimeout(timeout);
+            bounceValues.forEach(val => val.stopAnimation());
             opacity.stopAnimation();
         };
     }, []);
@@ -66,7 +72,7 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
                 { opacity }
             ]}
         >
-            {/* Static Profile Image */}
+            {/* Static Profile Image (No Shadow) */}
             <View style={styles.imageContainer}>
                 <Image
                     source={require("../assets/images/kayes.jpg")}
@@ -74,48 +80,26 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
                 />
             </View>
 
-            {/* Individual characters making an intense "Sea Wave" ripple */}
-            <View style={styles.textTrack}>
-                <Animated.View
-                    style={{
-                        flexDirection: 'row',
-                        transform: [{ translateX: moveX }]
-                    }}
-                >
-                    {characters.map((char, index) => {
-                        // Maximize the "continuous" ripple effect:
-                        const amplitude = 55; // Deep wave
-                        const frequency = 1.2; // Tighter, more complex wave flow
+            {/* Bouncing Text logic inspired by provided demo */}
+            <View style={styles.textContainer}>
+                {characters.map((char, index) => {
+                    const translateY = bounceValues[index].interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [0, -25], // Bounce distance
+                    });
 
-                        const translateY = waveAnim.interpolate({
-                            inputRange: [0, 0.25, 0.5, 0.75, 1],
-                            outputRange: [
-                                Math.sin((index * frequency) - (0 * 2 * Math.PI)) * amplitude,
-                                Math.sin((index * frequency) - (0.25 * 2 * Math.PI)) * amplitude,
-                                Math.sin((index * frequency) - (0.5 * 2 * Math.PI)) * amplitude,
-                                Math.sin((index * frequency) - (0.75 * 2 * Math.PI)) * amplitude,
-                                Math.sin((index * frequency) - (1 * 2 * Math.PI)) * amplitude,
-                            ],
-                        });
-
-                        return (
-                            <Animated.Text
-                                key={index}
-                                style={[
-                                    tw`text-5xl font-black text-red-600 px-0.5`,
-                                    {
-                                        transform: [{ translateY }],
-                                        textShadowColor: 'rgba(220, 38, 38, 0.4)',
-                                        textShadowOffset: { width: 0, height: 8 },
-                                        textShadowRadius: 15,
-                                    }
-                                ]}
-                            >
-                                {char}
-                            </Animated.Text>
-                        );
-                    })}
-                </Animated.View>
+                    return (
+                        <Animated.Text
+                            key={index}
+                            style={[
+                                styles.bouncingText,
+                                { transform: [{ translateY }] }
+                            ]}
+                        >
+                            {char}
+                        </Animated.Text>
+                    );
+                })}
             </View>
         </Animated.View>
     );
@@ -124,30 +108,32 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
 const styles = StyleSheet.create({
     overlay: {
         ...StyleSheet.absoluteFillObject,
-        backgroundColor: 'white',
+        backgroundColor: '#a855f7',
         zIndex: 999,
         alignItems: 'center',
         justifyContent: 'center',
     },
     imageContainer: {
-        shadowColor: "#dc2626",
-        shadowOffset: { width: 0, height: 20 },
-        shadowOpacity: 0.2,
-        shadowRadius: 35,
-        elevation: 15,
-        marginBottom: 90,
+        marginBottom: 70,
     },
     image: {
-        width: 220,
-        height: 220,
-        borderRadius: 110,
-        borderWidth: 6,
-        borderColor: '#fee2e2',
+        width: 180,
+        height: 180,
+        borderRadius: 90,
     },
-    textTrack: {
-        position: 'absolute',
-        bottom: SCREEN_HEIGHT * 0.28,
-        width: '100%',
-        alignItems: 'flex-start',
+    textContainer: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'center',
+        paddingHorizontal: 20,
+    },
+    bouncingText: {
+        fontSize: 42, // Adjusted to fit 'MD_Kayesur' (10 letters) comfortably
+        color: '#ffffff',
+        fontWeight: '900', // Black font weight for strong impact
+        textTransform: 'uppercase',
+        textShadowColor: 'rgba(0,0,0,0.3)',
+        textShadowOffset: { width: 0, height: 6 },
+        textShadowRadius: 1,
     },
 });
