@@ -18,10 +18,6 @@ import tw from 'twrnc';
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 const LandingHero = () => {
-
-//typing animation code start
-
-
     const titles = ['FrontEnd Developer', 'Full Stack Developer', 'App Developer', 'MERN Stack Developer'];
     const [displayText, setDisplayText] = useState('');
     const [titleIndex, setTitleIndex] = useState(0);
@@ -40,10 +36,8 @@ const LandingHero = () => {
             }
 
             if (!isDeleting && displayText === currentTitle) {
-                // Pause at the end before deleting
                 setTimeout(() => setIsDeleting(true), 1500);
             } else if (isDeleting && displayText === '') {
-                // Move to next title after deleting
                 setIsDeleting(false);
                 setTitleIndex((prev) => (prev + 1) % titles.length);
             }
@@ -52,8 +46,6 @@ const LandingHero = () => {
         const timer = setTimeout(handleTyping, typingSpeed);
         return () => clearTimeout(timer);
     }, [displayText, isDeleting, titleIndex]);
-
-//typing animation code end
 
     const handleDownloadCV = async () => {
         try {
@@ -67,7 +59,6 @@ const LandingHero = () => {
     return (
         <View style={[styles.container as ViewStyle, tw`px-6 py-12`]}>
             <View style={tw`flex-1 flex-col md:flex-row items-center justify-between`}>
-
                 {/* Left Content */}
                 <View style={tw`flex-1 mb-10 md:mb-0`}>
                     <Text style={tw`text-white text-lg font-medium mb-2`}>
@@ -105,7 +96,7 @@ const LandingHero = () => {
                         ]}
                     >
                         <Ionicons name="download-outline" size={22} color="white" style={tw`mr-2`} />
-                        <Text style={tw`text-white text-lg font-bold`}>My CV</Text>
+                        <Text style={tw`text-white text-lg font-bold text-center`}>My CV</Text>
                     </TouchableOpacity>
                 </View>
 
@@ -119,7 +110,6 @@ const LandingHero = () => {
                         />
                     </View>
                 </View>
-
             </View>
         </View>
     );
