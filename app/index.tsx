@@ -1,3 +1,4 @@
+
 import {
   Pressable,
   Text,
@@ -12,6 +13,7 @@ import { useAuth } from "@clerk/clerk-expo";
 import { useState } from "react";
 import SafeScreen from "@/components/SafeScreen";
 import SplashScreen from "@/components/SplashScreen";
+import LandingHero from "@/components/LandingHero";
 import tw from 'twrnc';
 
 export default function LandingPage() {
@@ -20,14 +22,6 @@ export default function LandingPage() {
   const pathname = usePathname();
   const [activeIcon, setActiveIcon] = useState<string | null>(null);
   const [showSplash, setShowSplash] = useState(true);
-
-  const handleGetStarted = () => {
-    if (isSignedIn) {
-      router.push("/(tabs)");
-    } else {
-      router.push("/(auth)/sign-in");
-    }
-  };
 
   const pageIcons = [
     { icon: "information-circle" as keyof typeof Ionicons.glyphMap, route: "/(tabs)/about", label: "About", path: "/about" },
@@ -55,65 +49,17 @@ export default function LandingPage() {
       {showSplash && <SplashScreen onComplete={() => setShowSplash(false)} />}
 
       {/* Status bar handling */}
-      <StatusBar barStyle="dark-content" backgroundColor="white" />
+      <StatusBar barStyle="light-content" backgroundColor="#064e3b" />
 
       <View style={tw`flex-1 bg-white`}>
         {/* Main Content - Scrollable */}
         <ScrollView
           style={tw`flex-1`}
-          contentContainerStyle={tw`flex-grow items-center justify-center px-6 py-10`}
+          contentContainerStyle={tw`flex-grow`}
           showsVerticalScrollIndicator={false}
         >
-          {/* App Logo/Icon */}
-          <View style={tw`mb-8`}>
-            <View style={tw`w-24 h-24 rounded-full bg-red-100 items-center justify-center mx-auto mb-4`}>
-              <Ionicons name="fitness" size={48} color="#dc2626" />
-            </View>
-          </View>
-
-          {/* Welcome Text */}
-          <Text style={tw`text-3xl md:text-4xl font-bold text-gray-900 text-center mb-2`}>
-            Welcome to FitLife
-          </Text>
-
-          <Text style={tw`text-2xl md:text-3xl font-bold text-red-600 text-center mb-6`}>
-            MD_Kayesur
-          </Text>
-
-          {/* Description */}
-          <Text style={tw`text-base md:text-lg text-gray-600 text-center leading-relaxed mb-10 max-w-md`}>
-            Start your fitness journey with us. Train hard, stay consistent, and achieve your goals step by step. Transform your body and mind.
-          </Text>
-
-          {/* Get Started Button */}
-          <Pressable
-            onPress={handleGetStarted}
-            style={({ pressed }) => [
-              tw`bg-red-600 px-10 py-4 rounded-full shadow-lg`,
-              pressed && tw`bg-red-700 opacity-90`
-            ]}
-          >
-            <Text style={tw`text-white font-bold text-lg`}>
-              CLONE & GET STARTED NOW
-            </Text>
-          </Pressable>
-
-          {/* Features Grid (Visible on larger screens) */}
-          <View style={tw`hidden md:flex flex-row flex-wrap justify-center mt-12 gap-6 max-w-2xl`}>
-            {[
-              { icon: "barbell", label: "Workout Plans" },
-              { icon: "nutrition", label: "Nutrition Guide" },
-              { icon: "stats-chart", label: "Progress Track" },
-              { icon: "people", label: "Community" }
-            ].map((feature, index) => (
-              <View key={index} style={tw`items-center p-4`}>
-                <View style={tw`w-16 h-16 rounded-full bg-gray-100 items-center justify-center mb-3`}>
-                  <Ionicons name={feature.icon as any} size={28} color="#dc2626" />
-                </View>
-                <Text style={tw`text-gray-700 font-medium`}>{feature.label}</Text>
-              </View>
-            ))}
-          </View>
+          {/* New Premium Landing Hero Component */}
+          <LandingHero />
         </ScrollView>
 
         {/* Bottom Navigation - Fixed for mobile, different for web */}
