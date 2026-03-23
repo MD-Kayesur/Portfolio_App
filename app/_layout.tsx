@@ -58,28 +58,19 @@ export default function RootLayout() {
           publishableKey=""
           tokenCache={tokenCache}
         >
-          <Stack>
-            <Stack.Screen name="index" options={{ headerShown: false }} />
+          <Stack screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="index" />
             <Stack.Screen
               name="(auth)/missing-key"
-              options={{
-                headerShown: false,
-              }}
             />
             <Stack.Screen
               name="(auth)"
-              options={{
-                headerShown: false,
-              }}
             />
             <Stack.Screen
               name="(tabs)"
-              options={{
-                headerShown: false,
-              }}
             />
-            <Stack.Screen name="(pages)" options={{ headerShown: false }} />
-            <Stack.Screen name="+not-found" />
+            <Stack.Screen name="(pages)" />
+            <Stack.Screen name="+not-found" options={{ headerShown: true }} />
           </Stack>
         </ClerkProvider>
       </Provider>
@@ -95,13 +86,13 @@ export default function RootLayout() {
           domain: undefined, // Let Clerk auto-detect
         })}
       >
-        <Stack>
-          <Stack.Screen name="index" options={{ headerShown: false }} />
-          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="workout" options={{ headerShown: false }} />
-          <Stack.Screen name="(pages)" options={{ headerShown: false }} />
-          <Stack.Screen name="+not-found" />
+        <Stack screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="index" />
+          <Stack.Screen name="(auth)" />
+          <Stack.Screen name="(tabs)" />
+          <Stack.Screen name="workout" />
+          <Stack.Screen name="(pages)" />
+          <Stack.Screen name="+not-found" options={{ headerShown: true }} />
         </Stack>
       </ClerkProvider>
     </Provider>

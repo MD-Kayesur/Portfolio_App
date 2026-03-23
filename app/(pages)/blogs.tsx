@@ -9,11 +9,11 @@ import {
   StyleSheet,
   TouchableOpacity,
   Dimensions,
-  ScrollView,
 } from 'react-native';
 import { useGetBlogsQuery } from '@/redux/feature/blogs/blogApi';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+import SafeScreen from '@/components/SafeScreen';
 
 const { width } = Dimensions.get('window');
 
@@ -23,29 +23,35 @@ export default function BlogList() {
 
   if (isLoading) {
     return (
-      <View style={styles.centerContainer}>
-        <ActivityIndicator size="large" color="#6366f1" />
-        <Text style={styles.loadingText}>Loading blogs...</Text>
-      </View>
+      <SafeScreen>
+        <View style={styles.centerContainer}>
+          <ActivityIndicator size="large" color="#6366f1" />
+          <Text style={styles.loadingText}>Loading blogs...</Text>
+        </View>
+      </SafeScreen>
     );
   }
 
   if (error) {
     return (
-      <View style={styles.centerContainer}>
-        <Ionicons name="alert-circle-outline" size={60} color="#ef4444" />
-        <Text style={styles.errorText}>Error loading blogs</Text>
-        <Text style={styles.errorSubtext}>Please try again later</Text>
-      </View>
+      <SafeScreen>
+        <View style={styles.centerContainer}>
+          <Ionicons name="alert-circle-outline" size={60} color="#ef4444" />
+          <Text style={styles.errorText}>Error loading blogs</Text>
+          <Text style={styles.errorSubtext}>Please try again later</Text>
+        </View>
+      </SafeScreen>
     );
   }
 
   if (!blogs || blogs.length === 0) {
     return (
-      <View style={styles.centerContainer}>
-        <Ionicons name="document-text-outline" size={60} color="#9ca3af" />
-        <Text style={styles.emptyText}>No blogs available</Text>
-      </View>
+      <SafeScreen>
+        <View style={styles.centerContainer}>
+          <Ionicons name="document-text-outline" size={60} color="#9ca3af" />
+          <Text style={styles.emptyText}>No blogs available</Text>
+        </View>
+      </SafeScreen>
     );
   }
 
@@ -102,25 +108,27 @@ export default function BlogList() {
   );
 
   return (
-    <View style={styles.container}>
-      {/* Header */}
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>My Blogs</Text>
-        <Text style={styles.headerSubtitle}>
-          {blogs.length} {blogs.length === 1 ? 'Post' : 'Posts'}
-        </Text>
-      </View>
+    <SafeScreen>
+      <View style={styles.container}>
+        {/* Header */}
+        <View style={styles.header}>
+          <Text style={styles.headerTitle}>My Blogs</Text>
+          <Text style={styles.headerSubtitle}>
+            {blogs.length} {blogs.length === 1 ? 'Post' : 'Posts'}
+          </Text>
+        </View>
 
-      {/* Blog List */}
-      <FlatList
-        data={blogs}
-        renderItem={renderBlogItem}
-        keyExtractor={(item) => item._id}
-        contentContainerStyle={styles.listContent}
-        showsVerticalScrollIndicator={false}
-        ItemSeparatorComponent={() => <View style={styles.separator} />}
-      />
-    </View>
+        {/* Blog List */}
+        <FlatList
+          data={blogs}
+          renderItem={renderBlogItem}
+          keyExtractor={(item) => item._id}
+          contentContainerStyle={styles.listContent}
+          showsVerticalScrollIndicator={false}
+          ItemSeparatorComponent={() => <View style={styles.separator} />}
+        />
+      </View>
+    </SafeScreen>
   );
 }
 
@@ -139,7 +147,7 @@ const styles = StyleSheet.create({
   header: {
     backgroundColor: '#fff',
     padding: 20,
-    paddingTop: 60,
+    paddingTop: 12, // Reduced from 60 to have a normal gap with SafeScreen
     borderBottomWidth: 1,
     borderBottomColor: '#e5e7eb',
   },

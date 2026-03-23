@@ -20,9 +20,11 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
     const text = "MD_Kayesur";
     const characters = text.split("");
 
-    // Create an array of Animated values for each character
+    // Animation values
     const bounceValues = useRef(characters.map(() => new Animated.Value(0))).current;
     const opacity = useRef(new Animated.Value(1)).current;
+    const imgScale = useRef(new Animated.Value(1)).current;
+    const imgOpacity = useRef(new Animated.Value(1)).current;
 
     useEffect(() => {
         // Start cascading bounce animations for each character
@@ -47,21 +49,36 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
         // Run all animations in parallel
         animations.forEach(anim => anim.start());
 
-        // Final fade out and complete splash
+        // Final exit sequence: Image zooms and vanishes (Total time: 3 seconds)
         const timeout = setTimeout(() => {
-            Animated.timing(opacity, {
-                toValue: 0,
-                duration: 800,
-                useNativeDriver: true,
-            }).start(() => {
+            // Simultaneous image zoom + vanish AND overall fade
+            Animated.parallel([
+                Animated.timing(imgScale, {
+                    toValue: 2,
+                    duration: 1000,
+                    useNativeDriver: true,
+                }),
+                Animated.timing(imgOpacity, {
+                    toValue: 0,
+                    duration: 1000,
+                    useNativeDriver: true,
+                }),
+                Animated.timing(opacity, {
+                    toValue: 0,
+                    duration: 1000,
+                    useNativeDriver: true,
+                })
+            ]).start(() => {
                 onComplete();
             });
-        }, 5500);
+        }, 2000); // 2s delay + 1s animation = 3s total
 
         return () => {
             clearTimeout(timeout);
             bounceValues.forEach(val => val.stopAnimation());
             opacity.stopAnimation();
+            imgScale.stopAnimation();
+            imgOpacity.stopAnimation();
         };
     }, []);
 
@@ -72,15 +89,21 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
                 { opacity }
             ]}
         >
-            {/* Static Profile Image (Larger size as requested) */}
-            <View style={styles.imageContainer}>
+            {/* Profile Image with Zoom and Vanish logic */}
+            <Animated.View style={[
+                styles.imageContainer,
+                {
+                    transform: [{ scale: imgScale }],
+                    opacity: imgOpacity
+                }
+            ]}>
                 <Image
                     source={require("../assets/images/kayes.jpg")}
                     style={styles.image}
                 />
-            </View>
+            </Animated.View>
 
-            {/* Bouncing Text logic inspired by provided demo */}
+            {/* Bouncing Text logic */}
             <View style={styles.textContainer}>
                 {characters.map((char, index) => {
                     const translateY = bounceValues[index].interpolate({
@@ -108,18 +131,18 @@ export default function SplashScreen({ onComplete }: SplashScreenProps) {
 const styles = StyleSheet.create({
     overlay: {
         ...StyleSheet.absoluteFillObject,
-        backgroundColor: '#fca5a5', // red-300
+        backgroundColor: '#fca5a5',
         zIndex: 999,
         alignItems: 'center',
         justifyContent: 'center',
     },
     imageContainer: {
-        marginBottom: 40, // Reduced from 80 for a tighter gap
+        marginBottom: 40,
     },
     image: {
-        width: 240, // Increased size from 180
-        height: 240, // Increased size from 180
-        borderRadius: 120, // Half of 240 for circle
+        width: 240,
+        height: 240,
+        borderRadius: 120,
     },
     textContainer: {
         flexDirection: 'row',
@@ -129,7 +152,7 @@ const styles = StyleSheet.create({
     },
     bouncingText: {
         fontSize: 48,
-        color: '#7f1d1d', // red-900
+        color: '#7f1d1d',
         fontWeight: '900',
         textTransform: 'uppercase',
         textShadowColor: 'rgba(0,0,0,0.15)',
