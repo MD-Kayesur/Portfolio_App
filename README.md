@@ -32,7 +32,7 @@ Before you begin, ensure you have the following installed:
 
 ```bash
 git clone <your-repository-url>
-cd react-native-expo-starter
+cd Portfolio_App
 ```
 
 ### 2. Install Dependencies
@@ -156,7 +156,7 @@ This will start the Expo development server. You can then:
 ## 📁 Project Structure
 
 ```
-react-native-expo-starter/
+Portfolio_App/
 ├── app/                          # Expo Router screens
 │   ├── (auth)/                  # Authentication routes
 │   │   ├── _layout.tsx          # Auth layout
