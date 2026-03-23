@@ -13,11 +13,13 @@ import {
 } from 'react-native';
 import { useGetBlogsQuery } from '@/redux/feature/blogs/blogApi';
 import { Ionicons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 
 const { width } = Dimensions.get('window');
 
 export default function BlogList() {
   const { data: blogs, isLoading, error } = useGetBlogsQuery();
+  const router = useRouter();
 
   if (isLoading) {
     return (
@@ -47,8 +49,16 @@ export default function BlogList() {
     );
   }
 
+  const handleBlogPress = (id: string) => {
+    router.push(`/(pages)/blog/${id}`);
+  };
+
   const renderBlogItem = ({ item }: { item: any }) => (
-    <TouchableOpacity style={styles.blogCard} activeOpacity={0.7}>
+    <TouchableOpacity
+      style={styles.blogCard}
+      activeOpacity={0.7}
+      onPress={() => handleBlogPress(item._id)}
+    >
       {/* Blog Image */}
       <Image
         source={{ uri: item.media }}
@@ -83,10 +93,10 @@ export default function BlogList() {
         )}
 
         {/* Read More Button */}
-        <TouchableOpacity style={styles.readMoreButton}>
+        <View style={styles.readMoreButton}>
           <Text style={styles.readMoreText}>Read More</Text>
           <Ionicons name="arrow-forward" size={16} color="#6366f1" />
-        </TouchableOpacity>
+        </View>
       </View>
     </TouchableOpacity>
   );

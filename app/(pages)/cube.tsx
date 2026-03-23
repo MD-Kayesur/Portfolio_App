@@ -3,6 +3,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import tw from 'twrnc';
+import { ScrollView } from "react-native";
 
 export default function CubePage() {
   return (
@@ -19,7 +20,8 @@ export default function CubePage() {
       </View>
 
       {/* Main Content */}
-      <View style={tw`flex-1 items-center justify-center px-6`}>
+      <ScrollView>
+        <View style={tw`flex-1 items-center justify-center px-6`}>
         
         {/* Cube with Shadow */}
         <View style={tw`mb-8`}>
@@ -83,6 +85,7 @@ export default function CubePage() {
           </Pressable>
         </View>
       </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
