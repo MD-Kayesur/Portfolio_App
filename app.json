@@ -1,5 +1,6 @@
 {
   "expo": {
+    "icon": "./assets/images/kayes.jpg",
     "name": "Portfolio_App",
     "slug": "Portfolio_App",
     "version": "1.0.0",
@@ -26,6 +27,11 @@
     "scheme": "starter",
     "plugins": [
       "expo-web-browser"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "94fafd73-7ebf-4ffd-8a3c-61ffea563a3f"
+      }
+    }
   }
 }

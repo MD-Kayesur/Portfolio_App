@@ -102,11 +102,11 @@ export default function LandingPage() {
             intensity={95}
             tint="light"
             style={[
-              tw`absolute bottom-0 left-0 right-0 border-t border-white/20 pt-2 pb-6 px-2`,
-              { backgroundColor: 'rgba(255,255,255,0.3)', overflow: 'hidden' }
+              tw`absolute bottom-0 left-0 right-0 border-t border-white/20 pt-4 pb-10 px-4`,
+              { backgroundColor: 'rgba(255,255,255,0.4)', overflow: 'hidden' }
             ]}
           >
-            <View style={tw`flex-row items-center justify-between w-full`}>
+            <View style={tw`flex-row items-center justify-around w-full`}>
               {pageIcons.map((page, index) => (
                 <Pressable
                   key={index}
@@ -117,8 +117,8 @@ export default function LandingPage() {
                   ]}
                 >
                   <View style={[
-                    tw`w-12 h-12 rounded-full items-center justify-center mb-0.5`,
-                    isActive(page) ? tw`bg-red-50/50` : tw`bg-transparent`
+                    tw`w-12 h-12 rounded-full items-center justify-center mb-1.5`,
+                    isActive(page) ? tw`bg-red-50/60` : tw`bg-transparent`
                   ]}>
                     <Ionicons
                       name={page.icon}
@@ -129,7 +129,7 @@ export default function LandingPage() {
                   <Text
                     numberOfLines={1}
                     style={[
-                      tw`text-[10px] font-bold`,
+                      tw`text-xs font-bold`,
                       isActive(page) ? tw`text-red-600` : tw`text-gray-500`
                     ]}
                   >

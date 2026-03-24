@@ -50,7 +50,6 @@ export default function BlogDetail() {
     return (
         <SafeAreaView style={styles.container} edges={['top']}>
             <ScrollView showsVerticalScrollIndicator={false}>
-                {/* Header with Back Button */}
                 <View style={styles.header}>
                     <TouchableOpacity
                         onPress={() => router.back()}
@@ -59,10 +58,9 @@ export default function BlogDetail() {
                         <Ionicons name="arrow-back" size={24} color="#111827" />
                     </TouchableOpacity>
                     <Text style={styles.headerTitle} numberOfLines={1}>Blog Detail</Text>
-                    <View style={{ width: 40 }} /> {/* Spacer for centering title */}
+                    <View style={{ width: 40 }} />
                 </View>
 
-                {/* Hero Image */}
                 <Image
                     source={{ uri: blog.media }}
                     style={styles.heroImage}
@@ -70,7 +68,6 @@ export default function BlogDetail() {
                 />
 
                 <View style={styles.content}>
-                    {/* Metadata */}
                     <View style={styles.metaContainer}>
                         <View style={styles.dateBadge}>
                             <Ionicons name="calendar-outline" size={14} color="#6366f1" />
@@ -84,18 +81,12 @@ export default function BlogDetail() {
                         )}
                     </View>
 
-                    {/* Title */}
                     <Text style={styles.title}>{blog.about}</Text>
 
-                    {/* Divider */}
                     <View style={styles.divider} />
 
-                    {/* Description */}
-                    <Text style={styles.description}>
-                        {blog.description}
-                    </Text>
+                    <Text style={styles.description}>{blog.description}</Text>
 
-                    {/* Additional Content (Optional) */}
                     <View style={tw`mt-8 p-4 bg-indigo-50 rounded-2xl`}>
                         <Text style={tw`text-indigo-900 font-bold text-lg mb-2`}>
                             Key Insights
