@@ -58,7 +58,7 @@ export default function BlogDetail() {
                         <Ionicons name="arrow-back" size={24} color="#111827" />
                     </TouchableOpacity>
                     <Text style={styles.headerTitle} numberOfLines={1}>Blog Detail</Text>
-                    <View style={{ width: 40 }} />
+                    <View style={{ width: 10 }} />
                 </View>
 
                 <Image

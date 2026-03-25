@@ -16,28 +16,22 @@ export default function whatsapp() {
   const isDarkMode = colorScheme === 'dark';
 
   const handleEmailPress = () => {
-    Linking.openURL('mailto:example@gamil.com')
+    Linking.openURL('mailto:mdkayesur@gmail.com')
       .catch(() => Alert.alert('Error', 'Cannot open email app'));
   };
 
   const handlePhonePress = () => {
-    Linking.openURL('tel:+1234-56789')
+    Linking.openURL('tel:+8801926360430')
       .catch(() => Alert.alert('Error', 'Cannot make a call'));
   };
 
   const handleWhatsAppPress = () => {
-    Linking.openURL('https://wa.me/1234-56789')
+    Linking.openURL('https://wa.me/8801926360430')
       .catch(() => Alert.alert('Error', 'Cannot open WhatsApp'));
   };
 
   const handleSendMessage = () => {
-    Alert.alert(
-      'Message Sent',
-      'Your message has been sent successfully!',
-      [
-        { text: 'OK', onPress: () => router.back() }
-      ]
-    );
+    router.push('/(pages)/paper-plane');
   };
 
   return (
@@ -99,7 +93,7 @@ export default function whatsapp() {
                 tw`text-lg font-semibold`,
                 isDarkMode ? tw`text-white` : tw`text-gray-800`
               ]}>
-                example@gamil.com
+                mdkayesur@gmail.com
               </Text>
             </View>
             <Ionicons name="open-outline" size={20} color={isDarkMode ? "#9ca3af" : "#6b7280"} />
@@ -123,7 +117,7 @@ export default function whatsapp() {
                 tw`text-lg font-semibold`,
                 isDarkMode ? tw`text-white` : tw`text-gray-800`
               ]}>
-                +880 1234-56789
+                +880 1926-360430
               </Text>
             </View>
             <Ionicons name="open-outline" size={20} color={isDarkMode ? "#9ca3af" : "#6b7280"} />
@@ -153,22 +147,24 @@ export default function whatsapp() {
         {/* WhatsApp Button */}
         <Pressable
           onPress={handleWhatsAppPress}
-          style={tw`flex-row items-center justify-center bg-green-600 py-4 rounded-xl mb-4`}
+          style={tw`flex-row items-center justify-center bg-white border-2 border-black py-4 rounded-xl mb-4`}
         >
-          <Ionicons name="logo-whatsapp" size={24} color="white" />
-          <Text style={tw`text-white text-lg font-bold ml-3`}>Chat on WhatsApp</Text>
+          <Ionicons name="logo-whatsapp" size={24} color="black" />
+          <Text style={tw`text-black text-lg font-bold ml-3`}>Chat on WhatsApp</Text>
         </Pressable>
 
-        {/* Send Message Button */}
+        {/* Send Message Button - White with Black Text and Border for visibility */}
         <Pressable
           onPress={handleSendMessage}
           style={({ pressed }) => [
-            tw`bg-red-700 py-4 rounded-xl items-center`,
-            pressed && tw`opacity-80`
+            tw`bg-white py-4 rounded-xl items-center flex-row justify-center border-2 border-black shadow-md`,
+            pressed && tw`bg-gray-100`
           ]}
         >
-          <Text style={tw`text-white text-lg font-bold`}>Send Message</Text>
+          <Ionicons name="mail" size={24} color="black" />
+          <Text style={tw`text-black text-lg font-bold ml-3`}>Send Message</Text>
         </Pressable>
+
 
         {/* Footer Note */}
         <Text style={[

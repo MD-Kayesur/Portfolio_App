@@ -112,11 +112,20 @@ export default function BlogList() {
       <View style={styles.container}>
         {/* Header */}
         <View style={styles.header}>
-          <Text style={styles.headerTitle}>My Blogs</Text>
-          <Text style={styles.headerSubtitle}>
-            {blogs.length} {blogs.length === 1 ? 'Post' : 'Posts'}
-          </Text>
+          <TouchableOpacity
+            onPress={() => router.back()}
+            style={styles.backButton}
+          >
+            <Ionicons name="arrow-back" size={24} color="#111827" />
+          </TouchableOpacity>
+          <View>
+            <Text style={styles.headerTitle}>My Blogs</Text>
+            <Text style={styles.headerSubtitle}>
+              {blogs.length} {blogs.length === 1 ? 'Post' : 'Posts'}
+            </Text>
+          </View>
         </View>
+
 
         {/* Blog List */}
         <FlatList
@@ -145,12 +154,25 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   header: {
+    flexDirection: 'row',
+    alignItems: 'center',
     backgroundColor: '#fff',
-    padding: 20,
-    paddingTop: 12, // Reduced from 60 to have a normal gap with SafeScreen
+    padding: 16,
+    paddingTop: 12,
     borderBottomWidth: 1,
     borderBottomColor: '#e5e7eb',
+    gap: 12,
   },
+  backButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: '#f3f4f6',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 4,
+  },
+
   headerTitle: {
     fontSize: 28,
     fontWeight: 'bold',
