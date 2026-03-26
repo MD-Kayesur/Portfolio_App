@@ -101,7 +101,7 @@ export default function AIAssistant() {
             {/* Header */}
             <View style={styles.header}>
                 <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
-                    <Ionicons name="arrow-back" size={24} color="#dc2626" />
+                    <Ionicons name="arrow-back" size={24} color="white" />
                 </TouchableOpacity>
                 <View style={styles.headerInfo}>
                     <Text style={styles.headerTitle}>AI Assistant</Text>
@@ -160,21 +160,21 @@ export default function AIAssistant() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: 'transparent',
     },
     header: {
         flexDirection: 'row',
         alignItems: 'center',
         padding: 16,
         borderBottomWidth: 1,
-        borderBottomColor: '#f3f4f6',
+        borderBottomColor: 'rgba(255,255,255,0.1)',
+        paddingTop: 40,
     },
     backButton: {
         width: 44,
         height: 44,
         borderRadius: 22,
-        borderWidth: 2,
-        borderColor: '#dc2626',
+        backgroundColor: 'rgba(255,255,255,0.1)',
         justifyContent: 'center',
         alignItems: 'center',
         marginRight: 12,
@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
     headerTitle: {
         fontSize: 18,
         fontWeight: 'bold',
-        color: '#111827',
+        color: '#fff',
     },
     statusContainer: {
         flexDirection: 'row',
@@ -201,7 +201,7 @@ const styles = StyleSheet.create({
     },
     statusText: {
         fontSize: 12,
-        color: '#6b7280',
+        color: '#9ca3af',
     },
     messageList: {
         padding: 16,
@@ -233,7 +233,7 @@ const styles = StyleSheet.create({
         borderBottomRightRadius: 4,
     },
     aiBubble: {
-        backgroundColor: '#f3f4f6',
+        backgroundColor: 'rgba(243, 244, 246, 0.85)',
         borderBottomLeftRadius: 4,
     },
     messageText: {
@@ -257,21 +257,21 @@ const styles = StyleSheet.create({
         alignItems: 'flex-end',
         padding: 12,
         borderTopWidth: 1,
-        borderTopColor: '#f3f4f6',
-        backgroundColor: '#fff',
+        borderTopColor: 'rgba(255,255,255,0.1)',
+        backgroundColor: 'rgba(0,0,0,0.5)',
     },
     input: {
         flex: 1,
-        backgroundColor: '#f9fafb',
+        backgroundColor: 'rgba(255,255,255,0.05)',
         borderWidth: 1,
-        borderColor: '#e5e7eb',
+        borderColor: 'rgba(255,255,255,0.1)',
         borderRadius: 24,
         paddingHorizontal: 16,
         paddingVertical: 10,
         paddingTop: 10,
         fontSize: 15,
         maxHeight: 100,
-        color: '#111827',
+        color: '#fff',
     },
     sendButton: {
         width: 44,

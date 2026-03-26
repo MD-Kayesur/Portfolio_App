@@ -48,12 +48,12 @@ export default function AboutPage() {
                 {/* Skills/Focus Section */}
                 <View style={tw`flex-row flex-wrap gap-4 mb-6`}>
                     <View style={tw`bg-white/5 px-4 py-3 rounded-2xl border border-white/5 flex-1 min-w-[140px]`}>
-                        <Ionicons name="code-slash" size={24} color="#a855f7" />
+                        <Ionicons name="code" size={24} color="#a855f7" />
                         <Text style={tw`text-white font-bold mt-2 text-lg`}>Web Dev</Text>
                         <Text style={tw`text-gray-400 text-sm mt-1`}>Full Stack solutions with MERN</Text>
                     </View>
                     <View style={tw`bg-white/5 px-4 py-3 rounded-2xl border border-white/5 flex-1 min-w-[140px]`}>
-                        <Ionicons name="smartphone" size={24} color="#a855f7" />
+                        <Ionicons name="phone-portrait" size={24} color="#a855f7" />
                         <Text style={tw`text-white font-bold mt-2 text-lg`}>App Dev</Text>
                         <Text style={tw`text-gray-400 text-sm mt-1`}>Native performance with React Native</Text>
                     </View>
