@@ -4,8 +4,11 @@
 
 .contrast-text {
   mix-blend-mode: difference;
-  color: white !important;
+  color: #fff;
+  text-shadow: 0 0 1px rgba(0, 0, 0, 0.1);
 }
+
+/* For mobile logic, we will use text shadows in the component styles */
 
 @layer base {
   body {

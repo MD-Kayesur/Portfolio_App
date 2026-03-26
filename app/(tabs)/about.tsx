@@ -1,4 +1,4 @@
-import { ScrollView, View, Text, Pressable, Image } from "react-native";
+import { ScrollView, View, Text, Pressable, Image, Platform } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
@@ -40,12 +40,12 @@ export default function AboutPage() {
                 </View>
 
                 {/* Content Section */}
-                <View style={tw`bg-white/20 p-6 rounded-3xl border border-white/10 mb-6`}>
-                    <Text style={tw`text-purple-400 text-xl font-bold mb-4`}>Who I Am</Text>
-                    <Text style={tw`text-white text-lg leading-7 mb-4`}>
+                <View style={tw`p-6 mb-6`}>
+                    <Text style={tw`text-purple-400 text-xl font-bold mb-4 ${Platform.OS === 'web' ? 'contrast-text' : ''}`}>Who I Am</Text>
+                    <Text style={tw`text-white text-lg leading-7 mb-4 ${Platform.OS === 'web' ? 'contrast-text' : ''}`}>
                         I am a dedicated <Text style={tw`text-purple-400 font-bold`}>Full Stack Developer</Text> and <Text style={tw`text-purple-400 font-bold`}>App Developer</Text> with a passion for creating high-performance, responsive, and user-centric applications.
                     </Text>
-                    <Text style={tw`text-white text-base leading-6 opacity-80`}>
+                    <Text style={tw`text-white text-base leading-6 opacity-80 ${Platform.OS === 'web' ? 'contrast-text' : ''}`}>
                         My journey in tech began with a curiosity for how things work on the web, which led me to master the MERN stack. Recently, I've expanded my expertise into mobile app development, leveraging Expo and React Native to build seamless cross-platform experiences.
                     </Text>
                 </View>
@@ -56,7 +56,7 @@ export default function AboutPage() {
                 </View>
 
                 {/* Experience/Education */}
-                <View style={tw`bg-white/10 p-6 rounded-3xl border border-white/10 mt-6`}>
+                <View style={tw`p-6 mt-6`}>
                     <Text style={tw`text-purple-400 text-xl font-bold mb-4`}>My Mission</Text>
                     <Text style={tw`text-white text-base leading-6 opacity-80`}>
                         To bridge the gap between complex backend logic and elegant frontend design, delivering products that not only work perfectly but also provide an exceptional user experience.

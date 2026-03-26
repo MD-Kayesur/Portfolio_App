@@ -61,43 +61,45 @@ const LandingHero = () => {
             <View style={tw`flex-1 flex-col md:flex-row items-center justify-between`}>
                 {/* Left Content */}
                 <View style={tw`flex-1 mb-10 md:mb-0`}>
-                    <Text style={tw`text-lg font-medium mb-2 ${Platform.OS === 'web' ? 'contrast-text' : 'text-white'}`}>
-                        Hello. I'm
-                    </Text>
-                    <Text style={tw`text-4xl md:text-6xl font-black mb-4 leading-tight ${Platform.OS === 'web' ? 'contrast-text' : 'text-white'}`}>
-                        MD. Kayesur Rahman
-                    </Text>
-
-                    <View style={tw`flex-row items-center mb-6`}>
-                        <Text style={tw`text-purple-400 text-xl font-bold mr-2`}>
-                            i am
+                    <View>
+                        <Text style={[tw`text-lg font-medium mb-2 ${Platform.OS === 'web' ? 'contrast-text' : 'text-white'}`, styles.textReadability]}>
+                            Hello. I'm
                         </Text>
-                        <View style={tw`flex-row items-center`}>
-                            <Text style={tw`text-white text-xl font-bold`}>
-                                {displayText}
+                        <Text style={[tw`text-4xl md:text-6xl font-black mb-4 leading-tight ${Platform.OS === 'web' ? 'contrast-text' : 'text-white'}`, styles.textReadability]}>
+                            MD. Kayesur Rahman
+                        </Text>
+
+                        <View style={tw`flex-row items-center mb-6`}>
+                            <Text style={tw`text-purple-400 text-xl font-bold mr-2`}>
+                                i am
                             </Text>
-                            {/* Blinking Cursor */}
-                            <View style={[styles.cursor, tw`bg-purple-400 ml-1`]} />
+                            <View style={tw`flex-row items-center`}>
+                                <Text style={tw`text-white text-xl font-bold`}>
+                                    {displayText}
+                                </Text>
+                                {/* Blinking Cursor */}
+                                <View style={[styles.cursor, tw`bg-purple-400 ml-1`]} />
+                            </View>
                         </View>
+
+                        <Text style={[tw`text-base md:text-lg mb-8 leading-relaxed max-w-xl ${Platform.OS === 'web' ? 'contrast-text' : 'text-gray-200'}`, styles.textReadability]}>
+                            Front-End Developer crafting high-performance, responsive, and user-friendly web applications
+                            using modern technologies, clean code, and best practices for seamless user experiences.
+                        </Text>
+
+                        {/* Single "My CV" Button */}
+                        <TouchableOpacity
+                            onPress={handleDownloadCV}
+                            activeOpacity={0.8}
+                            style={[
+                                styles.button as ViewStyle,
+                                { shadowColor: '#9333ea', shadowOffset: { width: 0, height: 10 }, shadowOpacity: 0.3, shadowRadius: 20, elevation: 10 }
+                            ]}
+                        >
+                            <Ionicons name="download-outline" size={22} color="white" style={tw`mr-2`} />
+                            <Text style={tw`text-white text-lg font-bold text-center`}>My CV</Text>
+                        </TouchableOpacity>
                     </View>
-
-                    <Text style={tw`text-base md:text-lg mb-8 leading-relaxed max-w-xl ${Platform.OS === 'web' ? 'contrast-text' : 'text-gray-200'}`}>
-                        Front-End Developer crafting high-performance, responsive, and user-friendly web applications
-                        using modern technologies, clean code, and best practices for seamless user experiences.
-                    </Text>
-
-                    {/* Single "My CV" Button */}
-                    <TouchableOpacity
-                        onPress={handleDownloadCV}
-                        activeOpacity={0.8}
-                        style={[
-                            styles.button as ViewStyle,
-                            { shadowColor: '#9333ea', shadowOffset: { width: 0, height: 10 }, shadowOpacity: 0.3, shadowRadius: 20, elevation: 10 }
-                        ]}
-                    >
-                        <Ionicons name="download-outline" size={22} color="white" style={tw`mr-2`} />
-                        <Text style={tw`text-white text-lg font-bold text-center`}>My CV</Text>
-                    </TouchableOpacity>
                 </View>
 
                 {/* Right Content - Profile Image */}
@@ -152,6 +154,23 @@ const styles = StyleSheet.create({
         width: 3,
         height: 24,
         opacity: 1,
+    },
+    textReadability: {
+        ...Platform.select({
+            ios: {
+                textShadowColor: 'rgba(0, 0, 0, 0.9)',
+                textShadowOffset: { width: 0, height: 2 },
+                textShadowRadius: 15,
+            },
+            android: {
+                textShadowColor: 'rgba(0, 0, 0, 0.9)',
+                textShadowOffset: { width: 0, height: 2 },
+                textShadowRadius: 15,
+            },
+            web: {
+                // Already handled by mix-blend-mode in CSS
+            }
+        })
     }
 });
 

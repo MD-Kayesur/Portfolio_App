@@ -69,10 +69,9 @@ export default function Contact() {
                     {/* Contact Cards */}
                     <View style={tw`gap-4 mb-10`}>
 
-                        {/* Email Card */}
                         <Pressable
                             onPress={handleEmailPress}
-                            style={tw`flex-row items-center p-6 rounded-3xl bg-white/10 border border-white/10`}
+                            style={tw`flex-row items-center p-6 mb-4`}
                         >
                             <View style={tw`w-14 h-14 rounded-2xl bg-purple-500/20 items-center justify-center mr-5`}>
                                 <Ionicons name="mail" size={28} color="#a855f7" />
@@ -89,7 +88,7 @@ export default function Contact() {
                         {/* Phone Card */}
                         <Pressable
                             onPress={handlePhonePress}
-                            style={tw`flex-row items-center p-6 rounded-3xl bg-white/10 border border-white/10`}
+                            style={tw`flex-row items-center p-6 mb-4`}
                         >
                             <View style={tw`w-14 h-14 rounded-2xl bg-emerald-500/20 items-center justify-center mr-5`}>
                                 <Ionicons name="call" size={28} color="#10b981" />
@@ -104,7 +103,7 @@ export default function Contact() {
                         </Pressable>
 
                         {/* Location Card */}
-                        <View style={tw`flex-row items-center p-6 rounded-3xl bg-white/10 border border-white/10`}>
+                        <View style={tw`flex-row items-center p-6 mb-4`}>
                             <View style={tw`w-14 h-14 rounded-2xl bg-blue-500/20 items-center justify-center mr-5`}>
                                 <Ionicons name="location" size={28} color="#3b82f6" />
                             </View>

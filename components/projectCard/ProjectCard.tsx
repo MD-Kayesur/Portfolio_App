@@ -60,7 +60,7 @@ export default function ProjectCard() {
       {projects.map((project) => (
         <View
           key={project.id}
-          style={tw`${project.bgColor} rounded-3xl p-6 mb-6 border border-white/10`}
+          style={tw`${project.bgColor} rounded-3xl p-6 mb-6 border border-white/10 bg-black/60`}
         >
           <View style={tw`mb-4`}>
             <Text style={tw`text-white text-2xl font-bold mb-2`}>
