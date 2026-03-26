@@ -3,6 +3,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import tw from 'twrnc';
+import ProjectCard from "@/components/projectCard/ProjectCard";
 
 export default function AboutPage() {
     const router = useRouter();
@@ -17,6 +18,10 @@ export default function AboutPage() {
                 <Ionicons name="arrow-back" size={24} color="white" />
             </Pressable>
 
+            {/* We'll use a single ScrollView for the whole page. 
+                Since ProjectCard itself has a ScrollView, we should probably 
+                just use the content of ProjectCard here or make ProjectCard non-scrollable.
+            */}
             <ScrollView
                 contentContainerStyle={tw`flex-grow px-6 pt-24 pb-12`}
                 showsVerticalScrollIndicator={false}
@@ -35,7 +40,7 @@ export default function AboutPage() {
                 </View>
 
                 {/* Content Section */}
-                <View style={tw`bg-white/10 p-6 rounded-3xl border border-white/10 mb-6`}>
+                <View style={tw`bg-white/20 p-6 rounded-3xl border border-white/10 mb-6`}>
                     <Text style={tw`text-purple-400 text-xl font-bold mb-4`}>Who I Am</Text>
                     <Text style={tw`text-white text-lg leading-7 mb-4`}>
                         I am a dedicated <Text style={tw`text-purple-400 font-bold`}>Full Stack Developer</Text> and <Text style={tw`text-purple-400 font-bold`}>App Developer</Text> with a passion for creating high-performance, responsive, and user-centric applications.
@@ -45,22 +50,13 @@ export default function AboutPage() {
                     </Text>
                 </View>
 
-                {/* Skills/Focus Section */}
-                <View style={tw`flex-row flex-wrap gap-4 mb-6`}>
-                    <View style={tw`bg-white/5 px-4 py-3 rounded-2xl border border-white/5 flex-1 min-w-[140px]`}>
-                        <Ionicons name="code" size={24} color="#a855f7" />
-                        <Text style={tw`text-white font-bold mt-2 text-lg`}>Web Dev</Text>
-                        <Text style={tw`text-gray-400 text-sm mt-1`}>Full Stack solutions with MERN</Text>
-                    </View>
-                    <View style={tw`bg-white/5 px-4 py-3 rounded-2xl border border-white/5 flex-1 min-w-[140px]`}>
-                        <Ionicons name="phone-portrait" size={24} color="#a855f7" />
-                        <Text style={tw`text-white font-bold mt-2 text-lg`}>App Dev</Text>
-                        <Text style={tw`text-gray-400 text-sm mt-1`}>Native performance with React Native</Text>
-                    </View>
+                {/* Projects Section - We'll add it here */}
+                <View style={tw`mt-6`}>
+                    <ProjectCard />
                 </View>
 
                 {/* Experience/Education */}
-                <View style={tw`bg-white/10 p-6 rounded-3xl border border-white/10`}>
+                <View style={tw`bg-white/10 p-6 rounded-3xl border border-white/10 mt-6`}>
                     <Text style={tw`text-purple-400 text-xl font-bold mb-4`}>My Mission</Text>
                     <Text style={tw`text-white text-base leading-6 opacity-80`}>
                         To bridge the gap between complex backend logic and elegant frontend design, delivering products that not only work perfectly but also provide an exceptional user experience.
