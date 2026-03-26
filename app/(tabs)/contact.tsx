@@ -2,9 +2,9 @@ import {
     Pressable,
     Text,
     View,
-    useColorScheme,
     Linking,
-    Alert
+    Alert,
+    ScrollView
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
@@ -12,180 +12,140 @@ import tw from 'twrnc';
 import { useRouter } from "expo-router";
 
 export default function Contact() {
-    const colorScheme = useColorScheme();
-    const isDarkMode = colorScheme === 'dark';
     const router = useRouter();
 
     const handleEmailPress = () => {
-        Linking.openURL('mailto:example@gamil.com')
+        Linking.openURL('mailto:mdkayesur@gmail.com')
             .catch(() => Alert.alert('Error', 'Cannot open email app'));
     };
 
     const handlePhonePress = () => {
-        Linking.openURL('tel:+1234-56789')
+        Linking.openURL('tel:+8801926360430')
             .catch(() => Alert.alert('Error', 'Cannot make a call'));
     };
 
     const handleWhatsAppPress = () => {
-        Linking.openURL('https://wa.me/1234-56789')
+        Linking.openURL('https://wa.me/8801926360430')
             .catch(() => Alert.alert('Error', 'Cannot open WhatsApp'));
     };
 
     const handleSendMessage = () => {
-        Alert.alert(
-            'Message Sent',
-            'Your message has been sent successfully!',
-            [
-                { text: 'OK', onPress: () => router.back() }
-            ]
-        );
+        router.push('/(pages)/paper-plane');
     };
 
     return (
-        <SafeAreaView style={[
-            tw`flex-1`,
-            isDarkMode ? tw`bg-black` : tw`bg-gray-50`
-        ]}>
-            <View style={tw`flex-1 px-4`}>
+        <SafeAreaView style={tw`flex-1`}>
+            <View style={tw`flex-1 px-6`}>
 
                 {/* Back Button */}
                 <Pressable
                     onPress={() => router.back()}
-                    style={tw`absolute top-10 left-4 z-10 bg-white dark:bg-gray-800 p-2 rounded-full shadow-sm`}
+                    style={tw`absolute top-12 left-6 z-10 bg-white/10 p-2 rounded-full`}
                 >
                     <Ionicons
                         name="arrow-back"
                         size={24}
-                        color={isDarkMode ? "white" : "black"}
+                        color="white"
                     />
                 </Pressable>
 
-                {/* Header */}
-                <View style={tw`items-center mt-20 mb-10`}>
-                    <View style={tw`w-20 h-20 rounded-full bg-red-100 dark:bg-red-900 items-center justify-center mb-4`}>
-                        <Ionicons name="chatbubbles" size={40} color="#dc2626" />
+                <ScrollView
+                    showsVerticalScrollIndicator={false}
+                    contentContainerStyle={tw`pb-12`}
+                >
+                    {/* Header */}
+                    <View style={tw`items-center mt-24 mb-10`}>
+                        <View style={tw`w-24 h-24 rounded-full bg-purple-500/20 border border-purple-500/30 items-center justify-center mb-4`}>
+                            <Ionicons name="chatbubbles" size={48} color="#a855f7" />
+                        </View>
+                        <Text style={tw`text-4xl font-black text-white`}>
+                            Get In Touch
+                        </Text>
+                        <Text style={tw`mt-2 text-center text-lg text-gray-400 px-4`}>
+                            Have a project in mind? Let's build something amazing together.
+                        </Text>
                     </View>
-                    <Text style={[
-                        tw`text-3xl font-bold`,
-                        isDarkMode ? tw`text-white` : tw`text-gray-900`
-                    ]}>
-                        Get In Touch
-                    </Text>
-                    <Text style={[
-                        tw`mt-2 text-center text-base`,
-                        isDarkMode ? tw`text-gray-300` : tw`text-gray-600`
-                    ]}>
-                        Feel free to reach out anytime
-                    </Text>
-                </View>
 
-                {/* Contact Cards */}
-                <View style={tw`gap-4 mb-8`}>
+                    {/* Contact Cards */}
+                    <View style={tw`gap-4 mb-10`}>
 
-                    {/* Email Card */}
-                    <Pressable
-                        onPress={handleEmailPress}
-                        style={[
-                            tw`flex-row items-center p-5 rounded-2xl`,
-                            isDarkMode ? tw`bg-gray-900` : tw`bg-white`,
-                            { shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.05, shadowRadius: 8, elevation: 2 }
-                        ]}
-                    >
-                        <View style={tw`w-12 h-12 rounded-full bg-red-100 dark:bg-red-900 items-center justify-center mr-4`}>
-                            <Ionicons name="mail" size={24} color="#dc2626" />
-                        </View>
-                        <View style={tw`flex-1`}>
-                            <Text style={tw`text-gray-400 text-sm`}>Email</Text>
-                            <Text style={[
-                                tw`text-lg font-semibold`,
-                                isDarkMode ? tw`text-white` : tw`text-gray-800`
-                            ]}>
-                                example@gamil.com
-                            </Text>
-                        </View>
-                        <Ionicons name="open-outline" size={20} color={isDarkMode ? "#9ca3af" : "#6b7280"} />
-                    </Pressable>
+                        {/* Email Card */}
+                        <Pressable
+                            onPress={handleEmailPress}
+                            style={tw`flex-row items-center p-6 rounded-3xl bg-white/10 border border-white/10`}
+                        >
+                            <View style={tw`w-14 h-14 rounded-2xl bg-purple-500/20 items-center justify-center mr-5`}>
+                                <Ionicons name="mail" size={28} color="#a855f7" />
+                            </View>
+                            <View style={tw`flex-1`}>
+                                <Text style={tw`text-gray-400 text-xs uppercase font-bold tracking-widest`}>Email</Text>
+                                <Text style={tw`text-lg font-bold text-white mt-1`}>
+                                    mdkayesur@gmail.com
+                                </Text>
+                            </View>
+                            <Ionicons name="chevron-forward" size={20} color="#6b7280" />
+                        </Pressable>
 
-                    {/* Phone Card */}
-                    <Pressable
-                        onPress={handlePhonePress}
-                        style={[
-                            tw`flex-row items-center p-5 rounded-2xl`,
-                            isDarkMode ? tw`bg-gray-900` : tw`bg-white`,
-                            { shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.05, shadowRadius: 8, elevation: 2 }
-                        ]}
-                    >
-                        <View style={tw`w-12 h-12 rounded-full bg-green-100 dark:bg-green-900 items-center justify-center mr-4`}>
-                            <Ionicons name="call" size={24} color="#059669" />
-                        </View>
-                        <View style={tw`flex-1`}>
-                            <Text style={tw`text-gray-400 text-sm`}>Phone</Text>
-                            <Text style={[
-                                tw`text-lg font-semibold`,
-                                isDarkMode ? tw`text-white` : tw`text-gray-800`
-                            ]}>
-                                +880 1234-56789
-                            </Text>
-                        </View>
-                        <Ionicons name="open-outline" size={20} color={isDarkMode ? "#9ca3af" : "#6b7280"} />
-                    </Pressable>
+                        {/* Phone Card */}
+                        <Pressable
+                            onPress={handlePhonePress}
+                            style={tw`flex-row items-center p-6 rounded-3xl bg-white/10 border border-white/10`}
+                        >
+                            <View style={tw`w-14 h-14 rounded-2xl bg-emerald-500/20 items-center justify-center mr-5`}>
+                                <Ionicons name="call" size={28} color="#10b981" />
+                            </View>
+                            <View style={tw`flex-1`}>
+                                <Text style={tw`text-gray-400 text-xs uppercase font-bold tracking-widest`}>Phone</Text>
+                                <Text style={tw`text-lg font-bold text-white mt-1`}>
+                                    +880 1926-360430
+                                </Text>
+                            </View>
+                            <Ionicons name="chevron-forward" size={20} color="#6b7280" />
+                        </Pressable>
 
-                    {/* Location Card */}
-                    <View style={[
-                        tw`flex-row items-center p-5 rounded-2xl`,
-                        isDarkMode ? tw`bg-gray-900` : tw`bg-white`,
-                        { shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.05, shadowRadius: 8, elevation: 2 }
-                    ]}>
-                        <View style={tw`w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900 items-center justify-center mr-4`}>
-                            <Ionicons name="location" size={24} color="#3b82f6" />
-                        </View>
-                        <View style={tw`flex-1`}>
-                            <Text style={tw`text-gray-400 text-sm`}>Location</Text>
-                            <Text style={[
-                                tw`text-lg font-semibold`,
-                                isDarkMode ? tw`text-white` : tw`text-gray-800`
-                            ]}>
-                                Dhaka, Bangladesh
-                            </Text>
+                        {/* Location Card */}
+                        <View style={tw`flex-row items-center p-6 rounded-3xl bg-white/10 border border-white/10`}>
+                            <View style={tw`w-14 h-14 rounded-2xl bg-blue-500/20 items-center justify-center mr-5`}>
+                                <Ionicons name="location" size={28} color="#3b82f6" />
+                            </View>
+                            <View style={tw`flex-1`}>
+                                <Text style={tw`text-gray-400 text-xs uppercase font-bold tracking-widest`}>Location</Text>
+                                <Text style={tw`text-lg font-bold text-white mt-1`}>
+                                    Dhaka, Bangladesh
+                                </Text>
+                            </View>
                         </View>
                     </View>
-                </View>
 
-                {/* WhatsApp Button */}
-                <Pressable
-                    onPress={handleWhatsAppPress}
-                    style={tw`flex-row items-center justify-center bg-green-600 py-4 rounded-xl mb-4`}
-                >
-                    <Ionicons name="logo-whatsapp" size={24} color="white" />
-                    <Text style={tw`text-white text-lg font-bold ml-3`}>Chat on WhatsApp</Text>
-                </Pressable>
+                    {/* Action Buttons */}
+                    <View style={tw`gap-4`}>
+                        {/* WhatsApp Button */}
+                        <Pressable
+                            onPress={handleWhatsAppPress}
+                            style={tw`flex-row items-center justify-center bg-emerald-600 py-5 rounded-2xl shadow-lg`}
+                        >
+                            <Ionicons name="logo-whatsapp" size={28} color="white" />
+                            <Text style={tw`text-white text-xl font-black ml-3`}>Chat on WhatsApp</Text>
+                        </Pressable>
 
-                {/* Send Message Button */}
-                <Pressable
-                    onPress={handleSendMessage}
-                    style={({ pressed }) => [
-                        tw`bg-red-700 py-4 rounded-xl items-center`,
-                        pressed && tw`opacity-80`
-                    ]}
-                >
-                    <Text style={tw`text-white text-lg font-bold`}>Send Message</Text>
-                </Pressable>
+                        {/* Send Message Button */}
+                        <Pressable
+                            onPress={handleSendMessage}
+                            style={({ pressed }) => [
+                                tw`bg-white py-5 rounded-2xl items-center shadow-lg`,
+                                pressed && tw`opacity-90`
+                            ]}
+                        >
+                            <Text style={tw`text-black text-xl font-black`}>Send Direct Message</Text>
+                        </Pressable>
+                    </View>
 
-                {/* Footer Note */}
-                <Text style={[
-                    tw`text-center mt-8 text-sm`,
-                    isDarkMode ? tw`text-gray-400` : tw`text-gray-500`
-                ]}>
-                    We typically respond within 24 hours
-                </Text>
+                    {/* Footer Note */}
+                    <Text style={tw`text-center mt-10 text-sm text-gray-500 font-medium`}>
+                        Average response time: &lt; 24 hours
+                    </Text>
+                </ScrollView>
             </View>
         </SafeAreaView>
     );
 }
-
-
-
-
-
-
-
