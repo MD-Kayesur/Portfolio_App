@@ -6,6 +6,9 @@ import { useEffect } from 'react';
 import { Platform } from 'react-native';
 import { ClerkProvider } from '@clerk/clerk-expo';
 import { tokenCache } from '@clerk/clerk-expo/token-cache';
+import { Video, ResizeMode } from 'expo-av';
+import { View, StyleSheet, useColorScheme } from 'react-native';
+import tw from 'twrnc';
 
 // Only import CSS on web - NativeWind handles mobile automatically via Metro
 if (Platform.OS === 'web') {
@@ -58,20 +61,38 @@ export default function RootLayout() {
           publishableKey=""
           tokenCache={tokenCache}
         >
-          <Stack screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="index" />
-            <Stack.Screen
-              name="(auth)/missing-key"
+          <View style={tw`flex-1`}>
+            {/* Background Video */}
+            <Video
+              source={require('../assets/vedios/animate1.mp4')}
+              style={StyleSheet.absoluteFill}
+              resizeMode={ResizeMode.COVER}
+              isLooping
+              isMuted
+              shouldPlay
             />
-            <Stack.Screen
-              name="(auth)"
-            />
-            <Stack.Screen
-              name="(tabs)"
-            />
-            <Stack.Screen name="(pages)" />
-            <Stack.Screen name="+not-found" options={{ headerShown: true }} />
-          </Stack>
+
+            {/* Content with Dynamic Background Inversion (Web Only with mix-blend-mode if added via CSS) */}
+            <View style={tw`flex-1`}>
+              <Stack screenOptions={{
+                headerShown: false,
+                contentStyle: { backgroundColor: 'transparent' } // Make screens transparent
+              }}>
+                <Stack.Screen name="index" />
+                <Stack.Screen
+                  name="(auth)/missing-key"
+                />
+                <Stack.Screen
+                  name="(auth)"
+                />
+                <Stack.Screen
+                  name="(tabs)"
+                />
+                <Stack.Screen name="(pages)" />
+                <Stack.Screen name="+not-found" options={{ headerShown: true }} />
+              </Stack>
+            </View>
+          </View>
         </ClerkProvider>
       </Provider>
     );
@@ -86,14 +107,31 @@ export default function RootLayout() {
           domain: undefined, // Let Clerk auto-detect
         })}
       >
-        <Stack screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="index" />
-          <Stack.Screen name="(auth)" />
-          <Stack.Screen name="(tabs)" />
-          <Stack.Screen name="workout" />
-          <Stack.Screen name="(pages)" />
-          <Stack.Screen name="+not-found" options={{ headerShown: true }} />
-        </Stack>
+        <View style={tw`flex-1`}>
+          {/* Background Video */}
+          <Video
+            source={require('../assets/vedios/animate1.mp4')}
+            style={StyleSheet.absoluteFill}
+            resizeMode={ResizeMode.COVER}
+            isLooping
+            isMuted
+            shouldPlay
+          />
+
+          <View style={tw`flex-1`}>
+            <Stack screenOptions={{
+              headerShown: false,
+              contentStyle: { backgroundColor: 'transparent' } // Make screens transparent
+            }}>
+              <Stack.Screen name="index" />
+              <Stack.Screen name="(auth)" />
+              <Stack.Screen name="(tabs)" />
+              <Stack.Screen name="workout" />
+              <Stack.Screen name="(pages)" />
+              <Stack.Screen name="+not-found" options={{ headerShown: true }} />
+            </Stack>
+          </View>
+        </View>
       </ClerkProvider>
     </Provider>
   );

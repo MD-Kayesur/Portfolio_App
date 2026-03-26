@@ -1,3 +1,14 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.contrast-text {
+  mix-blend-mode: difference;
+  color: white !important;
+}
+
+@layer base {
+  body {
+    @apply bg-transparent;
+  }
+}

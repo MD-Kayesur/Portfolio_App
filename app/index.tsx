@@ -51,9 +51,9 @@ export default function LandingPage() {
       {showSplash && <SplashScreen onComplete={() => setShowSplash(false)} />}
 
       {/* Status bar handling */}
-      <StatusBar barStyle="light-content" backgroundColor="#064e3b" />
+      <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />
 
-      <View style={[tw`flex-1`, { backgroundColor: '#064e3b' }]}>
+      <View style={[tw`flex-1`, { backgroundColor: 'transparent' }]}>
         {/* Main Content - Scrollable */}
         <ScrollView
           style={tw`flex-1`}

@@ -61,10 +61,10 @@ const LandingHero = () => {
             <View style={tw`flex-1 flex-col md:flex-row items-center justify-between`}>
                 {/* Left Content */}
                 <View style={tw`flex-1 mb-10 md:mb-0`}>
-                    <Text style={tw`text-white text-lg font-medium mb-2`}>
+                    <Text style={tw`text-lg font-medium mb-2 ${Platform.OS === 'web' ? 'contrast-text' : 'text-white'}`}>
                         Hello. I'm
                     </Text>
-                    <Text style={tw`text-white text-4xl md:text-6xl font-black mb-4 leading-tight`}>
+                    <Text style={tw`text-4xl md:text-6xl font-black mb-4 leading-tight ${Platform.OS === 'web' ? 'contrast-text' : 'text-white'}`}>
                         MD. Kayesur Rahman
                     </Text>
 
@@ -81,7 +81,7 @@ const LandingHero = () => {
                         </View>
                     </View>
 
-                    <Text style={tw`text-gray-200 text-base md:text-lg mb-8 leading-relaxed max-w-xl`}>
+                    <Text style={tw`text-base md:text-lg mb-8 leading-relaxed max-w-xl ${Platform.OS === 'web' ? 'contrast-text' : 'text-gray-200'}`}>
                         Front-End Developer crafting high-performance, responsive, and user-friendly web applications
                         using modern technologies, clean code, and best practices for seamless user experiences.
                     </Text>
@@ -117,7 +117,7 @@ const LandingHero = () => {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: '#064e3b',
+        backgroundColor: 'transparent',
         minHeight: Platform.OS === 'web' ? 600 : SCREEN_HEIGHT * 0.7,
         justifyContent: 'center',
     },
