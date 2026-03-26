@@ -1,16 +1,70 @@
-import GymCard from "@/components/gymCard/GymCard";
-import { ScrollView, View } from "react-native";
+import { ScrollView, View, Text, Pressable, Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
+import tw from 'twrnc';
 
 export default function AboutPage() {
+    const router = useRouter();
+
     return (
-        <SafeAreaView className="flex-1 bg-white">
+        <SafeAreaView style={tw`flex-1`}>
+            {/* Back Button */}
+            <Pressable
+                onPress={() => router.back()}
+                style={tw`absolute top-12 left-6 z-10 bg-white/10 p-2 rounded-full`}
+            >
+                <Ionicons name="arrow-back" size={24} color="white" />
+            </Pressable>
+
             <ScrollView
-                contentContainerStyle={{ flexGrow: 1 }}
+                contentContainerStyle={tw`flex-grow px-6 pt-24 pb-12`}
                 showsVerticalScrollIndicator={false}
             >
-                <View className="flex-1 items-center justify-center py-6">
-                    <GymCard />
+                {/* Profile Section */}
+                <View style={tw`items-center mb-10`}>
+                    <View style={tw`w-32 h-32 rounded-full border-4 border-purple-500 p-1 mb-4`}>
+                        <Image
+                            source={require('@/assets/images/kayes.jpg')}
+                            style={tw`w-full h-full rounded-full`}
+                            resizeMode="cover"
+                        />
+                    </View>
+                    <Text style={tw`text-white text-3xl font-bold text-center`}>About Me</Text>
+                    <View style={tw`h-1 w-20 bg-purple-500 mt-2 rounded-full`} />
+                </View>
+
+                {/* Content Section */}
+                <View style={tw`bg-white/10 p-6 rounded-3xl border border-white/10 mb-6`}>
+                    <Text style={tw`text-purple-400 text-xl font-bold mb-4`}>Who I Am</Text>
+                    <Text style={tw`text-white text-lg leading-7 mb-4`}>
+                        I am a dedicated <Text style={tw`text-purple-400 font-bold`}>Full Stack Developer</Text> and <Text style={tw`text-purple-400 font-bold`}>App Developer</Text> with a passion for creating high-performance, responsive, and user-centric applications.
+                    </Text>
+                    <Text style={tw`text-white text-base leading-6 opacity-80`}>
+                        My journey in tech began with a curiosity for how things work on the web, which led me to master the MERN stack. Recently, I've expanded my expertise into mobile app development, leveraging Expo and React Native to build seamless cross-platform experiences.
+                    </Text>
+                </View>
+
+                {/* Skills/Focus Section */}
+                <View style={tw`flex-row flex-wrap gap-4 mb-6`}>
+                    <View style={tw`bg-white/5 px-4 py-3 rounded-2xl border border-white/5 flex-1 min-w-[140px]`}>
+                        <Ionicons name="code-slash" size={24} color="#a855f7" />
+                        <Text style={tw`text-white font-bold mt-2 text-lg`}>Web Dev</Text>
+                        <Text style={tw`text-gray-400 text-sm mt-1`}>Full Stack solutions with MERN</Text>
+                    </View>
+                    <View style={tw`bg-white/5 px-4 py-3 rounded-2xl border border-white/5 flex-1 min-w-[140px]`}>
+                        <Ionicons name="smartphone" size={24} color="#a855f7" />
+                        <Text style={tw`text-white font-bold mt-2 text-lg`}>App Dev</Text>
+                        <Text style={tw`text-gray-400 text-sm mt-1`}>Native performance with React Native</Text>
+                    </View>
+                </View>
+
+                {/* Experience/Education */}
+                <View style={tw`bg-white/10 p-6 rounded-3xl border border-white/10`}>
+                    <Text style={tw`text-purple-400 text-xl font-bold mb-4`}>My Mission</Text>
+                    <Text style={tw`text-white text-base leading-6 opacity-80`}>
+                        To bridge the gap between complex backend logic and elegant frontend design, delivering products that not only work perfectly but also provide an exceptional user experience.
+                    </Text>
                 </View>
             </ScrollView>
         </SafeAreaView>
