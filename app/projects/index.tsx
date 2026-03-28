@@ -116,20 +116,20 @@ export default function ProjectList() {
     return (
         <SafeScreen>
             <View style={styles.container}>
+                {/* Fixed Back Button - Absolute Position */}
+                <TouchableOpacity
+                    onPress={() => router.back()}
+                    style={tw`absolute top-12 left-6 z-50 bg-white/10 p-3 rounded-full border border-white/5`}
+                >
+                    <Ionicons name="arrow-back" size={24} color="white" />
+                </TouchableOpacity>
+
                 {/* Header */}
-                <View style={styles.header}>
-                    <TouchableOpacity
-                        onPress={() => router.back()}
-                        style={styles.backButton}
-                    >
-                        <Ionicons name="arrow-back" size={24} color="white" />
-                    </TouchableOpacity>
-                    <View>
-                        <Text style={styles.headerTitle}>My Projects</Text>
-                        <Text style={styles.headerSubtitle}>
-                            Featured {projects.length} Works
-                        </Text>
-                    </View>
+                <View style={tw`px-6 pt-32 pb-6`}>
+                    <Text style={styles.headerTitle}>My Projects</Text>
+                    <Text style={styles.headerSubtitle}>
+                        Featured {projects.length} Works
+                    </Text>
                 </View>
 
                 {/* Project List */}
