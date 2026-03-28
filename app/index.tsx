@@ -6,6 +6,8 @@ import {
   ScrollView,
   Platform,
   StatusBar,
+  Linking,
+  TouchableOpacity,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter, usePathname } from "expo-router";
@@ -45,6 +47,15 @@ export default function LandingPage() {
     return pathname.includes(page.path) || (page.path === "/(tabs)" && pathname === "/");
   };
 
+  const handleDownloadCV = async () => {
+    try {
+      const cvUrl = "https://raw.githubusercontent.com/MD-Kayesur/Portfolio_App/main/assets/images/My_Resume%20(1).pdf";
+      await Linking.openURL(cvUrl);
+    } catch (error) {
+      console.error("Failed to download CV:", error);
+    }
+  };
+
   return (
     <SafeScreen>
       {/* Dynamic Splash Screen Component */}
@@ -54,6 +65,18 @@ export default function LandingPage() {
       <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />
 
       <View style={[tw`flex-1`, { backgroundColor: 'transparent' }]}>
+        {/* Fixed "My CV" Button - Top Right */}
+        <View style={tw`absolute top-2 right-4 z-50`}>
+          <TouchableOpacity
+            onPress={handleDownloadCV}
+            activeOpacity={0.8}
+            style={tw`bg-purple-600 px-4 py-2 rounded-full flex-row items-center shadow-lg`}
+          >
+            <Ionicons name="download-outline" size={18} color="white" style={tw`mr-2`} />
+            <Text style={tw`text-white font-bold text-sm`}>My CV</Text>
+          </TouchableOpacity>
+        </View>
+
         {/* Main Content - Scrollable */}
         <ScrollView
           style={tw`flex-1`}

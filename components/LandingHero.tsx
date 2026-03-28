@@ -13,11 +13,13 @@ import {
     ViewStyle,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 import tw from 'twrnc';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 const LandingHero = () => {
+    const router = useRouter();
     const titles = ['FrontEnd Developer', 'Full Stack Developer', 'App Developer', 'MERN Stack Developer'];
     const [displayText, setDisplayText] = useState('');
     const [titleIndex, setTitleIndex] = useState(0);
@@ -87,18 +89,44 @@ const LandingHero = () => {
                             using modern technologies, clean code, and best practices for seamless user experiences.
                         </Text>
 
-                        {/* Single "My CV" Button */}
-                        <TouchableOpacity
-                            onPress={handleDownloadCV}
-                            activeOpacity={0.8}
-                            style={[
-                                styles.button as ViewStyle,
-                                { shadowColor: '#9333ea', shadowOffset: { width: 0, height: 10 }, shadowOpacity: 0.3, shadowRadius: 20, elevation: 10 }
-                            ]}
-                        >
-                            <Ionicons name="download-outline" size={22} color="white" style={tw`mr-2`} />
-                            <Text style={tw`text-white text-lg font-bold text-center`}>My CV</Text>
-                        </TouchableOpacity>
+                        {/* Navigation Row - Blog, Projects, Signup */}
+                        <View style={tw`flex-row flex-wrap gap-3`}>
+                            <TouchableOpacity
+                                onPress={() => router.push('/blogs')}
+                                activeOpacity={0.8}
+                                style={[
+                                    styles.heroActionBtn as ViewStyle,
+                                    { backgroundColor: '#6366f1' } // indigo-500
+                                ]}
+                            >
+                                <Ionicons name="book-outline" size={18} color="white" style={tw`mr-2`} />
+                                <Text style={tw`text-white text-sm font-bold`}>Blogs</Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity
+                                onPress={() => router.push('/projects')}
+                                activeOpacity={0.8}
+                                style={[
+                                    styles.heroActionBtn as ViewStyle,
+                                    { backgroundColor: '#f59e0b' } // amber-500
+                                ]}
+                            >
+                                <Ionicons name="grid-outline" size={18} color="white" style={tw`mr-2`} />
+                                <Text style={tw`text-white text-sm font-bold`}>Projects</Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity
+                                onPress={() => router.push('/sign-up')}
+                                activeOpacity={0.8}
+                                style={[
+                                    styles.heroActionBtn as ViewStyle,
+                                    { backgroundColor: '#f43f5e' } // rose-500
+                                ]}
+                            >
+                                <Ionicons name="person-add-outline" size={18} color="white" style={tw`mr-2`} />
+                                <Text style={tw`text-white text-sm font-bold`}>Join Now</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
                 </View>
 
@@ -123,14 +151,17 @@ const styles = StyleSheet.create({
         minHeight: Platform.OS === 'web' ? 600 : SCREEN_HEIGHT * 0.7,
         justifyContent: 'center',
     },
-    button: {
-        backgroundColor: '#9333ea',
+    heroActionBtn: {
         flexDirection: 'row',
         alignItems: 'center',
-        paddingHorizontal: 35,
-        paddingVertical: 18,
-        borderRadius: 15,
-        alignSelf: 'flex-start',
+        paddingHorizontal: 20,
+        paddingVertical: 12,
+        borderRadius: 12,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.2,
+        shadowRadius: 8,
+        elevation: 5,
     },
     imageWrapper: {
         position: 'relative',
