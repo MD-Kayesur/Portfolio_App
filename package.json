@@ -1,5 +1,5 @@
 {
-  "name": "Portfolio_App",
+  "name": "portfolio-app",
   "version": "1.0.0",
   "main": "expo-router/entry",
   "scripts": {
@@ -48,5 +48,9 @@
     "postcss": "^8.4.35",
     "typescript": "~5.9.2"
   },
-  "private": true
+  "private": true,
+  "overrides": {
+    "react": "19.1.0",
+    "react-dom": "19.1.0"
+  }
 }

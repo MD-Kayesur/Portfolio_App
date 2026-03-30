@@ -2,7 +2,7 @@
   "expo": {
     "icon": "./assets/images/kayes.jpg",
     "name": "Portfolio_App",
-    "slug": "Portfolio_App",
+    "slug": "mdkayesur",
     "version": "1.0.0",
     "orientation": "portrait",
     "userInterfaceStyle": "light",
@@ -30,8 +30,9 @@
     ],
     "extra": {
       "eas": {
-        "projectId": "94fafd73-7ebf-4ffd-8a3c-61ffea563a3f"
+        "projectId": "2b6a7faf-fb1b-4905-9091-eb1a0b8b7ba8"
       }
-    }
+    },
+    "owner": "md_kayesur"
   }
 }
