@@ -1,0 +1,72 @@
+[
+    {
+        "id": "1",
+        "name": "E-Commerce Premium Platform",
+        "description": "A high-fidelity shopping experience with real-time inventory and Stripe payments.",
+        "skills": [
+            "React Native",
+            "Redux Toolkit",
+            "Stripe API",
+            "Node.js",
+            "Express",
+            "MongoDB"
+        ],
+        "implementation": "Implemented a complex shopping cart logic that persists across sessions and synchronized with a Node.js backend. Integrated Stripe for secure mobile payments and used Redux Toolkit Query for efficient data fetching and caching.",
+        "liveLink": "https://ecommerce-preview.vercel.app",
+        "codeLink": "https://github.com/MD-Kayesur/ecommerce-frontend",
+        "serverCodeLink": "https://github.com/MD-Kayesur/ecommerce-backend",
+        "image": "https://images.unsplash.com/photo-1557821552-17105176677c?q=80&w=1000&auto=format&fit=crop"
+    },
+    {
+        "id": "2",
+        "name": "AI Content Management Dashboard",
+        "description": "Admin control center for automated lesson generation using LLMs.",
+        "skills": [
+            "React",
+            "TypeScript",
+            "Vite",
+            "Tailwind CSS",
+            "OpenRouter AI",
+            "Redux"
+        ],
+        "implementation": "Developed a multi-step wizard for lesson creation with dynamic AI provider selection (Grok, OpenAI, OpenRouter). Built an advanced analytics dashboard with Recharts for business performance tracking.",
+        "liveLink": "https://admin-analytics.vercel.app",
+        "codeLink": "https://github.com/MD-Kayesur/admin-frontend",
+        "serverCodeLink": "https://github.com/MD-Kayesur/admin-backend",
+        "image": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1000&auto=format&fit=crop"
+    },
+    {
+        "id": "3",
+        "name": "Social Connect App",
+        "description": "A real-time social networking application with group chats and stories.",
+        "skills": [
+            "React Native",
+            "Firebase Auth",
+            "Firestore",
+            "Socket.io",
+            "Cloudinary"
+        ],
+        "implementation": "Built real-time messaging using Socket.io and Firestore listeners. Implemented optimistic UI updates for chat messages and cloud-based image storage via Cloudinary for user profiles and stories.",
+        "liveLink": "https://social-connect-demo.vercel.app",
+        "codeLink": "https://github.com/MD-Kayesur/social-frontend",
+        "serverCodeLink": "https://github.com/MD-Kayesur/social-backend",
+        "image": "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1000&auto=format&fit=crop"
+    },
+    {
+        "id": "4",
+        "name": "Portfolio Mobile Masterpiece",
+        "description": "The very app you are currently browsing, built with cutting-edge mobile tech.",
+        "skills": [
+            "Expo",
+            "React Native",
+            "Clerk Auth",
+            "NativeWind",
+            "RTK Query"
+        ],
+        "implementation": "Engineered a global state management system using Redux and Clerk for identity. Created a seamless experience with background video rendering and shared element transitions across pages.",
+        "liveLink": "https://portfolio-app-demo.vercel.app",
+        "codeLink": "https://github.com/MD-Kayesur/portfolio-app",
+        "serverCodeLink": "https://github.com/MD-Kayesur/portfolio-server",
+        "image": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1000&auto=format&fit=crop"
+    }
+]

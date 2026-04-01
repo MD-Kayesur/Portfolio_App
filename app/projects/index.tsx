@@ -10,7 +10,8 @@ import {
     Dimensions,
     Linking,
 } from 'react-native';
-import { useGetProjectsQuery, Project } from '@/redux/feature/projects/projectApi';
+import projectsData from '@/utils/projectsData.json';
+// import { useGetProjectsQuery, Project } from '@/redux/feature/projects/projectApi';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import SafeScreen from '@/components/SafeScreen';
@@ -18,9 +19,23 @@ import tw from 'twrnc';
 
 const { width } = Dimensions.get('window');
 
+// Define interface based on new JSON
+interface Project {
+    id: string;
+    name: string;
+    description: string;
+    skills: string[];
+    implementation: string;
+    liveLink: string;
+    codeLink: string;
+    serverCodeLink: string;
+    image: string;
+}
+
 export default function ProjectList() {
-    const { data: projects, isLoading, error } = useGetProjectsQuery();
     const router = useRouter();
+    // Using static data as requested by the user
+    const projects = projectsData as Project[];
 
     const openLink = async (url: string) => {
         try {
@@ -29,40 +44,6 @@ export default function ProjectList() {
             console.error("Failed to open link:", err);
         }
     };
-
-    if (isLoading) {
-        return (
-            <SafeScreen>
-                <View style={styles.centerContainer}>
-                    <ActivityIndicator size="large" color="#9333ea" />
-                    <Text style={styles.loadingText}>Loading projects...</Text>
-                </View>
-            </SafeScreen>
-        );
-    }
-
-    if (error) {
-        return (
-            <SafeScreen>
-                <View style={styles.centerContainer}>
-                    <Ionicons name="alert-circle-outline" size={60} color="#ef4444" />
-                    <Text style={styles.errorText}>Error loading projects</Text>
-                    <Text style={styles.errorSubtext}>Please try again later</Text>
-                </View>
-            </SafeScreen>
-        );
-    }
-
-    if (!projects || projects.length === 0) {
-        return (
-            <SafeScreen>
-                <View style={styles.centerContainer}>
-                    <Ionicons name="grid-outline" size={60} color="#9ca3af" />
-                    <Text style={styles.emptyText}>No projects found</Text>
-                </View>
-            </SafeScreen>
-        );
-    }
 
     const renderProjectItem = ({ item }: { item: Project }) => (
         <View style={styles.projectCard}>
@@ -82,32 +63,54 @@ export default function ProjectList() {
 
                 {/* Tech Stack */}
                 <View style={tw`flex-row flex-wrap gap-2 mb-4`}>
-                    {item.techStack.map((tech, i) => (
-                        <View key={i} style={tw`bg-purple-100 px-2.5 py-1 rounded-md`}>
-                            <Text style={tw`text-purple-700 text-[10px] font-bold uppercase`}>{tech}</Text>
+                    {item.skills.map((skill, i) => (
+                        <View key={i} style={tw`bg-purple-100 dark:bg-purple-900/30 px-2.5 py-1 rounded-md border border-purple-200 dark:border-purple-500/20`}>
+                            <Text style={tw`text-purple-700 dark:text-purple-400 text-[10px] font-bold uppercase`}>{skill}</Text>
                         </View>
                     ))}
                 </View>
 
-                {/* Action Buttons */}
-                <View style={tw`flex-row gap-3`}>
-                    <TouchableOpacity
-                        style={styles.actionButton}
-                        onPress={() => router.push(`/projects/${item._id}`)}
-                    >
-                        <Text style={styles.actionButtonText}>View Details</Text>
-                        <Ionicons name="arrow-forward" size={16} color="white" />
-                    </TouchableOpacity>
-
-                    {item.link && (
+                {/* Action Buttons Row */}
+                <View style={tw`flex-col gap-2`}>
+                    <View style={tw`flex-row gap-2`}>
                         <TouchableOpacity
-                            style={[styles.actionButton, tw`bg-gray-800`]}
-                            onPress={() => openLink(item.link)}
+                            style={[styles.actionButton, tw`bg-purple-600 flex-1`]}
+                            onPress={() => router.push(`/projects/${item.id}`)}
                         >
-                            <Ionicons name="logo-github" size={16} color="white" />
-                            <Text style={styles.actionButtonText}>Live Link</Text>
+                            <Text style={styles.actionButtonText}>View Details</Text>
+                            <Ionicons name="arrow-forward" size={16} color="white" />
                         </TouchableOpacity>
-                    )}
+                    </View>
+
+                    <View style={tw`flex-row gap-2`}>
+                        {item.liveLink && (
+                            <TouchableOpacity
+                                style={[styles.actionButton, tw`bg-emerald-600 flex-1`]}
+                                onPress={() => openLink(item.liveLink)}
+                            >
+                                <Ionicons name="globe-outline" size={14} color="white" />
+                                <Text style={tw`text-white text-[12px] font-bold`}>Live</Text>
+                            </TouchableOpacity>
+                        )}
+                        {item.codeLink && (
+                            <TouchableOpacity
+                                style={[styles.actionButton, tw`bg-gray-800 flex-1`]}
+                                onPress={() => openLink(item.codeLink)}
+                            >
+                                <Ionicons name="logo-github" size={14} color="white" />
+                                <Text style={tw`text-white text-[12px] font-bold`}>Client Code</Text>
+                            </TouchableOpacity>
+                        )}
+                        {item.serverCodeLink && (
+                            <TouchableOpacity
+                                style={[styles.actionButton, tw`bg-slate-700 flex-1`]}
+                                onPress={() => openLink(item.serverCodeLink)}
+                            >
+                                <Ionicons name="server-outline" size={14} color="white" />
+                                <Text style={tw`text-white text-[12px] font-bold`}>Server Code</Text>
+                            </TouchableOpacity>
+                        )}
+                    </View>
                 </View>
             </View>
         </View>
@@ -136,7 +139,7 @@ export default function ProjectList() {
                 <FlatList
                     data={projects}
                     renderItem={renderProjectItem}
-                    keyExtractor={(item) => item._id}
+                    keyExtractor={(item) => item.id}
                     contentContainerStyle={styles.listContent}
                     showsVerticalScrollIndicator={false}
                     ItemSeparatorComponent={() => <View style={styles.separator} />}
