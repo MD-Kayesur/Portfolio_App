@@ -34,13 +34,13 @@ export default function Contact() {
     };
 
     return (
-        <SafeAreaView style={tw`flex-1`}>
+        <SafeAreaView style={[tw`flex-1`, { backgroundColor: 'transparent' }]}>
             <View style={tw`flex-1 px-6`}>
 
                 {/* Back Button */}
                 <Pressable
                     onPress={() => router.back()}
-                    style={tw`absolute top-12 left-6 z-10 bg-white/10 p-2 rounded-full`}
+                    style={tw`absolute top-12 left-6 z-10 bg-white/10 p-2 rounded-full border border-white/20`}
                 >
                     <Ionicons
                         name="arrow-back"
@@ -55,7 +55,7 @@ export default function Contact() {
                 >
                     {/* Header */}
                     <View style={tw`items-center mt-24 mb-10`}>
-                        <View style={tw`w-24 h-24 rounded-full bg-purple-500/20 border border-purple-500/30 items-center justify-center mb-4`}>
+                        <View style={tw`w-24 h-24 rounded-full bg-purple-500/10 border border-purple-500/20 items-center justify-center mb-4`}>
                             <Ionicons name="chatbubbles" size={48} color="#a855f7" />
                         </View>
                         <Text style={tw`text-4xl font-black text-white`}>
@@ -71,10 +71,10 @@ export default function Contact() {
 
                         <Pressable
                             onPress={handleEmailPress}
-                            style={tw`flex-row items-center p-6 mb-4`}
+                            style={tw`flex-row items-center p-6 mb-4 bg-white/5 rounded-3xl border border-white/10`}
                         >
                             <View style={tw`w-14 h-14 rounded-2xl bg-purple-500/20 items-center justify-center mr-5`}>
-                                <Ionicons name="mail" size={28} color="#a855f7" />
+                                <Ionicons name="mail" size={28} color="#c084fc" />
                             </View>
                             <View style={tw`flex-1`}>
                                 <Text style={tw`text-gray-400 text-xs uppercase font-bold tracking-widest`}>Email</Text>
@@ -82,16 +82,16 @@ export default function Contact() {
                                     mdkayesur@gmail.com
                                 </Text>
                             </View>
-                            <Ionicons name="chevron-forward" size={20} color="#6b7280" />
+                            <Ionicons name="chevron-forward" size={20} color="#94a3b8" />
                         </Pressable>
 
                         {/* Phone Card */}
                         <Pressable
                             onPress={handlePhonePress}
-                            style={tw`flex-row items-center p-6 mb-4`}
+                            style={tw`flex-row items-center p-6 mb-4 bg-white/5 rounded-3xl border border-white/10`}
                         >
                             <View style={tw`w-14 h-14 rounded-2xl bg-emerald-500/20 items-center justify-center mr-5`}>
-                                <Ionicons name="call" size={28} color="#10b981" />
+                                <Ionicons name="call" size={28} color="#34d399" />
                             </View>
                             <View style={tw`flex-1`}>
                                 <Text style={tw`text-gray-400 text-xs uppercase font-bold tracking-widest`}>Phone</Text>
@@ -99,13 +99,13 @@ export default function Contact() {
                                     +880 1926-360430
                                 </Text>
                             </View>
-                            <Ionicons name="chevron-forward" size={20} color="#6b7280" />
+                            <Ionicons name="chevron-forward" size={20} color="#94a3b8" />
                         </Pressable>
 
                         {/* Location Card */}
-                        <View style={tw`flex-row items-center p-6 mb-4`}>
+                        <View style={tw`flex-row items-center p-6 mb-4 bg-white/5 rounded-3xl border border-white/10`}>
                             <View style={tw`w-14 h-14 rounded-2xl bg-blue-500/20 items-center justify-center mr-5`}>
-                                <Ionicons name="location" size={28} color="#3b82f6" />
+                                <Ionicons name="location" size={28} color="#60a5fa" />
                             </View>
                             <View style={tw`flex-1`}>
                                 <Text style={tw`text-gray-400 text-xs uppercase font-bold tracking-widest`}>Location</Text>
@@ -121,7 +121,7 @@ export default function Contact() {
                         {/* WhatsApp Button */}
                         <Pressable
                             onPress={handleWhatsAppPress}
-                            style={tw`flex-row items-center justify-center bg-emerald-600 py-5 rounded-2xl shadow-lg`}
+                            style={tw`flex-row items-center justify-center bg-emerald-600/90 py-5 rounded-2xl shadow-lg border border-emerald-400/20`}
                         >
                             <Ionicons name="logo-whatsapp" size={28} color="white" />
                             <Text style={tw`text-white text-xl font-black ml-3`}>Chat on WhatsApp</Text>
@@ -131,16 +131,16 @@ export default function Contact() {
                         <Pressable
                             onPress={handleSendMessage}
                             style={({ pressed }) => [
-                                tw`bg-white py-5 rounded-2xl items-center shadow-lg`,
-                                pressed && tw`opacity-90`
+                                tw`bg-white/10 py-5 rounded-2xl items-center shadow-lg border border-white/20`,
+                                pressed && tw`bg-white/20`
                             ]}
                         >
-                            <Text style={tw`text-black text-xl font-black`}>Send Direct Message</Text>
+                            <Text style={tw`text-white text-xl font-black`}>Send Direct Message</Text>
                         </Pressable>
                     </View>
 
                     {/* Footer Note */}
-                    <Text style={tw`text-center mt-10 text-sm text-gray-500 font-medium`}>
+                    <Text style={tw`text-center mt-10 text-sm text-gray-400 font-medium`}>
                         Average response time: &lt; 24 hours
                     </Text>
                 </ScrollView>
