@@ -11,7 +11,6 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter, usePathname } from "expo-router";
-import { useAuth } from "@clerk/clerk-expo";
 import { useState } from "react";
 import SafeScreen from "@/components/SafeScreen";
 import SplashScreen from "@/components/SplashScreen";
@@ -21,7 +20,6 @@ import { BlurView } from 'expo-blur';
 
 export default function LandingPage() {
   const router = useRouter();
-  const { isSignedIn } = useAuth();
   const pathname = usePathname();
   const [activeIcon, setActiveIcon] = useState<string | null>(null);
   const [showSplash, setShowSplash] = useState(true);

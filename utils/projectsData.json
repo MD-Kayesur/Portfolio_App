@@ -11,7 +11,7 @@
             "Express",
             "MongoDB"
         ],
-        "implementation": "Implemented a complex shopping cart logic that persists across sessions and synchronized with a Node.js backend. Integrated Stripe for secure mobile payments and used Redux Toolkit Query for efficient data fetching and caching.",
+        "implementation": "A production-ready starter template for React Native Expo projects with TypeScript, Redux Toolkit, Expo Router, NativeWind (Tailwind CSS), and comprehensive UI components.",
         "liveLink": "https://ecommerce-preview.vercel.app",
         "codeLink": "https://github.com/MD-Kayesur/ecommerce-frontend",
         "serverCodeLink": "https://github.com/MD-Kayesur/ecommerce-backend",
@@ -55,15 +55,14 @@
     {
         "id": "4",
         "name": "Portfolio Mobile Masterpiece",
-        "description": "The very app you are currently browsing, built with cutting-edge mobile tech.",
+        "description": "A high-performance personal portfolio mobile application built with React Native and Expo, featuring a premium glassmorphism design and smooth background animations.",
         "skills": [
             "Expo",
             "React Native",
-            "Clerk Auth",
             "NativeWind",
             "RTK Query"
         ],
-        "implementation": "Engineered a global state management system using Redux and Clerk for identity. Created a seamless experience with background video rendering and shared element transitions across pages.",
+        "implementation": "Engineered a global state management system using Redux. Created a seamless experience with background video rendering and smooth shared element transitions across all major pages.",
         "liveLink": "https://portfolio-app-demo.vercel.app",
         "codeLink": "https://github.com/MD-Kayesur/portfolio-app",
         "serverCodeLink": "https://github.com/MD-Kayesur/portfolio-server",

@@ -3,7 +3,6 @@ import { View, Pressable } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
-import { useAuth } from "@clerk/clerk-expo";
 
 interface ExpandableTabButtonProps {
   size: number;
@@ -16,7 +15,6 @@ export default function ExpandableTabButton({
 }: ExpandableTabButtonProps) {
   const [expanded, setExpanded] = useState(false);
   const router = useRouter();
-  const { isSignedIn } = useAuth();
 
   const menuItems = [
     {
@@ -72,30 +70,6 @@ export default function ExpandableTabButton({
         setExpanded(false);
       },
     },
-    ...(isSignedIn
-      ? []
-      : [
-          {
-            icon: "log-in" as keyof typeof Ionicons.glyphMap,
-            color: "#10B981",
-            route: "/(auth)/sign-in",
-            hasNotification: false,
-            onPress: () => {
-              router.push("/(auth)/sign-in");
-              setExpanded(false);
-            },
-          },
-          {
-            icon: "person-add" as keyof typeof Ionicons.glyphMap,
-            color: "#F59E0B",
-            route: "/(auth)/sign-up",
-            hasNotification: false,
-            onPress: () => {
-              router.push("/(auth)/sign-up");
-              setExpanded(false);
-            },
-          },
-        ]),
   ];
 
   return (
