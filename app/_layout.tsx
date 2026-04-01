@@ -5,15 +5,12 @@ import { store } from '../store/store';
 import { useEffect } from 'react';
 import { Platform } from 'react-native';
 import { ClerkProvider } from '@clerk/clerk-expo';
-import { tokenCache } from '@clerk/clerk-expo/token-cache';
+import { tokenCache } from '../utils/cache';
 import { Video, ResizeMode } from 'expo-av';
 import { View, StyleSheet, useColorScheme } from 'react-native';
 import tw from 'twrnc';
 
-// Only import CSS on web - NativeWind handles mobile automatically via Metro
-if (Platform.OS === 'web') {
-  require('./global.css');
-}
+import './global.css';
 
 // Get publishable key from environment
 let publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY?.trim() || '';
@@ -57,43 +54,28 @@ export default function RootLayout() {
   if (!publishableKey) {
     return (
       <Provider store={store}>
-        <ClerkProvider
-          publishableKey=""
-          tokenCache={tokenCache}
-        >
-          <View style={tw`flex-1`}>
-            {/* Background Video */}
-            <Video
-              source={require('../assets/vedios/animate1.mp4')}
-              style={StyleSheet.absoluteFill}
-              resizeMode={ResizeMode.COVER}
-              isLooping
-              isMuted
-              shouldPlay
-            />
+        <View style={tw`flex-1`}>
+          {/* Background Video */}
+          <Video
+            source={require('../assets/vedios/animate1.mp4')}
+            style={StyleSheet.absoluteFill}
+            resizeMode={ResizeMode.COVER}
+            isLooping
+            isMuted
+            shouldPlay
+          />
 
-            {/* Content with Dynamic Background Inversion (Web Only with mix-blend-mode if added via CSS) */}
-            <View style={tw`flex-1`}>
-              <Stack screenOptions={{
-                headerShown: false,
-                contentStyle: { backgroundColor: 'transparent' } // Make screens transparent
-              }}>
-                <Stack.Screen name="index" />
-                <Stack.Screen
-                  name="(auth)/missing-key"
-                />
-                <Stack.Screen
-                  name="(auth)"
-                />
-                <Stack.Screen
-                  name="(tabs)"
-                />
-                <Stack.Screen name="(pages)" />
-                <Stack.Screen name="+not-found" options={{ headerShown: true }} />
-              </Stack>
-            </View>
+          <View style={tw`flex-1`}>
+            <Stack screenOptions={{
+              headerShown: false,
+              contentStyle: { backgroundColor: 'transparent' }
+            }}>
+              <Stack.Screen name="index" />
+              <Stack.Screen name="(auth)/missing-key" />
+              <Stack.Screen name="+not-found" options={{ headerShown: true }} />
+            </Stack>
           </View>
-        </ClerkProvider>
+        </View>
       </Provider>
     );
   }
