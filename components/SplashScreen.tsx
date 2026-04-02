@@ -17,7 +17,7 @@ interface SplashScreenProps {
 }
 
 export default function SplashScreen({ onComplete }: SplashScreenProps) {
-    const text = "MD_Kayesur";
+    const text = "App_Developer";
     const characters = text.split("");
 
     // Animation values
@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
     },
     bouncingText: {
-        fontSize: 48,
+        fontSize: 40,
         color: '#7f1d1d',
         fontWeight: '900',
         textTransform: 'uppercase',

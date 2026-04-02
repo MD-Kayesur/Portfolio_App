@@ -20,7 +20,7 @@ const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 const LandingHero = () => {
     const router = useRouter();
-    const titles = ['FrontEnd Developer', 'Full Stack Developer', 'App Developer', 'MERN Stack Developer'];
+    const titles = [ 'App Developer','FrontEnd Developer', 'MERN Stack Developer','Full Stack Developer' ];
     const [displayText, setDisplayText] = useState('');
     const [titleIndex, setTitleIndex] = useState(0);
     const [isDeleting, setIsDeleting] = useState(false);
