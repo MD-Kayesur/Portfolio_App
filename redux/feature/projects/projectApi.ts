@@ -5,20 +5,25 @@ export interface Project {
     _id: string;
     name: string;
     description: string;
+    skills: string[];
+    implementation: string;
+    liveLink: string;
+    codeLink: string;
+    serverCodeLink: string;
     image: string;
-    link: string;
-    techStack: string[];
 }
 
 export const projectApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
         getProjects: builder.query<Project[], void>({
             query: () => '/projects',
+            transformResponse: (response: { data: Project[] }) => response.data,
             providesTags: ['Projects'],
         }),
 
         getProjectById: builder.query<Project, string>({
             query: (id) => `/projects/${id}`,
+            transformResponse: (response: { data: Project }) => response.data,
             providesTags: ['Projects'],
         }),
 

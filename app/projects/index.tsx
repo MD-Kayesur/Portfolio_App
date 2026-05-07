@@ -11,7 +11,7 @@ import {
     Linking,
 } from 'react-native';
 import projectsData from '@/utils/projectsData.json';
-// import { useGetProjectsQuery, Project } from '@/redux/feature/projects/projectApi';
+import { useGetProjectsQuery, Project } from '@/redux/feature/projects/projectApi';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import SafeScreen from '@/components/SafeScreen';
@@ -19,23 +19,11 @@ import tw from 'twrnc';
 
 const { width } = Dimensions.get('window');
 
-// Define interface based on new JSON
-interface Project {
-    id: string;
-    name: string;
-    description: string;
-    skills: string[];
-    implementation: string;
-    liveLink: string;
-    codeLink: string;
-    serverCodeLink: string;
-    image: string;
-}
+// Project interface is imported from projectApi
 
 export default function ProjectList() {
     const router = useRouter();
-    // Using static data as requested by the user
-    const projects = projectsData as Project[];
+    const { data: projects, isLoading, isError } = useGetProjectsQuery();
 
     const openLink = async (url: string) => {
         try {
@@ -75,7 +63,7 @@ export default function ProjectList() {
                     <View style={tw`flex-row gap-2`}>
                         <TouchableOpacity
                             style={[styles.actionButton, tw`bg-purple-600 flex-1`]}
-                            onPress={() => router.push(`/projects/${item.id}`)}
+                            onPress={() => router.push(`/projects/${item._id}`)}
                         >
                             <Text style={styles.actionButtonText}>View Details</Text>
                             <Ionicons name="arrow-forward" size={16} color="white" />
@@ -116,6 +104,34 @@ export default function ProjectList() {
         </View>
     );
 
+    if (isLoading) {
+        return (
+            <SafeScreen>
+                <View style={styles.centerContainer}>
+                    <ActivityIndicator size="large" color="#9333ea" />
+                    <Text style={styles.loadingText}>Loading Projects...</Text>
+                </View>
+            </SafeScreen>
+        );
+    }
+
+    if (isError || !projects) {
+        return (
+            <SafeScreen>
+                <View style={styles.centerContainer}>
+                    <Ionicons name="alert-circle-outline" size={64} color="#ef4444" />
+                    <Text style={styles.errorText}>Oops! Failed to load projects</Text>
+                    <TouchableOpacity
+                        style={[styles.actionButton, tw`mt-6 px-8 bg-purple-600`]}
+                        onPress={() => router.back()}
+                    >
+                        <Text style={styles.actionButtonText}>Go Back</Text>
+                    </TouchableOpacity>
+                </View>
+            </SafeScreen>
+        );
+    }
+
     return (
         <SafeScreen>
             <View style={styles.container}>
@@ -139,7 +155,7 @@ export default function ProjectList() {
                 <FlatList
                     data={projects}
                     renderItem={renderProjectItem}
-                    keyExtractor={(item) => item.id}
+                    keyExtractor={(item) => item._id}
                     contentContainerStyle={styles.listContent}
                     showsVerticalScrollIndicator={false}
                     ItemSeparatorComponent={() => <View style={styles.separator} />}

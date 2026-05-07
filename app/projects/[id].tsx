@@ -1,30 +1,19 @@
-import projectsData from '@/utils/projectsData.json';
-// import { useGetProjectByIdQuery } from "@/redux/feature/projects/projectApi";
+import { useGetProjectByIdQuery, Project } from "@/redux/feature/projects/projectApi";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter, useLocalSearchParams } from "expo-router";
-import { Pressable, Text, View, ScrollView, Image, Linking } from "react-native";
+import { Pressable, Text, View, ScrollView, Image, Linking, ActivityIndicator } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import tw from 'twrnc';
 import SafeScreen from "@/components/SafeScreen";
 
-interface Project {
-  id: string;
-  name: string;
-  description: string;
-  skills: string[];
-  implementation: string;
-  liveLink: string;
-  codeLink: string;
-  serverCodeLink: string;
-  image: string;
-}
+// Interface is now imported from projectApi
 
 export default function ProjectDetails() {
   const router = useRouter();
   const { id } = useLocalSearchParams();
 
-  // Find project in static data
-  const project = (projectsData as Project[]).find(p => p.id === id);
+  // Fetch project data from API
+  const { data: project, isLoading, isError } = useGetProjectByIdQuery(id as string);
 
   const openLink = async (url: string) => {
     try {
@@ -34,7 +23,18 @@ export default function ProjectDetails() {
     }
   };
 
-  if (!project) {
+  if (isLoading) {
+    return (
+      <SafeScreen>
+        <View style={tw`flex-1 items-center justify-center p-6`}>
+          <ActivityIndicator size="large" color="#9333ea" />
+          <Text style={tw`text-white mt-4`}>Loading details...</Text>
+        </View>
+      </SafeScreen>
+    );
+  }
+
+  if (isError || !project) {
     return (
       <SafeScreen>
         <View style={tw`flex-1 items-center justify-center p-6`}>
