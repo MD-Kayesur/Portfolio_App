@@ -17,13 +17,38 @@ export const projectApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
         getProjects: builder.query<Project[], void>({
             query: () => '/projects',
-            transformResponse: (response: { data: Project[] }) => response.data,
+            transformResponse: (response: { success: boolean; data: any[] }) => {
+                return response.data.map(item => ({
+                    _id: item._id,
+                    name: item.title,
+                    description: item.description,
+                    skills: item.tech || [],
+                    implementation: item.status || '',
+                    liveLink: item.live || '',
+                    codeLink: item.clientcode || '',
+                    serverCodeLink: item.servercode || '',
+                    image: item.img && item.img.length > 0 ? item.img[0] : ''
+                }));
+            },
             providesTags: ['Projects'],
         }),
 
         getProjectById: builder.query<Project, string>({
             query: (id) => `/projects/${id}`,
-            transformResponse: (response: { data: Project }) => response.data,
+            transformResponse: (response: { success: boolean; data: any }) => {
+                const item = response.data;
+                return {
+                    _id: item._id,
+                    name: item.title,
+                    description: item.description,
+                    skills: item.tech || [],
+                    implementation: item.status || '',
+                    liveLink: item.live || '',
+                    codeLink: item.clientcode || '',
+                    serverCodeLink: item.servercode || '',
+                    image: item.img && item.img.length > 0 ? item.img[0] : ''
+                };
+            },
             providesTags: ['Projects'],
         }),
 
