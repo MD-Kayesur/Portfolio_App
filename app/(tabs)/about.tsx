@@ -18,6 +18,14 @@ export default function AboutPage() {
                 <Ionicons name="arrow-back" size={24} color="white" />
             </Pressable>
 
+            {/* Login Button */}
+            <Pressable
+                onPress={() => router.push('/login')}
+                style={tw`absolute top-12 right-6 z-10 bg-purple-600 px-4 py-2 rounded-full`}
+            >
+                <Text style={tw`text-white font-bold font-mono`}>Login</Text>
+            </Pressable>
+
             {/* We'll use a single ScrollView for the whole page. 
                 Since ProjectCard itself has a ScrollView, we should probably 
                 just use the content of ProjectCard here or make ProjectCard non-scrollable.
