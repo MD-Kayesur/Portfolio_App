@@ -64,19 +64,19 @@ const LandingHero = () => {
                 {/* Left Content */}
                 <View style={tw`flex-1 mb-10 md:mb-0`}>
                     <View>
-                        <Text style={[tw`text-lg font-medium mb-2 ${Platform.OS === 'web' ? 'contrast-text' : 'text-white'}`, styles.textReadability]}>
+                        <Text style={[tw`text-lg font-medium font-mono mb-2 ${Platform.OS === 'web' ? 'contrast-text' : 'text-white'}`, styles.textReadability]}>
                             Hello. I'm
                         </Text>
-                        <Text style={[tw`text-4xl md:text-6xl font-black mb-4 leading-tight ${Platform.OS === 'web' ? 'contrast-text' : 'text-white'}`, styles.textReadability]}>
+                        <Text style={[tw`text-4xl md:text-6xl font-black font-mono mb-4 leading-tight ${Platform.OS === 'web' ? 'contrast-text' : 'text-white'}`, styles.textReadability]}>
                             MD. Kayesur Rahman
                         </Text>
 
                         <View style={tw`flex-row items-center mb-6`}>
-                            <Text style={tw`text-purple-400 text-xl font-bold mr-2`}>
+                            <Text style={tw`text-purple-400 text-xl font-bold font-mono mr-2`}>
                                 i am
                             </Text>
                             <View style={tw`flex-row items-center`}>
-                                <Text style={tw`text-white text-xl font-bold`}>
+                                <Text style={tw`text-white text-xl font-bold font-mono`}>
                                     {displayText}
                                 </Text>
                                 {/* Blinking Cursor */}
@@ -84,7 +84,7 @@ const LandingHero = () => {
                             </View>
                         </View>
 
-                        <Text style={[tw`text-base md:text-lg mb-8 leading-relaxed max-w-xl ${Platform.OS === 'web' ? 'contrast-text' : 'text-gray-200'}`, styles.textReadability]}>
+                        <Text style={[tw`text-base md:text-lg font-mono mb-8 leading-relaxed max-w-xl ${Platform.OS === 'web' ? 'contrast-text' : 'text-gray-200'}`, styles.textReadability]}>
                             Front-End Developer crafting high-performance, responsive, and user-friendly web applications
                             using modern technologies, clean code, and best practices for seamless user experiences.
                         </Text>
@@ -100,7 +100,7 @@ const LandingHero = () => {
                                 ]}
                             >
                                 <Ionicons name="book-outline" size={18} color="white" style={tw`mr-2`} />
-                                <Text style={tw`text-white text-sm font-bold`}>Blogs</Text>
+                                <Text style={tw`text-white text-sm font-bold font-mono`}>Blogs</Text>
                             </TouchableOpacity>
 
                             <TouchableOpacity
@@ -112,7 +112,7 @@ const LandingHero = () => {
                                 ]}
                             >
                                 <Ionicons name="grid-outline" size={18} color="white" style={tw`mr-2`} />
-                                <Text style={tw`text-white text-sm font-bold`}>Projects</Text>
+                                <Text style={tw`text-white text-sm font-bold font-mono`}>Projects</Text>
                             </TouchableOpacity>
 
                             <TouchableOpacity
@@ -124,7 +124,7 @@ const LandingHero = () => {
                                 ]}
                             >
                                 <Ionicons name="person-add-outline" size={18} color="white" style={tw`mr-2`} />
-                                <Text style={tw`text-white text-sm font-bold`}>Join Now</Text>
+                                <Text style={tw`text-white text-sm font-bold font-mono`}>Join Now</Text>
                             </TouchableOpacity>
                         </View>
                     </View>

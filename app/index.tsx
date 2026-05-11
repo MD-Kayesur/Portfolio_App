@@ -71,7 +71,7 @@ export default function LandingPage() {
             style={tw`bg-purple-600 px-4 py-2 rounded-full flex-row items-center shadow-lg`}
           >
             <Ionicons name="download-outline" size={18} color="white" style={tw`mr-2`} />
-            <Text style={tw`text-white font-bold text-sm`}>My CV</Text>
+            <Text style={tw`text-white font-bold text-sm font-mono`}>My CV</Text>
           </TouchableOpacity>
         </View>
 
@@ -108,7 +108,7 @@ export default function LandingPage() {
                   <Text
                     numberOfLines={1}
                     style={[
-                      tw`text-[10px] mt-1 font-bold`,
+                      tw`text-[10px] mt-1 font-bold font-mono`,
                       isActive(page) ? tw`text-red-600` : tw`text-gray-500`
                     ]}
                   >
@@ -151,7 +151,7 @@ export default function LandingPage() {
                   <Text
                     numberOfLines={1}
                     style={[
-                      tw`text-xs font-bold`,
+                      tw`text-xs font-bold font-mono`,
                       isActive(page) ? tw`text-red-600` : tw`text-gray-500`
                     ]}
                   >

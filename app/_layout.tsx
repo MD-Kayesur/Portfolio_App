@@ -2,9 +2,23 @@ import { Stack, usePathname } from 'expo-router';
 import { Provider } from 'react-redux';
 import { store } from '../store/store';
 import { useEffect, useRef } from 'react';
-import { Platform, View, StyleSheet } from 'react-native';
+import { Platform, View, StyleSheet, Text, TextInput } from 'react-native';
 import { VideoView, useVideoPlayer } from 'expo-video';
 import tw from 'twrnc';
+
+// Apply global font style to match frontend web (monospace)
+const applyGlobalFont = () => {
+  const customStyle = { fontFamily: Platform.OS === 'ios' ? 'Menlo' : 'monospace' };
+  
+  const TextAny = Text as any;
+  TextAny.defaultProps = TextAny.defaultProps || {};
+  TextAny.defaultProps.style = [TextAny.defaultProps.style, customStyle];
+
+  const TextInputAny = TextInput as any;
+  TextInputAny.defaultProps = TextInputAny.defaultProps || {};
+  TextInputAny.defaultProps.style = [TextInputAny.defaultProps.style, customStyle];
+};
+applyGlobalFont();
 
 // Safely try to require Clarity to avoid crashes in Expo Go or non-native environments
 let Clarity: any = null;

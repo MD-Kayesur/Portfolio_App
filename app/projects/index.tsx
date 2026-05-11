@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
     View,
     Text,
@@ -9,6 +9,7 @@ import {
     TouchableOpacity,
     Dimensions,
     Linking,
+    ScrollView,
 } from 'react-native';
 import projectsData from '@/utils/projectsData.json';
 import { useGetProjectsQuery, Project } from '@/redux/feature/projects/projectApi';
@@ -24,6 +25,7 @@ const { width } = Dimensions.get('window');
 export default function ProjectList() {
     const router = useRouter();
     const { data: projects, isLoading, isError } = useGetProjectsQuery();
+    const [activeTab, setActiveTab] = useState('All');
 
     const openLink = async (url: string) => {
         try {
@@ -132,10 +134,20 @@ export default function ProjectList() {
         );
     }
 
+    const filteredProjects = projects?.filter(project => {
+        if (activeTab === 'All') return true;
+        
+        // Map "Costome code" tab back to "custom code" implementation status
+        const filterVal = activeTab === 'Costome code' ? 'custom code' : activeTab.toLowerCase();
+        return project.implementation?.toLowerCase() === filterVal;
+    }) || [];
+
     return (
         <SafeScreen>
             <View style={styles.container}>
-                {/* Fixed Back Button - Absolute Position */}
+                <View style={tw`flex flex-col justify-center items-center`}>
+
+{/* Fixed Back Button - Absolute Position */}
                 <TouchableOpacity
                     onPress={() => router.back()}
                     style={tw`absolute top-12 left-6 z-50 bg-white/10 p-3 rounded-full border border-white/5`}
@@ -144,16 +156,41 @@ export default function ProjectList() {
                 </TouchableOpacity>
 
                 {/* Header */}
-                <View style={tw`px-6 pt-32 pb-6`}>
+                <View style={tw`px-6 pt-12 pb-4`}>
                     <Text style={styles.headerTitle}>My Projects</Text>
                     <Text style={styles.headerSubtitle}>
-                        Featured {projects.length} Works
+                        Featured {filteredProjects.length} Works
                     </Text>
+                </View>
+                </View>
+                
+
+                {/* Tabs */}
+                <View style={tw`px-6 pb-6`}>
+                    <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={tw`flex-row gap-3`}>
+                        {['All', 'Costome code', 'webflow', 'Wordpress'].map(tab => (
+                            <TouchableOpacity 
+                                key={tab}
+                                onPress={() => setActiveTab(tab)}
+                                style={[
+                                    tw`px-5 py-2.5 rounded-full border`,
+                                    activeTab === tab 
+                                        ? tw`bg-purple-600 border-purple-600` 
+                                        : tw`bg-transparent border-white/20`
+                                ]}
+                            >
+                                <Text style={[
+                                    tw`text-sm font-semibold font-mono`,
+                                    activeTab === tab ? tw`text-white` : tw`text-gray-400`
+                                ]}>{tab}</Text>
+                            </TouchableOpacity>
+                        ))}
+                    </ScrollView>
                 </View>
 
                 {/* Project List */}
                 <FlatList
-                    data={projects}
+                    data={filteredProjects}
                     renderItem={renderProjectItem}
                     keyExtractor={(item) => item._id}
                     contentContainerStyle={styles.listContent}
