@@ -115,20 +115,10 @@ const LandingHero = () => {
                                 <Text style={tw`text-white text-sm font-bold font-mono`}>Projects</Text>
                             </TouchableOpacity>
 
-                            <TouchableOpacity
-                                onPress={() => router.push('/sign-up')}
-                                activeOpacity={0.8}
-                                style={[
-                                    styles.heroActionBtn as ViewStyle,
-                                    { backgroundColor: '#f43f5e' } // rose-500
-                                ]}
-                            >
-                                <Ionicons name="person-add-outline" size={18} color="white" style={tw`mr-2`} />
-                                <Text style={tw`text-white text-sm font-bold font-mono`}>Join Now</Text>
-                            </TouchableOpacity>
                         </View>
                     </View>
                 </View>
+
 
                 {/* Right Content - Profile Image */}
                 <View style={styles.imageWrapper as ViewStyle}>
