@@ -12,10 +12,20 @@
       "distribution": "internal",
       "android": {
         "buildType": "apk"
+      },
+      "env": {
+        "EXPO_PUBLIC_API_URL": "https://my-own-portfolio-server.vercel.app",
+        "VITE_DATABASE_URL": "https://my-own-portfolio-server.vercel.app/",
+        "VITE_ADMIN_EMAILS": "rmdkayesur@gmail.com,mdkayesurrahman67@gmail.com"
       }
     },
     "production": {
-      "autoIncrement": true
+      "autoIncrement": true,
+      "env": {
+        "EXPO_PUBLIC_API_URL": "https://my-own-portfolio-server.vercel.app",
+        "VITE_DATABASE_URL": "https://my-own-portfolio-server.vercel.app/",
+        "VITE_ADMIN_EMAILS": "rmdkayesur@gmail.com,mdkayesurrahman67@gmail.com"
+      }
     }
   },
   "submit": {
