@@ -14,6 +14,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import { useSendMessageMutation } from '@/redux/feature/chat/chatApi';
+import Markdown from 'react-native-markdown-display';
 
 interface Message {
     id: string;
@@ -35,6 +36,27 @@ export default function AIAssistant() {
     const [sendMessage, { isLoading }] = useSendMessageMutation();
     const flatListRef = useRef<FlatList>(null);
 
+    const handleHardRules = (prompt: string) => {
+        const p = prompt.toLowerCase();
+
+        // WHO ARE YOU rule
+        if (p.includes("who are you") || p.includes("who created you")) {
+            return "I am assistant of my boss Kayesur.";
+        }
+
+        // GITHUB request rule
+        if (p.includes("github") || p.includes("git link")) {
+            return "Here is my boss's GitHub link: \n\n [![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/MD-Kayesur)";
+        }
+
+        // LINKEDIN request rule
+        if (p.includes("linkedin") || p.includes("linkdin")) {
+            return "Here is my boss's LinkedIn link: \n\n [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/md-kayesur-rahman-212759317)";
+        }
+
+        return null;
+    };
+
     const handleSend = async () => {
         if (!inputText.trim() || isLoading) return;
 
@@ -47,6 +69,19 @@ export default function AIAssistant() {
 
         setMessages((prev) => [...prev, userMessage]);
         setInputText('');
+
+        // 0. Check Hard Rules First
+        const hardResponse = handleHardRules(userMessage.text);
+        if (hardResponse) {
+            const aiMessage: Message = {
+                id: (Date.now() + 1).toString(),
+                text: hardResponse,
+                sender: 'ai',
+                timestamp: new Date(),
+            };
+            setMessages((prev) => [...prev, aiMessage]);
+            return;
+        }
 
         try {
             const response = await sendMessage({ message: userMessage.text }).unwrap();
@@ -81,14 +116,20 @@ export default function AIAssistant() {
                     item.sender === 'user' ? styles.userBubble : styles.aiBubble,
                 ]}
             >
-                <Text
-                    style={[
-                        styles.messageText,
-                        item.sender === 'user' ? styles.userText : styles.aiText,
-                    ]}
-                >
-                    {item.text}
-                </Text>
+                {item.sender === 'ai' ? (
+                    <Markdown style={markdownStyles}>
+                        {item.text}
+                    </Markdown>
+                ) : (
+                    <Text
+                        style={[
+                            styles.messageText,
+                            styles.userText,
+                        ]}
+                    >
+                        {item.text}
+                    </Text>
+                )}
             </View>
             <Text style={styles.timestamp}>
                 {item.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
@@ -286,3 +327,58 @@ const styles = StyleSheet.create({
         backgroundColor: '#a5b4fc',
     },
 });
+
+const markdownStyles = {
+    body: {
+        color: '#1f2937',
+        fontSize: 14,
+        lineHeight: 20,
+    },
+    heading1: {
+        color: '#111827',
+        fontWeight: 'bold',
+        fontSize: 20,
+        marginVertical: 10,
+    },
+    heading2: {
+        color: '#111827',
+        fontWeight: 'bold',
+        fontSize: 18,
+        marginVertical: 8,
+    },
+    bullet_list: {
+        marginVertical: 10,
+    },
+    list_item: {
+        flexDirection: 'row',
+        alignItems: 'flex-start',
+    },
+    strong: {
+        fontWeight: 'bold',
+    },
+    link: {
+        color: '#4f46e5',
+        textDecorationLine: 'underline',
+    },
+    table: {
+        borderWidth: 1,
+        borderColor: '#d1d5db',
+        borderRadius: 4,
+        marginVertical: 10,
+    },
+    tr: {
+        borderBottomWidth: 1,
+        borderColor: '#d1d5db',
+        flexDirection: 'row',
+    },
+    th: {
+        flex: 1,
+        padding: 5,
+        fontWeight: 'bold',
+        backgroundColor: '#f3f4f6',
+    },
+    td: {
+        flex: 1,
+        padding: 5,
+    },
+};
