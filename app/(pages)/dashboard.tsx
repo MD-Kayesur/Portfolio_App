@@ -40,12 +40,13 @@ export default function Dashboard() {
       const fileUri = localUri || uri;
       
       if (Platform.OS === 'web') {
-        const link = document.createElement('a');
+        const doc = (globalThis as any).document;
+        const link = doc.createElement('a');
         link.href = fileUri;
         link.download = 'document.png';
-        document.body.appendChild(link);
+        doc.body.appendChild(link);
         link.click();
-        document.body.removeChild(link);
+        doc.body.removeChild(link);
       } else {
         if (await Sharing.isAvailableAsync()) {
           await Sharing.shareAsync(fileUri, {

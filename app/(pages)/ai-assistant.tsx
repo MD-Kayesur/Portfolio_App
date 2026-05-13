@@ -37,27 +37,6 @@ export default function AIAssistant() {
     const [sendMessage, { isLoading }] = useSendMessageMutation();
     const flatListRef = useRef<FlatList>(null);
 
-    const handleHardRules = (prompt: string) => {
-        const p = prompt.toLowerCase();
-
-        // WHO ARE YOU rule
-        if (p.includes("who are you") || p.includes("who created you")) {
-            return "I am assistant of my boss Kayesur.";
-        }
-
-        // GITHUB request rule
-        if (p.includes("github") || p.includes("git link")) {
-            return "Here is my boss's GitHub link: \n\n [![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/MD-Kayesur)";
-        }
-
-        // LINKEDIN request rule
-        if (p.includes("linkedin") || p.includes("linkdin")) {
-            return "Here is my boss's LinkedIn link: \n\n [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/md-kayesur-rahman-212759317)";
-        }
-
-        return null;
-    };
-
     const handleSend = async () => {
         if (!inputText.trim() || isLoading) return;
 
@@ -70,19 +49,6 @@ export default function AIAssistant() {
 
         setMessages((prev) => [...prev, userMessage]);
         setInputText('');
-
-        // 0. Check Hard Rules First
-        const hardResponse = handleHardRules(userMessage.text);
-        if (hardResponse) {
-            const aiMessage: Message = {
-                id: (Date.now() + 1).toString(),
-                text: hardResponse,
-                sender: 'ai',
-                timestamp: new Date(),
-            };
-            setMessages((prev) => [...prev, aiMessage]);
-            return;
-        }
 
         try {
             const response = await sendMessage({ message: userMessage.text }).unwrap();
@@ -169,6 +135,17 @@ export default function AIAssistant() {
                 contentContainerStyle={styles.messageList}
                 onContentSizeChange={() => flatListRef.current?.scrollToEnd({ animated: true })}
                 showsVerticalScrollIndicator={false}
+                ListFooterComponent={isLoading ? (
+                    <View style={[styles.messageContainer, styles.aiMessage]}>
+                        <View style={[styles.messageBubble, styles.aiBubble, styles.typingBubble]}>
+                            <View style={styles.typingDots}>
+                                <View style={styles.dot} />
+                                <View style={[styles.dot, styles.dot2]} />
+                                <View style={[styles.dot, styles.dot3]} />
+                            </View>
+                        </View>
+                    </View>
+                ) : null}
             />
 
             {/* Input Area */}
@@ -333,9 +310,31 @@ const styles = StyleSheet.create({
     sendButtonDisabled: {
         backgroundColor: '#a5b4fc',
     },
+    typingBubble: {
+        width: 60,
+        paddingVertical: 8,
+    },
+    typingDots: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 4,
+    },
+    dot: {
+        width: 6,
+        height: 6,
+        borderRadius: 3,
+        backgroundColor: '#9ca3af',
+    },
+    dot2: {
+        opacity: 0.6,
+    },
+    dot3: {
+        opacity: 0.3,
+    },
 });
 
-const markdownStyles = {
+const markdownStyles: any = {
     body: {
         color: '#1f2937',
         fontSize: 14,
