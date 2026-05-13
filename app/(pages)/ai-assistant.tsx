@@ -9,6 +9,7 @@ import {
     Platform,
     ActivityIndicator,
     StyleSheet,
+    Linking,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
@@ -117,7 +118,13 @@ export default function AIAssistant() {
                 ]}
             >
                 {item.sender === 'ai' ? (
-                    <Markdown style={markdownStyles}>
+                    <Markdown 
+                        style={markdownStyles}
+                        onLinkPress={(url) => {
+                            Linking.openURL(url);
+                            return true;
+                        }}
+                    >
                         {item.text}
                     </Markdown>
                 ) : (
