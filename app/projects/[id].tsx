@@ -1,19 +1,67 @@
 import { useGetProjectByIdQuery, Project } from "@/redux/feature/projects/projectApi";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter, useLocalSearchParams } from "expo-router";
-import { Pressable, Text, View, ScrollView, Image, Linking, ActivityIndicator } from "react-native";
+import { Pressable, Text, View, ScrollView, Image, Linking, ActivityIndicator, Dimensions } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import tw from 'twrnc';
 import SafeScreen from "@/components/SafeScreen";
 
+const { width } = Dimensions.get('window');
+
 // Interface is now imported from projectApi
+
+const LOCAL_APP_PROJECT: Project = {
+  _id: "portfolio-app-id",
+  name: "Portfolio Mobile Masterpiece",
+  description: "A high-performance personal portfolio mobile application built with React Native and Expo, featuring a premium glassmorphism design and smooth background animations.",
+  skills: ["Expo", "React Native", "NativeWind", "RTK Query"],
+  implementation: "Engineered a global state management system using Redux. Created a seamless experience with background video rendering and smooth shared element transitions across all major pages.",
+  liveLink: "https://expo.dev/accounts/md_kayesur/projects/rideshare/builds/3a4d3f4d-a2b3-4d15-bc59-4438ee2b8d32",
+  codeLink: "https://github.com/MD-Kayesur/Portfolio_App",
+  serverCodeLink: "https://github.com/MD-Kayesur/My-Own-Portfolio-server",
+  image: "/app_screenshot_1.png",
+  images: [
+    "/app_screenshot_1.png",
+    "/app_screenshot_2.png",
+    "/app_screenshot_3.png",
+    "/app_screenshot_4.png"
+  ]
+};
+
+const getProjectImageSource = (imageStr: string) => {
+  if (!imageStr) {
+    return { uri: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?q=80&w=1000' };
+  }
+  if (imageStr.includes('app_screenshot_1.png')) {
+    return require('@/assets/images/app_screenshot_1.png');
+  }
+  if (imageStr.includes('app_screenshot_2.png')) {
+    return require('@/assets/images/app_screenshot_2.png');
+  }
+  if (imageStr.includes('app_screenshot_3.png')) {
+    return require('@/assets/images/app_screenshot_3.png');
+  }
+  if (imageStr.includes('app_screenshot_4.png')) {
+    return require('@/assets/images/app_screenshot_4.png');
+  }
+  return { uri: imageStr };
+};
 
 export default function ProjectDetails() {
   const router = useRouter();
   const { id } = useLocalSearchParams();
 
+  const isApp = id === 'portfolio-app-id';
+
   // Fetch project data from API
-  const { data: project, isLoading, isError } = useGetProjectByIdQuery(id as string);
+  const { data: apiProject, isLoading: apiLoading, isError: apiError } = useGetProjectByIdQuery(
+    id as string,
+    { skip: isApp }
+  );
+
+  const project = isApp ? LOCAL_APP_PROJECT : apiProject;
+  const isLoading = isApp ? false : apiLoading;
+  const isError = isApp ? false : apiError;
 
   const openLink = async (url: string) => {
     try {
@@ -64,14 +112,43 @@ export default function ProjectDetails() {
         {/* Header Section */}
         <View style={tw`p-6 pt-24`}>
           {/* Project Image Panel */}
-          <View style={tw`w-full h-64 rounded-3xl overflow-hidden mb-8 border border-white/10`}>
-            <Image
-              source={{ uri: project.image }}
-              style={tw`w-full h-full`}
-              resizeMode="cover"
-            />
-            <View style={[tw`absolute inset-0 bg-black/40`]} />
-          </View>
+          {project.images && project.images.length > 0 ? (
+            <ScrollView 
+              horizontal 
+              pagingEnabled 
+              showsHorizontalScrollIndicator={false} 
+              style={tw`mb-8 h-[400px]`}
+              contentContainerStyle={tw`gap-4`}
+            >
+              {project.images.map((img, index) => (
+                <View 
+                  key={index} 
+                  style={[
+                    tw`rounded-3xl overflow-hidden border border-white/10 bg-black/40 flex items-center justify-center`,
+                    { width: width - 48, height: 400 }
+                  ]}
+                >
+                  <Image
+                    source={getProjectImageSource(img)}
+                    style={tw`w-full h-full`}
+                    resizeMode="contain"
+                  />
+                  <View style={[tw`absolute bottom-4 right-4 bg-black/60 px-3 py-1.5 rounded-full border border-white/10`]}>
+                    <Text style={tw`text-white text-xs font-bold`}>{index + 1} / {project.images?.length || 0}</Text>
+                  </View>
+                </View>
+              ))}
+            </ScrollView>
+          ) : (
+            <View style={tw`w-full h-64 rounded-3xl overflow-hidden mb-8 border border-white/10`}>
+              <Image
+                source={getProjectImageSource(project.image)}
+                style={tw`w-full h-full`}
+                resizeMode="cover"
+              />
+              <View style={[tw`absolute inset-0 bg-black/40`]} />
+            </View>
+          )}
 
           <Text style={tw`text-4xl font-black text-white mb-2`}>
             {project.name}

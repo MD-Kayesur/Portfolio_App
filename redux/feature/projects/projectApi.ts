@@ -11,6 +11,7 @@ export interface Project {
     codeLink: string;
     serverCodeLink: string;
     image: string;
+    images?: string[];
 }
 
 export const projectApi = baseApi.injectEndpoints({
@@ -27,7 +28,8 @@ export const projectApi = baseApi.injectEndpoints({
                     liveLink: item.live || '',
                     codeLink: item.clientcode || '',
                     serverCodeLink: item.servercode || '',
-                    image: item.img && item.img.length > 0 ? item.img[0] : ''
+                    image: item.img && item.img.length > 0 ? item.img[0] : '',
+                    images: item.img || []
                 }));
             },
             providesTags: ['Projects'],
@@ -46,7 +48,8 @@ export const projectApi = baseApi.injectEndpoints({
                     liveLink: item.live || '',
                     codeLink: item.clientcode || '',
                     serverCodeLink: item.servercode || '',
-                    image: item.img && item.img.length > 0 ? item.img[0] : ''
+                    image: item.img && item.img.length > 0 ? item.img[0] : '',
+                    images: item.img || []
                 };
             },
             providesTags: ['Projects'],

@@ -20,6 +20,25 @@ import tw from 'twrnc';
 
 const { width } = Dimensions.get('window');
 
+const getProjectImageSource = (imageStr: string) => {
+    if (!imageStr) {
+        return { uri: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?q=80&w=1000' };
+    }
+    if (imageStr.includes('app_screenshot_1.png')) {
+        return require('@/assets/images/app_screenshot_1.png');
+    }
+    if (imageStr.includes('app_screenshot_2.png')) {
+        return require('@/assets/images/app_screenshot_2.png');
+    }
+    if (imageStr.includes('app_screenshot_3.png')) {
+        return require('@/assets/images/app_screenshot_3.png');
+    }
+    if (imageStr.includes('app_screenshot_4.png')) {
+        return require('@/assets/images/app_screenshot_4.png');
+    }
+    return { uri: imageStr };
+};
+
 // Project interface is imported from projectApi
 
 export default function ProjectList() {
@@ -39,7 +58,7 @@ export default function ProjectList() {
         <View style={styles.projectCard}>
             {/* Project Image */}
             <Image
-                source={{ uri: item.image }}
+                source={getProjectImageSource(item.image)}
                 style={styles.projectImage}
                 resizeMode="cover"
             />
@@ -134,13 +153,53 @@ export default function ProjectList() {
         );
     }
 
-    const filteredProjects = projects?.filter(project => {
-        if (activeTab === 'All') return true;
-        
-        // Map "Costome code" tab back to "custom code" implementation status
-        const filterVal = activeTab === 'Costome code' ? 'custom code' : activeTab.toLowerCase();
-        return project.implementation?.toLowerCase() === filterVal;
-    }) || [];
+    const filteredProjects = (() => {
+        const dbFiltered = projects?.filter(project => {
+            if (activeTab === 'All') return true;
+            
+            // Map "Costome code" tab back to "custom code" implementation status
+            const filterVal = activeTab === 'Costome code' ? 'custom code' : activeTab.toLowerCase();
+            return project.implementation?.toLowerCase() === filterVal;
+        }) || [];
+
+        // Check if there are any app projects in database
+        const hasAppInDb = projects?.some(p => p.implementation?.toLowerCase() === 'app');
+
+        if (activeTab === 'App' && dbFiltered.length === 0) {
+            return [
+                {
+                    _id: "portfolio-app-id",
+                    name: "Portfolio Mobile Masterpiece",
+                    description: "A high-performance personal portfolio mobile application built with React Native and Expo, featuring a premium glassmorphism design and smooth background animations.",
+                    skills: ["Expo", "React Native", "NativeWind", "RTK Query"],
+                    implementation: "app",
+                    liveLink: "https://expo.dev/accounts/md_kayesur/projects/rideshare/builds/3a4d3f4d-a2b3-4d15-bc59-4438ee2b8d32",
+                    codeLink: "https://github.com/MD-Kayesur/Portfolio_App",
+                    serverCodeLink: "https://github.com/MD-Kayesur/My-Own-Portfolio-server",
+                    image: "/app_screenshot_1.png"
+                }
+            ];
+        }
+
+        if (activeTab === 'All' && !hasAppInDb) {
+            return [
+                ...dbFiltered,
+                {
+                    _id: "portfolio-app-id",
+                    name: "Portfolio Mobile Masterpiece",
+                    description: "A high-performance personal portfolio mobile application built with React Native and Expo, featuring a premium glassmorphism design and smooth background animations.",
+                    skills: ["Expo", "React Native", "NativeWind", "RTK Query"],
+                    implementation: "app",
+                    liveLink: "https://expo.dev/accounts/md_kayesur/projects/rideshare/builds/3a4d3f4d-a2b3-4d15-bc59-4438ee2b8d32",
+                    codeLink: "https://github.com/MD-Kayesur/Portfolio_App",
+                    serverCodeLink: "https://github.com/MD-Kayesur/My-Own-Portfolio-server",
+                    image: "/app_screenshot_1.png"
+                }
+            ];
+        }
+
+        return dbFiltered;
+    })();
 
     return (
         <SafeScreen>
@@ -168,7 +227,7 @@ export default function ProjectList() {
                 {/* Tabs */}
                 <View style={tw`px-6 pb-6`}>
                     <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={tw`flex-row gap-3`}>
-                        {['All', 'Costome code', 'webflow', 'Wordpress'].map(tab => (
+                        {['All', 'Costome code', 'App', 'webflow', 'Wordpress'].map(tab => (
                             <TouchableOpacity 
                                 key={tab}
                                 onPress={() => setActiveTab(tab)}
