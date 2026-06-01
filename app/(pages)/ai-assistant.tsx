@@ -352,6 +352,7 @@ const markdownStyles: any = {
         lineHeight: 25,
     },
     code_inline: {
+        backgroundColor: 'transparent',
         color: '#1f2937',
         fontSize: 14,
         fontWeight: 'bold',
