@@ -25,12 +25,11 @@ export default function LandingPage() {
   const [showSplash, setShowSplash] = useState(true);
 
   const pageIcons = [
-    { icon: "information-circle" as keyof typeof Ionicons.glyphMap, route: "/(tabs)/about", label: "About", path: "/about" },
-    { icon: "logo-whatsapp" as keyof typeof Ionicons.glyphMap, route: "/whatsapp", label: "WhatsApp", path: "/whatsapp" },
-    { icon: "home" as keyof typeof Ionicons.glyphMap, route: "/", label: "Home", path: "/" },
+    { icon: "information-circle-outline" as keyof typeof Ionicons.glyphMap, route: "/(tabs)/about", label: "About", path: "/about" },
+    { icon: "logo-whatsapp" as keyof typeof Ionicons.glyphMap, route: "/contact", label: "Contact", path: "/contact" },
+    { icon: "home-outline" as keyof typeof Ionicons.glyphMap, route: "/", label: "Home", path: "/" },
     { icon: "book-outline" as keyof typeof Ionicons.glyphMap, route: "/blogs", label: "Blogs", path: "/blogs" },
     { icon: "chatbubble-ellipses-outline" as keyof typeof Ionicons.glyphMap, route: "/ai-assistant", label: "Chat", path: "/ai-assistant" },
-
   ];
 
   const handleIconPress = (route: string, label: string) => {
@@ -43,6 +42,26 @@ export default function LandingPage() {
       return activeIcon === page.label;
     }
     return pathname.includes(page.path) || (page.path === "/(tabs)" && pathname === "/");
+  };
+
+  const getIconName = (page: typeof pageIcons[0]) => {
+    const active = isActive(page);
+    if (page.label === "About") {
+      return active ? "information-circle" : "information-circle-outline";
+    }
+    if (page.label === "Contact") {
+      return "logo-whatsapp";
+    }
+    if (page.label === "Home") {
+      return active ? "home" : "home-outline";
+    }
+    if (page.label === "Blogs") {
+      return active ? "book" : "book-outline";
+    }
+    if (page.label === "Chat") {
+      return active ? "chatbubble-ellipses" : "chatbubble-ellipses-outline";
+    }
+    return page.icon;
   };
 
   const handleDownloadCV = async () => {
@@ -95,25 +114,16 @@ export default function LandingPage() {
                   key={index}
                   onPress={() => handleIconPress(page.route, page.label)}
                   style={({ pressed }) => [
-                    tw`items-center p-2 rounded-2xl transition-all duration-200`,
-                    isActive(page) && tw`bg-red-50/80`,
+                    tw`flex-col items-center p-2 rounded-2xl transition-all duration-200`,
+                    isActive(page) && tw`bg-purple-600/10`,
                     pressed && tw`opacity-70`
                   ]}
                 >
                   <Ionicons
-                    name={page.icon}
+                    name={getIconName(page)}
                     size={28}
-                    color={isActive(page) ? "#dc2626" : "#4b5563"}
+                    color={isActive(page) ? "#9333ea" : "#4b5563"}
                   />
-                  <Text
-                    numberOfLines={1}
-                    style={[
-                      tw`text-[10px] mt-1 font-bold font-mono`,
-                      isActive(page) ? tw`text-red-600` : tw`text-gray-500`
-                    ]}
-                  >
-                    {page.label}
-                  </Text>
                 </Pressable>
               ))}
             </View>
@@ -124,39 +134,30 @@ export default function LandingPage() {
             intensity={95}
             tint="light"
             style={[
-              tw`absolute bottom-0 left-0 right-0 border-t border-white/20 pt-4 pb-10 px-4`,
-              { backgroundColor: 'rgba(255,255,255,0.4)', overflow: 'hidden' }
+              tw`absolute bottom-0 left-0 right-0 border-t border-white/20 pt-2 pb-6 px-4`,
+              { backgroundColor: 'rgba(114, 104, 91, 0.15)', overflow: 'hidden' }
             ]}
           >
-            <View style={tw`flex-row items-center justify-around w-full`}>
+            <View style={tw`flex-row  items-center justify-around w-full`}>
               {pageIcons.map((page, index) => (
                 <Pressable
                   key={index}
                   onPress={() => handleIconPress(page.route, page.label)}
                   style={({ pressed }) => [
-                    tw`items-center justify-center py-1 flex-1`,
+                    tw`items-center justify-center py-1 flex-1 `,
                     pressed && tw`opacity-70`
                   ]}
                 >
                   <View style={[
-                    tw`w-12 h-12 rounded-full items-center justify-center mb-1.5`,
-                    isActive(page) ? tw`bg-red-50/60` : tw`bg-transparent`
+                    tw`w-12 h-10 rounded-full items-center justify-center  `,
+                    isActive(page) ? tw` ` : tw`bg-transparent`
                   ]}>
                     <Ionicons
-                      name={page.icon}
-                      size={26}
-                      color={isActive(page) ? "#dc2626" : "#4b5563"}
+                      name={getIconName(page)}
+                      size={32}
+                      color={isActive(page) ? "#0b0635ff" : "#fff"}
                     />
                   </View>
-                  <Text
-                    numberOfLines={1}
-                    style={[
-                      tw`text-xs font-bold font-mono`,
-                      isActive(page) ? tw`text-red-600` : tw`text-gray-500`
-                    ]}
-                  >
-                    {page.label}
-                  </Text>
                 </Pressable>
               ))}
             </View>
