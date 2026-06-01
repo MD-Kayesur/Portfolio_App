@@ -16,6 +16,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import { useSendMessageMutation } from '@/redux/feature/chat/chatApi';
 import Markdown from 'react-native-markdown-display';
+import { BlurView } from 'expo-blur';
 
 interface Message {
     id: string;
@@ -29,7 +30,7 @@ export default function AIAssistant() {
     const [messages, setMessages] = useState<Message[]>([
         {
             id: '1',
-            text: "Hello! I'm MD's AI assistant. How can I help you today?",
+            text: "Hello! I'm MD Kayesur's AI assistant. You can ask me about MD Kayesur ?",
             sender: 'ai',
             timestamp: new Date(),
         },
@@ -153,10 +154,15 @@ export default function AIAssistant() {
                 behavior={Platform.OS === 'ios' ? 'padding' : undefined}
                 keyboardVerticalOffset={Platform.OS === 'ios' ? 90 : 0}
             >
-                <View style={styles.inputContainer}>
+                <BlurView
+                    intensity={90}
+                    tint="light"
+                    style={styles.inputContainer}
+                >
                     <TextInput
                         style={styles.input}
                         placeholder="Ask me anything..."
+                        placeholderTextColor="rgba(255, 255, 255, 0.7)"
                         value={inputText}
                         onChangeText={setInputText}
                         multiline
@@ -176,7 +182,7 @@ export default function AIAssistant() {
                             <Ionicons name="send" size={20} color="#fff" />
                         )}
                     </TouchableOpacity>
-                </View>
+                </BlurView>
             </KeyboardAvoidingView>
         </SafeAreaView>
     );
@@ -283,7 +289,8 @@ const styles = StyleSheet.create({
         padding: 12,
         borderTopWidth: 1,
         borderTopColor: 'rgba(255,255,255,0.1)',
-        backgroundColor: 'rgba(0,0,0,0.5)',
+        backgroundColor: 'rgba(255, 255, 255, 0.25)',
+        overflow: 'hidden',
     },
     input: {
         flex: 1,
