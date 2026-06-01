@@ -347,6 +347,18 @@ const markdownStyles: any = {
         fontSize: 14,
         lineHeight: 20,
     },
+    paragraph: {
+        marginVertical: 4,
+    },
+    code_inline: {
+        backgroundColor: '#dbeafe',
+        color: '#1e40af',
+        borderRadius: 6,
+        paddingHorizontal: 6,
+        paddingVertical: 2,
+        fontSize: 13,
+        fontWeight: 'bold',
+    },
     heading1: {
         color: '#111827',
         fontWeight: 'bold',
