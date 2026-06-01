@@ -345,18 +345,15 @@ const markdownStyles: any = {
     body: {
         color: '#1f2937',
         fontSize: 14,
-        lineHeight: 20,
+        lineHeight: 25,
     },
     paragraph: {
         marginVertical: 4,
+        lineHeight: 25,
     },
     code_inline: {
-        backgroundColor: '#dbeafe',
-        color: '#1e40af',
-        borderRadius: 6,
-        paddingHorizontal: 6,
-        paddingVertical: 2,
-        fontSize: 13,
+        color: '#1f2937',
+        fontSize: 14,
         fontWeight: 'bold',
     },
     heading1: {
