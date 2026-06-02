@@ -127,33 +127,34 @@ export default function AIAssistant() {
                 </View>
             </View>
 
-            {/* Chat Messages */}
-            <FlatList
-                ref={flatListRef}
-                data={messages}
-                renderItem={renderMessage}
-                keyExtractor={(item) => item.id}
-                contentContainerStyle={styles.messageList}
-                onContentSizeChange={() => flatListRef.current?.scrollToEnd({ animated: true })}
-                showsVerticalScrollIndicator={false}
-                ListFooterComponent={isLoading ? (
-                    <View style={[styles.messageContainer, styles.aiMessage]}>
-                        <View style={[styles.messageBubble, styles.aiBubble, styles.typingBubble]}>
-                            <View style={styles.typingDots}>
-                                <View style={styles.dot} />
-                                <View style={[styles.dot, styles.dot2]} />
-                                <View style={[styles.dot, styles.dot3]} />
-                            </View>
-                        </View>
-                    </View>
-                ) : null}
-            />
-
-            {/* Input Area */}
             <KeyboardAvoidingView
-                behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                style={{ flex: 1 }}
                 keyboardVerticalOffset={Platform.OS === 'ios' ? 90 : 0}
             >
+                {/* Chat Messages */}
+                <FlatList
+                    ref={flatListRef}
+                    data={messages}
+                    renderItem={renderMessage}
+                    keyExtractor={(item) => item.id}
+                    contentContainerStyle={styles.messageList}
+                    onContentSizeChange={() => flatListRef.current?.scrollToEnd({ animated: true })}
+                    showsVerticalScrollIndicator={false}
+                    ListFooterComponent={isLoading ? (
+                        <View style={[styles.messageContainer, styles.aiMessage]}>
+                            <View style={[styles.messageBubble, styles.aiBubble, styles.typingBubble]}>
+                                <View style={styles.typingDots}>
+                                    <View style={styles.dot} />
+                                    <View style={[styles.dot, styles.dot2]} />
+                                    <View style={[styles.dot, styles.dot3]} />
+                                </View>
+                            </View>
+                        </View>
+                    ) : null}
+                />
+
+                {/* Input Area */}
                 <BlurView
                     intensity={90}
                     tint="light"
