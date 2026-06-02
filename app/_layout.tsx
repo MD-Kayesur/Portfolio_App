@@ -74,9 +74,15 @@ export default function RootLayout() {
 
   const player = useVideoPlayer(require('../assets/vedios/animate1.mp4'), (player) => {
     player.loop = true;
-    player.play();
     player.muted = true;
+    player.play();
   });
+
+  useEffect(() => {
+    if (player) {
+      player.play();
+    }
+  }, [player]);
 
   return (
     <Provider store={store}>
