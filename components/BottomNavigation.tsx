@@ -30,7 +30,10 @@ export default function BottomNavigation({ translateY }: BottomNavigationProps) 
     if (activeIcon) {
       return activeIcon === page.label;
     }
-    return pathname.includes(page.path) || (page.path === "/(tabs)" && pathname === "/");
+    if (page.path === "/") {
+      return pathname === "/";
+    }
+    return pathname.includes(page.path);
   };
 
   const getIconName = (page: typeof pageIcons[0]) => {
