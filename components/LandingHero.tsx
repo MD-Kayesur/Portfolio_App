@@ -115,6 +115,18 @@ const LandingHero = () => {
                                 <Text style={tw`text-white text-sm font-bold font-mono`}>Projects</Text>
                             </TouchableOpacity>
 
+                            <TouchableOpacity
+                                onPress={() => router.push('/skills')}
+                                activeOpacity={0.8}
+                                style={[
+                                    styles.heroActionBtn as ViewStyle,
+                                    { backgroundColor: '#10b981' } // emerald-500
+                                ]}
+                            >
+                                <Ionicons name="hardware-chip-outline" size={18} color="white" style={tw`mr-2`} />
+                                <Text style={tw`text-white text-sm font-bold font-mono`}>Skills</Text>
+                            </TouchableOpacity>
+
                         </View>
                     </View>
                 </View>

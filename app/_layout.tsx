@@ -102,6 +102,9 @@ export default function RootLayout() {
             contentStyle: { backgroundColor: 'transparent' }
           }}>
             <Stack.Screen name="index" />
+            <Stack.Screen name="(tabs)" />
+            <Stack.Screen name="projects" />
+            <Stack.Screen name="(pages)" />
             <Stack.Screen name="+not-found" options={{ headerShown: true }} />
           </Stack>
         </View>

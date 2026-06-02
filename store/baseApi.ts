@@ -6,7 +6,7 @@ export const baseApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: process.env.EXPO_PUBLIC_API_URL || 'https://my-own-portfolio-server.vercel.app',
   }),
-  tagTypes: ['Blogs', 'Users', 'Projects'],
+  tagTypes: ['Blogs', 'Users', 'Projects', 'Skills'],
   endpoints: () => ({}),
 });
 
