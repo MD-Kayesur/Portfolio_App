@@ -92,7 +92,7 @@ export default function RootLayout() {
           style={StyleSheet.absoluteFill}
           player={player}
           contentFit="cover"
-          allowsFullscreen={false}
+          fullscreenOptions={{ enable: false }}
           allowsPictureInPicture={false}
         />
 
@@ -102,9 +102,6 @@ export default function RootLayout() {
             contentStyle: { backgroundColor: 'transparent' }
           }}>
             <Stack.Screen name="index" />
-            <Stack.Screen name="(tabs)" />
-            <Stack.Screen name="projects" />
-            <Stack.Screen name="(pages)" />
             <Stack.Screen name="+not-found" options={{ headerShown: true }} />
           </Stack>
         </View>
