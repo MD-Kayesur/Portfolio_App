@@ -1,12 +1,22 @@
-import { ScrollView, View, Text, Pressable, Image, Platform } from "react-native";
+import { ScrollView, View, Text, Pressable, Image, Platform, Animated } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
+import { useRef } from "react";
 import tw from 'twrnc';
 import ProjectCard from "@/components/projectCard/ProjectCard";
+import BottomNavigation from "@/components/BottomNavigation";
 
 export default function AboutPage() {
     const router = useRouter();
+
+    const scrollY = useRef(new Animated.Value(0)).current;
+    const scrollYClamped = Animated.diffClamp(scrollY, 0, 100);
+    const tabBarTranslateY = scrollYClamped.interpolate({
+        inputRange: [0, 100],
+        outputRange: [0, 100],
+        extrapolate: 'clamp',
+    });
 
     return (
         <SafeAreaView style={tw`flex-1`}>
@@ -30,9 +40,14 @@ export default function AboutPage() {
                 Since ProjectCard itself has a ScrollView, we should probably 
                 just use the content of ProjectCard here or make ProjectCard non-scrollable.
             */}
-            <ScrollView
+            <Animated.ScrollView
                 contentContainerStyle={tw`flex-grow px-6 pt-24 pb-12`}
                 showsVerticalScrollIndicator={false}
+                onScroll={Animated.event(
+                    [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+                    { useNativeDriver: Platform.OS !== 'web' }
+                )}
+                scrollEventThrottle={16}
             >
                 {/* Profile Section */}
                 <View style={tw`items-center mb-10`}>
@@ -70,7 +85,9 @@ export default function AboutPage() {
                         To bridge the gap between complex backend logic and elegant frontend design, delivering products that not only work perfectly but also provide an exceptional user experience.
                     </Text>
                 </View>
-            </ScrollView>
+            </Animated.ScrollView>
+
+            <BottomNavigation translateY={tabBarTranslateY} />
         </SafeAreaView>
     );
 }

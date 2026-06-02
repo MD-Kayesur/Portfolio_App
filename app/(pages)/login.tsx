@@ -27,7 +27,7 @@ export default function Login() {
   return (
     <SafeScreen>
       <View style={tw`flex-1 px-6 justify-center bg-transparent`}>
-        <TouchableOpacity onPress={() => router.back()} style={tw`absolute top-12 left-6 z-10 bg-white/10 p-2 rounded-full`}>
+        <TouchableOpacity onPress={() => router.back()} style={tw`absolute top-0 left-6 z-10 bg-white/10 p-2 rounded-full`}>
             <Ionicons name="arrow-back" size={24} color="white" />
         </TouchableOpacity>
         
@@ -36,7 +36,7 @@ export default function Login() {
         <TextInput 
           style={tw`bg-white/10 text-white px-4 py-4 rounded-lg mb-6 font-mono text-base`}
           placeholder="Enter Admin Email"
-          placeholderTextColor="#9ca3af"
+          placeholderTextColor="#fbfbfbff"
           value={email}
           onChangeText={setEmail}
           autoCapitalize="none"

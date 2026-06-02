@@ -8,61 +8,33 @@ import {
   StatusBar,
   Linking,
   TouchableOpacity,
+  Animated,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter, usePathname } from "expo-router";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import SafeScreen from "@/components/SafeScreen";
 import SplashScreen from "@/components/SplashScreen";
 import LandingHero from "@/components/LandingHero";
 import tw from 'twrnc';
-import { BlurView } from 'expo-blur';
+
+import BottomNavigation from "@/components/BottomNavigation";
 
 export default function LandingPage() {
   const router = useRouter();
   const pathname = usePathname();
-  const [activeIcon, setActiveIcon] = useState<string | null>(null);
   const [showSplash, setShowSplash] = useState(true);
 
-  const pageIcons = [
-    { icon: "information-circle-outline" as keyof typeof Ionicons.glyphMap, route: "/(tabs)/about", label: "About", path: "/about" },
-    { icon: "logo-whatsapp" as keyof typeof Ionicons.glyphMap, route: "/contact", label: "Contact", path: "/contact" },
-    { icon: "home-outline" as keyof typeof Ionicons.glyphMap, route: "/", label: "Home", path: "/" },
-    { icon: "book-outline" as keyof typeof Ionicons.glyphMap, route: "/blogs", label: "Blogs", path: "/blogs" },
-    { icon: "chatbubble-ellipses-outline" as keyof typeof Ionicons.glyphMap, route: "/ai-assistant", label: "Chat", path: "/ai-assistant" },
-  ];
+  // Scroll Animation Logic for Tab Bar
+  const scrollY = useRef(new Animated.Value(0)).current;
+  const scrollYClamped = Animated.diffClamp(scrollY, 0, 100);
+  const tabBarTranslateY = scrollYClamped.interpolate({
+    inputRange: [0, 100],
+    outputRange: [0, 100],
+    extrapolate: 'clamp',
+  });
 
-  const handleIconPress = (route: string, label: string) => {
-    setActiveIcon(label);
-    router.push(route as any);
-  };
 
-  const isActive = (page: typeof pageIcons[0]) => {
-    if (activeIcon) {
-      return activeIcon === page.label;
-    }
-    return pathname.includes(page.path) || (page.path === "/(tabs)" && pathname === "/");
-  };
-
-  const getIconName = (page: typeof pageIcons[0]) => {
-    const active = isActive(page);
-    if (page.label === "About") {
-      return active ? "information-circle" : "information-circle-outline";
-    }
-    if (page.label === "Contact") {
-      return "logo-whatsapp";
-    }
-    if (page.label === "Home") {
-      return active ? "home" : "home-outline";
-    }
-    if (page.label === "Blogs") {
-      return active ? "book" : "book-outline";
-    }
-    if (page.label === "Chat") {
-      return active ? "chatbubble-ellipses" : "chatbubble-ellipses-outline";
-    }
-    return page.icon;
-  };
 
   const handleDownloadCV = async () => {
     try {
@@ -95,74 +67,22 @@ export default function LandingPage() {
         </View>
 
         {/* Main Content - Scrollable */}
-        <ScrollView
+        <Animated.ScrollView
           style={tw`flex-1`}
           contentContainerStyle={tw`flex-grow pb-32`}
           showsVerticalScrollIndicator={false}
+          onScroll={Animated.event(
+            [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+            { useNativeDriver: Platform.OS !== 'web' }
+          )}
+          scrollEventThrottle={16}
         >
           {/* New Premium Landing Hero Component */}
           <LandingHero />
-        </ScrollView>
+        </Animated.ScrollView>
 
         {/* Bottom Navigation */}
-        {Platform.OS === 'web' ? (
-          // Web Navigation
-          <View style={tw`border-t border-gray-100 py-3 bg-white/60 absolute bottom-0 left-0 right-0`}>
-            <View style={tw`flex-row items-center justify-center gap-6 px-4`}>
-              {pageIcons.map((page, index) => (
-                <Pressable
-                  key={index}
-                  onPress={() => handleIconPress(page.route, page.label)}
-                  style={({ pressed }) => [
-                    tw`flex-col items-center p-2 rounded-2xl transition-all duration-200`,
-                    isActive(page) && tw`bg-purple-600/10`,
-                    pressed && tw`opacity-70`
-                  ]}
-                >
-                  <Ionicons
-                    name={getIconName(page)}
-                    size={28}
-                    color={isActive(page) ? "#9333ea" : "#4b5563"}
-                  />
-                </Pressable>
-              ))}
-            </View>
-          </View>
-        ) : (
-          // Mobile Navigation - Glassmorphism Style
-          <BlurView
-            intensity={95}
-            tint="light"
-            style={[
-              tw`absolute bottom-0 left-0 right-0 border-t border-white/20 pt-2 pb-6 px-4`,
-              { backgroundColor: 'rgba(114, 104, 91, 0.15)', overflow: 'hidden' }
-            ]}
-          >
-            <View style={tw`flex-row  items-center justify-around w-full`}>
-              {pageIcons.map((page, index) => (
-                <Pressable
-                  key={index}
-                  onPress={() => handleIconPress(page.route, page.label)}
-                  style={({ pressed }) => [
-                    tw`items-center justify-center py-1 flex-1 `,
-                    pressed && tw`opacity-70`
-                  ]}
-                >
-                  <View style={[
-                    tw`w-12 h-10 rounded-full items-center justify-center  `,
-                    isActive(page) ? tw` ` : tw`bg-transparent`
-                  ]}>
-                    <Ionicons
-                      name={getIconName(page)}
-                      size={32}
-                      color={isActive(page) ? "#0b0635ff" : "#fff"}
-                    />
-                  </View>
-                </Pressable>
-              ))}
-            </View>
-          </BlurView>
-        )}
+        <BottomNavigation translateY={tabBarTranslateY} />
       </View>
     </SafeScreen>
   );

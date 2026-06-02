@@ -155,15 +155,11 @@ export default function AIAssistant() {
                 />
 
                 {/* Input Area */}
-                <BlurView
-                    intensity={90}
-                    tint="light"
-                    style={styles.inputContainer}
-                >
+                <View style={styles.inputContainer}>
                     <TextInput
                         style={styles.input}
                         placeholder="Ask me anything..."
-                        placeholderTextColor="rgba(255, 255, 255, 0.7)"
+                        placeholderTextColor="#ffffff"
                         value={inputText}
                         onChangeText={setInputText}
                         multiline
@@ -183,7 +179,7 @@ export default function AIAssistant() {
                             <Ionicons name="send" size={20} color="#fff" />
                         )}
                     </TouchableOpacity>
-                </BlurView>
+                </View>
             </KeyboardAvoidingView>
         </SafeAreaView>
     );
@@ -200,7 +196,7 @@ const styles = StyleSheet.create({
         padding: 16,
         borderBottomWidth: 1,
         borderBottomColor: 'rgba(255,255,255,0.1)',
-        paddingTop: 40,
+        paddingTop: 0,
     },
     backButton: {
         width: 44,
@@ -288,14 +284,13 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'flex-end',
         padding: 12,
-        borderTopWidth: 1,
-        borderTopColor: 'rgba(255,255,255,0.1)',
-        backgroundColor: 'rgba(255, 255, 255, 0.25)',
+        borderTopWidth: 0,
+        backgroundColor: 'transparent',
         overflow: 'hidden',
     },
     input: {
         flex: 1,
-        backgroundColor: 'rgba(255,255,255,0.05)',
+        backgroundColor: 'transparent',
         borderWidth: 1,
         borderColor: 'rgba(255,255,255,0.1)',
         borderRadius: 24,

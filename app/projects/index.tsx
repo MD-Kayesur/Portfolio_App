@@ -10,6 +10,8 @@ import {
     Dimensions,
     Linking,
     ScrollView,
+    Animated,
+    Platform,
 } from 'react-native';
 import projectsData from '@/utils/projectsData.json';
 import { useGetProjectsQuery, Project } from '@/redux/feature/projects/projectApi';
@@ -17,8 +19,11 @@ import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import SafeScreen from '@/components/SafeScreen';
 import tw from 'twrnc';
+import BottomNavigation from '@/components/BottomNavigation';
+import { useRef } from 'react';
 
 const { width } = Dimensions.get('window');
+const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
 const getProjectImageSource = (imageStr: string) => {
     if (!imageStr) {
@@ -45,6 +50,14 @@ export default function ProjectList() {
     const router = useRouter();
     const { data: projects, isLoading, isError } = useGetProjectsQuery();
     const [activeTab, setActiveTab] = useState('All');
+
+    const scrollY = useRef(new Animated.Value(0)).current;
+    const scrollYClamped = Animated.diffClamp(scrollY, 0, 100);
+    const tabBarTranslateY = scrollYClamped.interpolate({
+        inputRange: [0, 100],
+        outputRange: [0, 100],
+        extrapolate: 'clamp',
+    });
 
     const openLink = async (url: string) => {
         try {
@@ -248,15 +261,21 @@ export default function ProjectList() {
                 </View>
 
                 {/* Project List */}
-                <FlatList
+                <AnimatedFlatList
                     data={filteredProjects}
                     renderItem={renderProjectItem}
-                    keyExtractor={(item) => item._id}
+                    keyExtractor={(item: any) => item._id}
                     contentContainerStyle={styles.listContent}
                     showsVerticalScrollIndicator={false}
                     ItemSeparatorComponent={() => <View style={styles.separator} />}
+                    onScroll={Animated.event(
+                        [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+                        { useNativeDriver: Platform.OS !== 'web' }
+                    )}
+                    scrollEventThrottle={16}
                 />
             </View>
+            <BottomNavigation translateY={tabBarTranslateY} />
         </SafeScreen>
     );
 }

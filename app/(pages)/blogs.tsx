@@ -1,5 +1,5 @@
 // app/(pages)/blogs.tsx
-import React from 'react';
+import React, { useRef } from 'react';
 import {
   View,
   Text,
@@ -9,17 +9,29 @@ import {
   StyleSheet,
   TouchableOpacity,
   Dimensions,
+  Animated,
+  Platform,
 } from 'react-native';
 import { useGetBlogsQuery } from '@/redux/feature/blogs/blogApi';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import SafeScreen from '@/components/SafeScreen';
+import BottomNavigation from '@/components/BottomNavigation';
 
 const { width } = Dimensions.get('window');
+const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
 export default function BlogList() {
   const { data: blogs, isLoading, error } = useGetBlogsQuery();
   const router = useRouter();
+
+  const scrollY = useRef(new Animated.Value(0)).current;
+  const scrollYClamped = Animated.diffClamp(scrollY, 0, 100);
+  const tabBarTranslateY = scrollYClamped.interpolate({
+      inputRange: [0, 100],
+      outputRange: [0, 100],
+      extrapolate: 'clamp',
+  });
 
   if (isLoading) {
     return (
@@ -128,15 +140,21 @@ export default function BlogList() {
 
 
         {/* Blog List */}
-        <FlatList
+        <AnimatedFlatList
           data={blogs}
           renderItem={renderBlogItem}
-          keyExtractor={(item) => item._id}
+          keyExtractor={(item: any) => item._id}
           contentContainerStyle={styles.listContent}
           showsVerticalScrollIndicator={false}
           ItemSeparatorComponent={() => <View style={styles.separator} />}
+          onScroll={Animated.event(
+              [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+              { useNativeDriver: Platform.OS !== 'web' }
+          )}
+          scrollEventThrottle={16}
         />
       </View>
+      <BottomNavigation translateY={tabBarTranslateY} />
     </SafeScreen>
   );
 }
@@ -158,7 +176,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'transparent',
     padding: 16,
-    paddingTop: 40,
+    paddingTop: 0,
     borderBottomWidth: 1,
     borderBottomColor: 'rgba(255,255,255,0.1)',
     gap: 12,
@@ -185,6 +203,7 @@ const styles = StyleSheet.create({
   },
   listContent: {
     padding: 16,
+    paddingBottom: 100,
   },
   blogCard: {
     backgroundColor: 'rgba(255,255,255,0.1)',

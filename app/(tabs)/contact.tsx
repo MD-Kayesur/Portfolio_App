@@ -4,15 +4,27 @@ import {
     View,
     Linking,
     Alert,
-    ScrollView
+    ScrollView,
+    Animated,
+    Platform
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import tw from 'twrnc';
 import { useRouter } from "expo-router";
+import { useRef } from "react";
+import BottomNavigation from "@/components/BottomNavigation";
 
 export default function Contact() {
     const router = useRouter();
+
+    const scrollY = useRef(new Animated.Value(0)).current;
+    const scrollYClamped = Animated.diffClamp(scrollY, 0, 100);
+    const tabBarTranslateY = scrollYClamped.interpolate({
+        inputRange: [0, 100],
+        outputRange: [0, 100],
+        extrapolate: 'clamp',
+    });
 
     const handleEmailPress = () => {
         Linking.openURL('mailto:mdkayesur@gmail.com')
@@ -40,7 +52,7 @@ export default function Contact() {
                 {/* Back Button */}
                 <Pressable
                     onPress={() => router.back()}
-                    style={tw`absolute top-12 left-6 z-10 bg-white/10 p-2 rounded-full border border-white/20`}
+                    style={tw`absolute  left-6 z-10 bg-white/10 p-2 rounded-full border border-white/20`}
                 >
                     <Ionicons
                         name="arrow-back"
@@ -49,12 +61,17 @@ export default function Contact() {
                     />
                 </Pressable>
 
-                <ScrollView
+                <Animated.ScrollView
                     showsVerticalScrollIndicator={false}
                     contentContainerStyle={tw`pb-12`}
+                    onScroll={Animated.event(
+                        [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+                        { useNativeDriver: Platform.OS !== 'web' }
+                    )}
+                    scrollEventThrottle={16}
                 >
                     {/* Header */}
-                    <View style={tw`items-center mt-24 mb-10`}>
+                    <View style={tw`items-center mt-10 mb-10`}>
                         <View style={tw`w-24 h-24 rounded-full bg-purple-500/10 border border-purple-500/20 items-center justify-center mb-4`}>
                             <Ionicons name="chatbubbles" size={48} color="#a855f7" />
                         </View>
@@ -143,8 +160,9 @@ export default function Contact() {
                     <Text style={tw`text-center mt-10 text-sm text-gray-400 font-medium`}>
                         Average response time: &lt; 24 hours
                     </Text>
-                </ScrollView>
+                </Animated.ScrollView>
             </View>
+            <BottomNavigation translateY={tabBarTranslateY} />
         </SafeAreaView>
     );
 }

@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, ScrollView, Image, Platform, Alert } from 'react-native';
+import React, { useState, useRef } from 'react';
+import { View, Text, TouchableOpacity, ScrollView, Image, Platform, Alert, Animated } from 'react-native';
 import tw from 'twrnc';
 import SafeScreen from '@/components/SafeScreen';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import * as Sharing from 'expo-sharing';
 import { Asset } from 'expo-asset';
+import BottomNavigation from '@/components/BottomNavigation';
 
 const familyData = [
   {
@@ -33,6 +34,14 @@ const familyData = [
 export default function Dashboard() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState("kayes");
+
+  const scrollY = useRef(new Animated.Value(0)).current;
+  const scrollYClamped = Animated.diffClamp(scrollY, 0, 100);
+  const tabBarTranslateY = scrollYClamped.interpolate({
+      inputRange: [0, 100],
+      outputRange: [0, 100],
+      extrapolate: 'clamp',
+  });
 
   const handleDownload = async (imageRequire: any) => {
     try {
@@ -135,7 +144,15 @@ export default function Dashboard() {
           </ScrollView>
         </View>
 
-        <ScrollView contentContainerStyle={tw`px-6 pb-12`} showsVerticalScrollIndicator={false}>
+        <Animated.ScrollView 
+          contentContainerStyle={tw`px-6 pb-32`} 
+          showsVerticalScrollIndicator={false}
+          onScroll={Animated.event(
+              [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+              { useNativeDriver: Platform.OS !== 'web' }
+          )}
+          scrollEventThrottle={16}
+        >
           {familyData.map((person) => {
             if (person.title === activeTab) {
               return (
@@ -149,8 +166,9 @@ export default function Dashboard() {
             }
             return null;
           })}
-        </ScrollView>
+        </Animated.ScrollView>
       </View>
+      <BottomNavigation translateY={tabBarTranslateY} />
     </SafeScreen>
   );
 }
