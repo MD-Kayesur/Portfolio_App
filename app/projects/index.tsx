@@ -67,76 +67,79 @@ export default function ProjectList() {
         }
     };
 
-    const renderProjectItem = ({ item }: { item: Project }) => (
-        <View style={styles.projectCard}>
-            {/* Project Image */}
-            <Image
-                source={getProjectImageSource(item.image)}
-                style={styles.projectImage}
-                resizeMode="cover"
-            />
+    const renderProjectItem = ({ item: rawItem }: { item: any }) => {
+        const item = rawItem as Project;
+        return (
+            <View style={styles.projectCard}>
+                {/* Project Image */}
+                <Image
+                    source={getProjectImageSource(item.image)}
+                    style={styles.projectImage}
+                    resizeMode="cover"
+                />
 
-            {/* Project Content */}
-            <View style={styles.projectContent}>
-                <Text style={styles.projectTitle}>{item.name}</Text>
-                <Text style={styles.projectDescription} numberOfLines={3}>
-                    {item.description}
-                </Text>
+                {/* Project Content */}
+                <View style={styles.projectContent}>
+                    <Text style={styles.projectTitle}>{item.name}</Text>
+                    <Text style={styles.projectDescription} numberOfLines={3}>
+                        {item.description}
+                    </Text>
 
-                {/* Tech Stack */}
-                <View style={tw`flex-row flex-wrap gap-2 mb-4`}>
-                    {item.skills.map((skill, i) => (
-                        <View key={i} style={tw`bg-purple-100 dark:bg-purple-900/30 px-2.5 py-1 rounded-md border border-purple-200 dark:border-purple-500/20`}>
-                            <Text style={tw`text-purple-700 dark:text-purple-400 text-[10px] font-bold uppercase`}>{skill}</Text>
-                        </View>
-                    ))}
-                </View>
-
-                {/* Action Buttons Row */}
-                <View style={tw`flex-col gap-2`}>
-                    <View style={tw`flex-row gap-2`}>
-                        <TouchableOpacity
-                            style={[styles.actionButton, tw`bg-purple-600 flex-1`]}
-                            onPress={() => router.push(`/projects/${item._id}`)}
-                        >
-                            <Text style={styles.actionButtonText}>View Details</Text>
-                            <Ionicons name="arrow-forward" size={16} color="white" />
-                        </TouchableOpacity>
+                    {/* Tech Stack */}
+                    <View style={tw`flex-row flex-wrap gap-2 mb-4`}>
+                        {item.skills.map((skill, i) => (
+                            <View key={i} style={tw`bg-purple-100 dark:bg-purple-900/30 px-2.5 py-1 rounded-md border border-purple-200 dark:border-purple-500/20`}>
+                                <Text style={tw`text-purple-700 dark:text-purple-400 text-[10px] font-bold uppercase`}>{skill}</Text>
+                            </View>
+                        ))}
                     </View>
 
-                    <View style={tw`flex-row gap-2`}>
-                        {item.liveLink && (
+                    {/* Action Buttons Row */}
+                    <View style={tw`flex-col gap-2`}>
+                        <View style={tw`flex-row gap-2`}>
                             <TouchableOpacity
-                                style={[styles.actionButton, tw`bg-emerald-600 flex-1`]}
-                                onPress={() => openLink(item.liveLink)}
+                                style={[styles.actionButton, tw`bg-purple-600 flex-1`]}
+                                onPress={() => router.push(`/projects/${item._id}`)}
                             >
-                                <Ionicons name="globe-outline" size={14} color="white" />
-                                <Text style={tw`text-white text-[12px] font-bold`}>Live</Text>
+                                <Text style={styles.actionButtonText}>View Details</Text>
+                                <Ionicons name="arrow-forward" size={16} color="white" />
                             </TouchableOpacity>
-                        )}
-                        {item.codeLink && (
-                            <TouchableOpacity
-                                style={[styles.actionButton, tw`bg-gray-800 flex-1`]}
-                                onPress={() => openLink(item.codeLink)}
-                            >
-                                <Ionicons name="logo-github" size={14} color="white" />
-                                <Text style={tw`text-white text-[12px] font-bold`}>Client Code</Text>
-                            </TouchableOpacity>
-                        )}
-                        {item.serverCodeLink && (
-                            <TouchableOpacity
-                                style={[styles.actionButton, tw`bg-slate-700 flex-1`]}
-                                onPress={() => openLink(item.serverCodeLink)}
-                            >
-                                <Ionicons name="server-outline" size={14} color="white" />
-                                <Text style={tw`text-white text-[12px] font-bold`}>Server Code</Text>
-                            </TouchableOpacity>
-                        )}
+                        </View>
+
+                        <View style={tw`flex-row gap-2`}>
+                            {item.liveLink && (
+                                <TouchableOpacity
+                                    style={[styles.actionButton, tw`bg-emerald-600 flex-1`]}
+                                    onPress={() => openLink(item.liveLink)}
+                                >
+                                    <Ionicons name="globe-outline" size={14} color="white" />
+                                    <Text style={tw`text-white text-[12px] font-bold`}>Live</Text>
+                                </TouchableOpacity>
+                            )}
+                            {item.codeLink && (
+                                <TouchableOpacity
+                                    style={[styles.actionButton, tw`bg-gray-800 flex-1`]}
+                                    onPress={() => openLink(item.codeLink)}
+                                >
+                                    <Ionicons name="logo-github" size={14} color="white" />
+                                    <Text style={tw`text-white text-[12px] font-bold`}>Client Code</Text>
+                                </TouchableOpacity>
+                            )}
+                            {item.serverCodeLink && (
+                                <TouchableOpacity
+                                    style={[styles.actionButton, tw`bg-slate-700 flex-1`]}
+                                    onPress={() => openLink(item.serverCodeLink)}
+                                >
+                                    <Ionicons name="server-outline" size={14} color="white" />
+                                    <Text style={tw`text-white text-[12px] font-bold`}>Server Code</Text>
+                                </TouchableOpacity>
+                            )}
+                        </View>
                     </View>
                 </View>
             </View>
-        </View>
-    );
+        );
+    };
 
     if (isLoading) {
         return (

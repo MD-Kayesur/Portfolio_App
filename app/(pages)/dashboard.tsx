@@ -6,6 +6,7 @@ import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import * as Sharing from 'expo-sharing';
 import { Asset } from 'expo-asset';
+import * as FileSystem from 'expo-file-system/legacy';
 import BottomNavigation from '@/components/BottomNavigation';
 
 const familyData = [
@@ -45,18 +46,47 @@ export default function Dashboard() {
 
   const handleDownload = async (imageRequire: any) => {
     try {
-      const [{ localUri, uri }] = await Asset.loadAsync(imageRequire);
-      const fileUri = localUri || uri;
+      const asset = Asset.fromModule(imageRequire);
+      if (!asset.downloaded) {
+        await asset.downloadAsync();
+      }
       
+      const { localUri, uri } = asset;
+      let fileUri = localUri || uri;
+      const filename = asset.name && asset.type ? `${asset.name}.${asset.type}` : 'document.png';
+
       if (Platform.OS === 'web') {
+        const response = await fetch(fileUri);
+        const blob = await response.blob();
+        const blobUrl = URL.createObjectURL(blob);
+        
         const doc = (globalThis as any).document;
         const link = doc.createElement('a');
-        link.href = fileUri;
-        link.download = 'document.png';
+        link.href = blobUrl;
+        link.download = filename;
         doc.body.appendChild(link);
         link.click();
         doc.body.removeChild(link);
+        URL.revokeObjectURL(blobUrl);
       } else {
+        // Ensure local file path on Native (especially dev server HTTP URIs)
+        const localDocPath = `${FileSystem.cacheDirectory}${filename}`;
+        
+        if (fileUri.startsWith('http://') || fileUri.startsWith('https://')) {
+          const downloadResult = await FileSystem.downloadAsync(fileUri, localDocPath);
+          fileUri = downloadResult.uri;
+        } else if (fileUri.startsWith('file://') || fileUri.startsWith('/') || fileUri.startsWith('assets-library://')) {
+          try {
+            await FileSystem.copyAsync({
+              from: fileUri,
+              to: localDocPath
+            });
+            fileUri = localDocPath;
+          } catch (copyError) {
+            console.log("Could not copy local file, using original fileUri:", copyError);
+          }
+        }
+
         if (await Sharing.isAvailableAsync()) {
           await Sharing.shareAsync(fileUri, {
             mimeType: 'image/png',
