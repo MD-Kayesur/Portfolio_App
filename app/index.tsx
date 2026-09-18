@@ -16,6 +16,10 @@ import { useState, useRef } from "react";
 import SafeScreen from "@/components/SafeScreen";
 import SplashScreen from "@/components/SplashScreen";
 import LandingHero from "@/components/LandingHero";
+import WhyCreatedSection from "@/components/landing/WhyCreatedSection";
+import WhatMovesAppSection from "@/components/landing/WhatMovesAppSection";
+import DeveloperRolesSection from "@/components/landing/DeveloperRolesSection";
+import FaqSection from "@/components/landing/FaqSection";
 import tw from 'twrnc';
 
 import BottomNavigation from "@/components/BottomNavigation";
@@ -79,6 +83,18 @@ export default function LandingPage() {
         >
           {/* New Premium Landing Hero Component */}
           <LandingHero />
+
+          {/* Section 1: Why I Created This App */}
+          <WhyCreatedSection />
+
+          {/* Section 2: What Moves This App (Core Architecture) */}
+          <WhatMovesAppSection />
+
+          {/* Section 3: Core Disciplines (Frontend, App, Full Stack) */}
+          <DeveloperRolesSection />
+
+          {/* Section 4: Interactive FAQ Section */}
+          <FaqSection />
         </Animated.ScrollView>
 
         {/* Bottom Navigation */}
