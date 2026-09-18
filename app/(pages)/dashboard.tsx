@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { View, Text, TouchableOpacity, ScrollView, Image, Platform, Alert, Animated } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, Image, Platform, Alert, Animated, Linking } from 'react-native';
 import tw from 'twrnc';
 import SafeScreen from '@/components/SafeScreen';
 import { useRouter } from 'expo-router';
@@ -35,6 +35,7 @@ const familyData = [
 export default function Dashboard() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState("kayes");
+  const [openMenuKey, setOpenMenuKey] = useState<string | null>(null);
 
   const scrollY = useRef(new Animated.Value(0)).current;
   const scrollYClamped = Animated.diffClamp(scrollY, 0, 100);
@@ -44,19 +45,49 @@ export default function Dashboard() {
       extrapolate: 'clamp',
   });
 
-  const handleDownload = async (imageRequire: any) => {
+  const getTargetFileUri = async (imageRequire: any, title: string) => {
+    const asset = Asset.fromModule(imageRequire);
+    if (!asset.downloaded) {
+      await asset.downloadAsync();
+    }
+    
+    const sourceUri = asset.localUri || asset.uri;
+    const sanitizedTitle = title.toLowerCase().replace(/[^a-z0-9]/g, '_');
+    const filename = `${sanitizedTitle}.png`;
+
+    if (Platform.OS === 'web') {
+      return { sourceUri, filename, isWeb: true, rawUri: asset.uri };
+    }
+
+    const targetPath = `${FileSystem.cacheDirectory}${Date.now()}_${filename}`;
+    
+    if (sourceUri.startsWith('http://') || sourceUri.startsWith('https://')) {
+      const res = await FileSystem.downloadAsync(sourceUri, targetPath);
+      return { sourceUri: res.uri, filename, isWeb: false, rawUri: asset.uri };
+    } else if (sourceUri.startsWith('file://') || sourceUri.startsWith('/') || sourceUri.startsWith('assets-library://')) {
+      try {
+        await FileSystem.copyAsync({ from: sourceUri, to: targetPath });
+        return { sourceUri: targetPath, filename, isWeb: false, rawUri: asset.uri };
+      } catch (err) {
+        return { sourceUri, filename, isWeb: false, rawUri: asset.uri };
+      }
+    }
+    return { sourceUri, filename, isWeb: false, rawUri: asset.uri };
+  };
+
+  const handleDownload = async (imageRequire: any, title: string) => {
     try {
       const asset = Asset.fromModule(imageRequire);
       if (!asset.downloaded) {
         await asset.downloadAsync();
       }
       
-      const { localUri, uri } = asset;
-      let fileUri = localUri || uri;
-      const filename = asset.name && asset.type ? `${asset.name}.${asset.type}` : 'document.png';
+      const sourceUri = asset.localUri || asset.uri;
+      const sanitizedTitle = title.toLowerCase().replace(/[^a-z0-9]/g, '_');
+      const filename = `${sanitizedTitle}.png`;
 
       if (Platform.OS === 'web') {
-        const response = await fetch(fileUri);
+        const response = await fetch(sourceUri);
         const blob = await response.blob();
         const blobUrl = URL.createObjectURL(blob);
         
@@ -68,38 +99,74 @@ export default function Dashboard() {
         link.click();
         doc.body.removeChild(link);
         URL.revokeObjectURL(blobUrl);
-      } else {
-        // Ensure local file path on Native (especially dev server HTTP URIs)
-        const localDocPath = `${FileSystem.cacheDirectory}${filename}`;
-        
-        if (fileUri.startsWith('http://') || fileUri.startsWith('https://')) {
-          const downloadResult = await FileSystem.downloadAsync(fileUri, localDocPath);
-          fileUri = downloadResult.uri;
-        } else if (fileUri.startsWith('file://') || fileUri.startsWith('/') || fileUri.startsWith('assets-library://')) {
-          try {
-            await FileSystem.copyAsync({
-              from: fileUri,
-              to: localDocPath
-            });
-            fileUri = localDocPath;
-          } catch (copyError) {
-            console.log("Could not copy local file, using original fileUri:", copyError);
-          }
-        }
+        Alert.alert("Success", `${title} downloaded successfully!`);
+        return;
+      }
 
-        if (await Sharing.isAvailableAsync()) {
-          await Sharing.shareAsync(fileUri, {
-            mimeType: 'image/png',
-            dialogTitle: 'Download Document',
-            UTI: 'public.png'
-          });
-        } else {
-          Alert.alert("Error", "Sharing/Downloading is not available on this device.");
+      // Direct Download logic like Resume/CV download: open direct asset URI via Linking
+      const downloadUrl = asset.uri || sourceUri;
+      if (downloadUrl && (downloadUrl.startsWith('http://') || downloadUrl.startsWith('https://'))) {
+        const canOpen = await Linking.canOpenURL(downloadUrl);
+        if (canOpen) {
+          await Linking.openURL(downloadUrl);
+          return;
         }
       }
+
+      // Fallback: Copy to document directory and open with Linking
+      const localDocPath = `${FileSystem.documentDirectory}${filename}`;
+      if (sourceUri.startsWith('http://') || sourceUri.startsWith('https://')) {
+        await FileSystem.downloadAsync(sourceUri, localDocPath);
+      } else {
+        try {
+          await FileSystem.copyAsync({ from: sourceUri, to: localDocPath });
+        } catch (copyErr) {
+          // ignore
+        }
+      }
+      const fileInfo = await FileSystem.getInfoAsync(localDocPath);
+      const fileToOpen = fileInfo.exists ? localDocPath : sourceUri;
+      await Linking.openURL(fileToOpen);
     } catch (error) {
-      console.error("Error downloading image:", error);
-      Alert.alert("Error", "Failed to download the document.");
+      console.error("Error downloading document:", error);
+      Alert.alert("Error", `Failed to download ${title}. Please try again.`);
+    }
+  };
+
+  const handleShare = async (imageRequire: any, title: string) => {
+    try {
+      const { sourceUri, filename, isWeb } = await getTargetFileUri(imageRequire, title);
+
+      if (isWeb) {
+        if ((globalThis as any).navigator?.share) {
+          const response = await fetch(sourceUri);
+          const blob = await response.blob();
+          const file = new File([blob], filename, { type: 'image/png' });
+          if ((globalThis as any).navigator.canShare?.({ files: [file] })) {
+            await (globalThis as any).navigator.share({
+              files: [file],
+              title: title,
+              text: `Check out ${title}`
+            });
+            return;
+          }
+        }
+        Alert.alert("Share", `Please use the Download option to save ${title}.`);
+        return;
+      }
+
+      if (await Sharing.isAvailableAsync()) {
+        await Sharing.shareAsync(sourceUri, {
+          mimeType: 'image/png',
+          dialogTitle: `Share ${title}`,
+          UTI: 'public.png'
+        });
+      } else {
+        Alert.alert("Notice", "Sharing is not supported on this device.");
+      }
+    } catch (error) {
+      console.error("Error sharing image:", error);
+      Alert.alert("Error", `Failed to share ${title}. Please try again.`);
     }
   };
 
@@ -115,6 +182,8 @@ export default function Dashboard() {
           if (key === 'ssc') title = 'SSC Certificate';
           if (key === 'hsc') title = 'HSC Certificate';
 
+          const isMenuOpen = openMenuKey === `${person.title}_${key}`;
+
           return (
             <View key={key} style={tw`mb-10 items-center w-full relative`}>
               <View style={tw`w-full relative rounded-xl overflow-hidden bg-black/20`}>
@@ -124,14 +193,39 @@ export default function Dashboard() {
                   resizeMode="contain" 
                 />
                 
-                {/* Download Button Overlay */}
+                {/* 3-Dot Action Button Trigger */}
                 <TouchableOpacity 
-                  onPress={() => handleDownload(person[key])}
-                  style={tw`absolute top-3 right-3 bg-cyan-600/90 py-2 px-4 rounded-full shadow-lg flex-row items-center border border-cyan-400/30`}
+                  onPress={() => setOpenMenuKey(isMenuOpen ? null : `${person.title}_${key}`)}
+                  style={tw`absolute top-3 right-3 bg-black/60 p-2.5 rounded-full shadow-lg border border-white/20 z-20`}
+                  activeOpacity={0.7}
                 >
-                  <Ionicons name="download-outline" size={18} color="white" />
-                  <Text style={tw`text-white font-bold font-mono ml-2 text-xs`}>Download</Text>
+                  <Ionicons name="ellipsis-vertical" size={20} color="white" />
                 </TouchableOpacity>
+
+                {/* Dropdown Action Menu */}
+                {isMenuOpen && (
+                  <View style={tw`absolute top-14 right-3 bg-gray-900/95 border border-cyan-500/30 rounded-2xl p-2 shadow-2xl z-30 min-w-40`}>
+                    <TouchableOpacity 
+                      onPress={() => {
+                        setOpenMenuKey(null);
+                        handleDownload(person[key], title);
+                      }}
+                      style={tw`flex-row items-center px-4 py-3 rounded-xl border-b border-white/10 active:bg-cyan-600/30`}
+                    >
+                      <Ionicons name="download-outline" size={18} color="#06b6d4" />
+                     </TouchableOpacity>
+
+                    <TouchableOpacity 
+                      onPress={() => {
+                        setOpenMenuKey(null);
+                        handleShare(person[key], title);
+                      }}
+                      style={tw`flex-row items-center px-4 py-3 rounded-xl active:bg-purple-600/30`}
+                    >
+                      <Ionicons name="share-social-outline" size={18} color="#a855f7" />
+                     </TouchableOpacity>
+                  </View>
+                )}
               </View>
               
               <Text style={tw`text-white mt-3 font-mono text-center font-bold text-lg tracking-wide`}>{title}</Text>

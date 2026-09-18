@@ -2,7 +2,8 @@ import { Stack, usePathname } from 'expo-router';
 import { Provider } from 'react-redux';
 import { store } from '../store/store';
 import { useEffect, useRef } from 'react';
-import { Platform, View, StyleSheet, Text, TextInput } from 'react-native';
+import { Platform, View, StyleSheet, Text, TextInput, NativeModules } from 'react-native';
+import Constants, { ExecutionEnvironment } from 'expo-constants';
 import { VideoView, useVideoPlayer } from 'expo-video';
 import tw from 'twrnc';
 
@@ -20,13 +21,14 @@ const applyGlobalFont = () => {
 };
 applyGlobalFont();
 
-// Safely try to require Clarity to avoid crashes in Expo Go or non-native environments
+// Safely try to require Clarity only if native module is linked (won't run in Expo Go or Web)
 let Clarity: any = null;
-if (Platform.OS !== 'web') {
+const isExpoGo = Constants.executionEnvironment === ExecutionEnvironment.StoreClient;
+if (Platform.OS !== 'web' && !isExpoGo && NativeModules.Clarity) {
   try {
     Clarity = require('@microsoft/react-native-clarity');
   } catch (e) {
-    console.warn('Clarity native module not found, probably running in Expo Go.');
+    // Ignore if not present
   }
 }
 
