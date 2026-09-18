@@ -3,6 +3,7 @@ import { View, Text, Image, TouchableOpacity, Platform } from 'react-native';
 import tw from 'twrnc';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+import { playTypingSound } from '@/utils/typingSound';
 
 export default function WhyCreatedSection() {
   const router = useRouter();
@@ -100,12 +101,15 @@ export default function WhyCreatedSection() {
 
       {/* Action Prompt */}
       <TouchableOpacity
-        onPress={() => router.push('/(tabs)/about')}
+        onPress={() => {
+          playTypingSound();
+          router.push('/blogs' as any);
+        }}
         style={tw`mt-6 bg-purple-600/20 border border-purple-500/30 py-3.5 px-6 rounded-2xl flex-row items-center justify-center active:bg-purple-600/40`}
         activeOpacity={0.7}
       >
         <Text style={tw`text-purple-300 font-bold font-mono text-sm mr-2`}>
-          Learn More About My Journey
+          Read My Blog
         </Text>
         <Ionicons name="arrow-forward" size={16} color="#c084fc" />
       </TouchableOpacity>

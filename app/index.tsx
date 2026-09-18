@@ -19,7 +19,6 @@ import LandingHero from "@/components/LandingHero";
 import WhyCreatedSection from "@/components/landing/WhyCreatedSection";
 import WhatMovesAppSection from "@/components/landing/WhatMovesAppSection";
 import DeveloperRolesSection from "@/components/landing/DeveloperRolesSection";
-import FaqSection from "@/components/landing/FaqSection";
 import tw from 'twrnc';
 
 import BottomNavigation from "@/components/BottomNavigation";
@@ -92,9 +91,6 @@ export default function LandingPage() {
 
           {/* Section 3: Core Disciplines (Frontend, App, Full Stack) */}
           <DeveloperRolesSection />
-
-          {/* Section 4: Interactive FAQ Section */}
-          <FaqSection />
         </Animated.ScrollView>
 
         {/* Bottom Navigation */}
