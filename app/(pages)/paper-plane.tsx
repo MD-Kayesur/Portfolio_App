@@ -5,6 +5,7 @@ import { Ionicons } from "@expo/vector-icons";
 import tw from 'twrnc';
 import { useState } from "react";
 import { useSendContactMutation } from "@/redux/feature/contact/contactApi";
+import { playTypingSound } from "@/utils/typingSound";
 
 export default function PaperPlanePage() {
   const [name, setName] = useState("");
@@ -76,7 +77,13 @@ export default function PaperPlanePage() {
                 placeholder="Enter your name"
                 placeholderTextColor="#9ca3af"
                 value={name}
-                onChangeText={setName}
+                onChangeText={(text) => {
+                  setName(text);
+                  playTypingSound();
+                }}
+                onKeyPress={() => {
+                  playTypingSound();
+                }}
               />
             </View>
 
@@ -89,7 +96,13 @@ export default function PaperPlanePage() {
                 keyboardType="email-address"
                 autoCapitalize="none"
                 value={email}
-                onChangeText={setEmail}
+                onChangeText={(text) => {
+                  setEmail(text);
+                  playTypingSound();
+                }}
+                onKeyPress={() => {
+                  playTypingSound();
+                }}
               />
             </View>
 
@@ -102,7 +115,13 @@ export default function PaperPlanePage() {
                 multiline
                 textAlignVertical="top"
                 value={message}
-                onChangeText={setMessage}
+                onChangeText={(text) => {
+                  setMessage(text);
+                  playTypingSound();
+                }}
+                onKeyPress={() => {
+                  playTypingSound();
+                }}
               />
             </View>
           </View>

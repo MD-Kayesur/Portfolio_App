@@ -17,6 +17,7 @@ import { router } from 'expo-router';
 import { useSendMessageMutation } from '@/redux/feature/chat/chatApi';
 import Markdown from 'react-native-markdown-display';
 import { BlurView } from 'expo-blur';
+import { playTypingSound } from '@/utils/typingSound';
 
 interface Message {
     id: string;
@@ -161,7 +162,13 @@ export default function AIAssistant() {
                         placeholder="Ask me anything..."
                         placeholderTextColor="#ffffff"
                         value={inputText}
-                        onChangeText={setInputText}
+                        onChangeText={(text) => {
+                            setInputText(text);
+                            playTypingSound();
+                        }}
+                        onKeyPress={() => {
+                            playTypingSound();
+                        }}
                         multiline
                         maxLength={500}
                     />

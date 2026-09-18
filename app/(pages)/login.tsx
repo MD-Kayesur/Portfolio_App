@@ -4,6 +4,7 @@ import { useRouter } from 'expo-router';
 import tw from 'twrnc';
 import SafeScreen from '@/components/SafeScreen';
 import { Ionicons } from '@expo/vector-icons';
+import { playTypingSound } from '@/utils/typingSound';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -38,7 +39,13 @@ export default function Login() {
           placeholder="Enter Admin Email"
           placeholderTextColor="#fbfbfbff"
           value={email}
-          onChangeText={setEmail}
+          onChangeText={(text) => {
+            setEmail(text);
+            playTypingSound();
+          }}
+          onKeyPress={() => {
+            playTypingSound();
+          }}
           autoCapitalize="none"
           keyboardType="email-address"
         />

@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { View, Text, TouchableOpacity, ScrollView, Image, Platform, Alert, Animated, Linking } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, Image, Platform, Alert, Animated, Linking, StyleSheet } from 'react-native';
 import tw from 'twrnc';
 import SafeScreen from '@/components/SafeScreen';
 import { useRouter } from 'expo-router';
@@ -7,6 +7,7 @@ import { Ionicons } from '@expo/vector-icons';
 import * as Sharing from 'expo-sharing';
 import { Asset } from 'expo-asset';
 import * as FileSystem from 'expo-file-system/legacy';
+import { BlurView } from 'expo-blur';
 import BottomNavigation from '@/components/BottomNavigation';
 
 const familyData = [
@@ -196,35 +197,56 @@ export default function Dashboard() {
                 {/* 3-Dot Action Button Trigger */}
                 <TouchableOpacity 
                   onPress={() => setOpenMenuKey(isMenuOpen ? null : `${person.title}_${key}`)}
-                  style={tw`absolute top-3 right-3 bg-black/60 p-2.5 rounded-full shadow-lg border border-white/20 z-20`}
+                  style={tw`absolute top-3 right-3 rounded-full overflow-hidden shadow-lg border border-white/25 z-30`}
                   activeOpacity={0.7}
                 >
-                  <Ionicons name="ellipsis-vertical" size={20} color="white" />
+                  <BlurView intensity={80} tint="dark" style={StyleSheet.absoluteFill} />
+                  <View style={tw`bg-white/35 p-2.5 items-center justify-center`}>
+                    <Ionicons name={isMenuOpen ? "close" : "ellipsis-vertical"} size={18} color="white" />
+                  </View>
                 </TouchableOpacity>
 
                 {/* Dropdown Action Menu */}
                 {isMenuOpen && (
-                  <View style={tw`absolute top-14 right-3 bg-gray-900/95 border border-cyan-500/30 rounded-2xl p-2 shadow-2xl z-30 min-w-40`}>
+                  <>
+                    {/* Backdrop to dismiss menu on tap outside */}
                     <TouchableOpacity 
-                      onPress={() => {
-                        setOpenMenuKey(null);
-                        handleDownload(person[key], title);
-                      }}
-                      style={tw`flex-row items-center px-4 py-3 rounded-xl border-b border-white/10 active:bg-cyan-600/30`}
-                    >
-                      <Ionicons name="download-outline" size={18} color="#06b6d4" />
-                     </TouchableOpacity>
+                      style={StyleSheet.absoluteFill} 
+                      activeOpacity={1} 
+                      onPress={() => setOpenMenuKey(null)} 
+                    />
 
-                    <TouchableOpacity 
-                      onPress={() => {
-                        setOpenMenuKey(null);
-                        handleShare(person[key], title);
-                      }}
-                      style={tw`flex-row items-center px-4 py-3 rounded-xl active:bg-purple-600/30`}
+                    <View 
+                      style={tw`absolute top-14 right-3 rounded-2xl overflow-hidden shadow-2xl z-30 border border-white/25`}
                     >
-                      <Ionicons name="share-social-outline" size={18} color="#a855f7" />
-                     </TouchableOpacity>
-                  </View>
+                      <BlurView intensity={85} tint="dark" style={StyleSheet.absoluteFill} />
+                      <View style={tw`bg-white/25 p-1 flex-col items-center justify-center`}>
+                        <TouchableOpacity 
+                          onPress={() => {
+                            setOpenMenuKey(null);
+                            handleDownload(person[key], title);
+                          }}
+                          style={tw`w-10 h-10 rounded-xl items-center justify-center active:bg-cyan-500/30`}
+                          activeOpacity={0.7}
+                        >
+                          <Ionicons name="download-outline" size={30} color="#02e0fdff" />
+                        </TouchableOpacity>
+
+                        <View style={tw`w-6 h-[1px] bg-white/20 my-1`} />
+
+                        <TouchableOpacity 
+                          onPress={() => {
+                            setOpenMenuKey(null);
+                            handleShare(person[key], title);
+                          }}
+                          style={tw`w-10 h-10 rounded-xl items-center justify-center active:bg-purple-500/30`}
+                          activeOpacity={0.7}
+                        >
+                          <Ionicons name="share-social-outline" size={30} color="#a604acff" />
+                        </TouchableOpacity>
+                      </View>
+                    </View>
+                  </>
                 )}
               </View>
               
