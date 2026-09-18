@@ -3,10 +3,14 @@ import { baseApi } from '../../../store/baseApi';
 
 export interface Feedback {
     _id: string;
+    id?: number | string;
     name: string;
-    email: string;
-    message: string;
-    rating?: number;
+    email?: string;
+    message?: string;
+    description?: string;
+    rating?: number | string;
+    location?: string;
+    image?: string;
     date?: string;
 }
 

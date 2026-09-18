@@ -5,6 +5,7 @@ import { useRouter } from "expo-router";
 import { useRef } from "react";
 import tw from 'twrnc';
 import ProjectCard from "@/components/projectCard/ProjectCard";
+import FeedbackSlider from "@/components/feedback/FeedbackSlider";
 import BottomNavigation from "@/components/BottomNavigation";
 
 export default function AboutPage() {
@@ -74,9 +75,12 @@ export default function AboutPage() {
                 </View>
 
                 {/* Projects Section - We'll add it here */}
-                <View style={tw`mt-6`}>
+                {/* <View style={tw`mt-6`}>
                     <ProjectCard />
-                </View>
+                </View> */}
+
+                {/* Feedback Slider Section */}
+                <FeedbackSlider />
 
                 {/* Experience/Education */}
                 <View style={tw`p-6 mt-6`}>
