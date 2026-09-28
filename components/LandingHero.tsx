@@ -51,7 +51,7 @@ const LandingHero = () => {
 
     const handleDownloadCV = async () => {
         try {
-            const cvUrl = "https://raw.githubusercontent.com/MD-Kayesur/Portfolio_App/main/assets/images/My_Resume%20(1).pdf";
+            const cvUrl = "https://raw.githubusercontent.com/MD-Kayesur/Portfolio_App/main/assets/images/MD_Kayesur-Resume.pdf";
             await Linking.openURL(cvUrl);
         } catch (error) {
             console.error("Failed to download CV:", error);

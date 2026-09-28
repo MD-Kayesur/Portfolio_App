@@ -2,7 +2,9 @@
   "compilerOptions": {
     "target": "esnext",
     "lib": [
-      "esnext"
+      "DOM",
+      "DOM.Iterable",
+      "ESNext"
     ],
     "jsx": "react-native",
     "module": "esnext",
