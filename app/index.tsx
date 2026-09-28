@@ -80,8 +80,8 @@ export default function LandingPage() {
           scrollEventThrottle={16}
         >
           {/* New Premium Landing Hero Component */}
-          {/* <LandingHero /> */}
-          <KaeysurHero />
+          <LandingHero />
+          {/* <KaeysurHero /> */}
 
           {/* Section 1: Why I Created This App */}
           <WhyCreatedSection />
