@@ -141,6 +141,19 @@ export default function ProjectList() {
         );
     };
 
+    const activeProjects = (projects && projects.length > 0) ? projects : projectsData.map((p: any) => ({
+        _id: p.id,
+        name: p.name,
+        description: p.description,
+        skills: p.skills,
+        implementation: p.implementation,
+        liveLink: p.liveLink,
+        codeLink: p.codeLink,
+        serverCodeLink: p.serverCodeLink,
+        image: p.image,
+        images: [p.image]
+    }));
+
     if (isLoading) {
         return (
             <SafeScreen>
@@ -152,48 +165,8 @@ export default function ProjectList() {
         );
     }
 
-    if (isError || !projects) {
-        return (
-            <SafeScreen>
-                <View style={tw`flex-1 items-center justify-center px-6`}>
-                    <View style={tw`bg-red-500/10 p-5 rounded-full border border-red-500/20 mb-4 items-center justify-center`}>
-                        <Ionicons name="cloud-offline-outline" size={48} color="#ef4444" />
-                    </View>
-
-                    <Text style={tw`text-xl font-bold text-white text-center font-mono mb-2`}>
-                        Database Connection Failed
-                    </Text>
-
-                    <Text style={tw`text-sm text-gray-400 text-center mb-6 leading-6 max-w-xs font-mono`}>
-                        Currently don't have data or failed to load from database. Please check your network connection or server status.
-                    </Text>
-
-                    <View style={tw`flex-row items-center gap-3`}>
-                        <TouchableOpacity
-                            style={tw`bg-purple-600 px-5 py-3 rounded-xl flex-row items-center gap-2 shadow-lg`}
-                            onPress={() => refetch?.()}
-                            activeOpacity={0.8}
-                        >
-                            <Ionicons name="refresh-outline" size={18} color="white" />
-                            <Text style={tw`text-white font-bold font-mono text-sm`}>Retry</Text>
-                        </TouchableOpacity>
-
-                        <TouchableOpacity
-                            style={tw`bg-white/10 border border-white/10 px-5 py-3 rounded-xl flex-row items-center gap-2`}
-                            onPress={() => router.back()}
-                            activeOpacity={0.8}
-                        >
-                            <Ionicons name="arrow-back-outline" size={18} color="white" />
-                            <Text style={tw`text-white font-bold font-mono text-sm`}>Go Back</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-            </SafeScreen>
-        );
-    }
-
     const filteredProjects = (() => {
-        const dbFiltered = projects?.filter(project => {
+        const dbFiltered = activeProjects.filter(project => {
             if (activeTab === 'All') return true;
             
             // Map "Costome code" tab back to "custom code" implementation status
@@ -202,7 +175,7 @@ export default function ProjectList() {
         }) || [];
 
         // Check if there are any app projects in database
-        const hasAppInDb = projects?.some(p => p.implementation?.toLowerCase() === 'app');
+        const hasAppInDb = activeProjects.some(p => p.implementation?.toLowerCase() === 'app');
 
         if (activeTab === 'App' && dbFiltered.length === 0) {
             return [
