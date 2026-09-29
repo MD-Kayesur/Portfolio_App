@@ -110,30 +110,28 @@ export default function Dashboard() {
         return;
       }
 
-      // Direct Download logic like Resume/CV download: open direct asset URI via Linking
-      const downloadUrl = asset.uri || sourceUri;
-      if (downloadUrl && (downloadUrl.startsWith('http://') || downloadUrl.startsWith('https://'))) {
-        const canOpen = await Linking.canOpenURL(downloadUrl);
+      // Mobile (iOS & Android) Download & Save Flow
+      const { sourceUri: localUri } = await getTargetFileUri(imageRequire, title);
+
+      if (await Sharing.isAvailableAsync()) {
+        await Sharing.shareAsync(localUri, {
+          mimeType: 'image/png',
+          dialogTitle: `Save / Download ${title}`,
+          UTI: 'public.png'
+        });
+        return;
+      }
+
+      // Remote URL fallback
+      if (asset.uri && (asset.uri.startsWith('http://') || asset.uri.startsWith('https://'))) {
+        const canOpen = await Linking.canOpenURL(asset.uri);
         if (canOpen) {
-          await Linking.openURL(downloadUrl);
+          await Linking.openURL(asset.uri);
           return;
         }
       }
 
-      // Fallback: Copy to document directory and open with Linking
-      const localDocPath = `${FileSystem.documentDirectory}${filename}`;
-      if (sourceUri.startsWith('http://') || sourceUri.startsWith('https://')) {
-        await FileSystem.downloadAsync(sourceUri, localDocPath);
-      } else {
-        try {
-          await FileSystem.copyAsync({ from: sourceUri, to: localDocPath });
-        } catch (copyErr) {
-          // ignore
-        }
-      }
-      const fileInfo = await FileSystem.getInfoAsync(localDocPath);
-      const fileToOpen = fileInfo.exists ? localDocPath : sourceUri;
-      await Linking.openURL(fileToOpen);
+      Alert.alert("Notice", `Download / Save option is not supported on this device.`);
     } catch (error) {
       console.error("Error downloading document:", error);
       Alert.alert("Error", `Failed to download ${title}. Please try again.`);

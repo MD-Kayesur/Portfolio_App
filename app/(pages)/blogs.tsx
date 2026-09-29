@@ -17,12 +17,13 @@ import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import SafeScreen from '@/components/SafeScreen';
 import BottomNavigation from '@/components/BottomNavigation';
+import tw from 'twrnc';
 
 const { width } = Dimensions.get('window');
 const AnimatedFlatList = Animated.createAnimatedComponent(FlatList);
 
 export default function BlogList() {
-  const { data: blogs, isLoading, error } = useGetBlogsQuery();
+  const { data: blogs, isLoading, error, refetch } = useGetBlogsQuery();
   const router = useRouter();
 
   const scrollY = useRef(new Animated.Value(0)).current;
@@ -47,10 +48,36 @@ export default function BlogList() {
   if (error) {
     return (
       <SafeScreen>
-        <View style={styles.centerContainer}>
-          <Ionicons name="alert-circle-outline" size={60} color="#ef4444" />
-          <Text style={styles.errorText}>Error loading blogs</Text>
-          <Text style={styles.errorSubtext}>Please try again later</Text>
+        <View style={tw`flex-1 items-center justify-center px-6`}>
+          <View style={tw`bg-red-500/10 p-5 rounded-full border border-red-500/20 mb-4 items-center justify-center`}>
+            <Ionicons name="cloud-offline-outline" size={48} color="#ef4444" />
+          </View>
+          <Text style={tw`text-xl font-bold text-white text-center font-mono mb-2`}>
+            Database Connection Issue
+          </Text>
+          <Text style={tw`text-sm text-gray-400 text-center mb-6 leading-6 max-w-xs font-mono`}>
+            Currently don't have data or failed to load from database. Please check your connection.
+          </Text>
+
+          <View style={tw`flex-row items-center gap-3`}>
+            <TouchableOpacity
+              style={tw`bg-indigo-600 px-5 py-3 rounded-xl flex-row items-center gap-2 shadow-lg`}
+              onPress={() => refetch?.()}
+              activeOpacity={0.8}
+            >
+              <Ionicons name="refresh-outline" size={18} color="white" />
+              <Text style={tw`text-white font-bold font-mono text-sm`}>Retry</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={tw`bg-white/10 border border-white/10 px-5 py-3 rounded-xl flex-row items-center gap-2`}
+              onPress={() => router.back()}
+              activeOpacity={0.8}
+            >
+              <Ionicons name="arrow-back-outline" size={18} color="white" />
+              <Text style={tw`text-white font-bold font-mono text-sm`}>Go Back</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </SafeScreen>
     );
@@ -59,9 +86,25 @@ export default function BlogList() {
   if (!blogs || blogs.length === 0) {
     return (
       <SafeScreen>
-        <View style={styles.centerContainer}>
-          <Ionicons name="document-text-outline" size={60} color="#9ca3af" />
-          <Text style={styles.emptyText}>No blogs available</Text>
+        <View style={tw`flex-1 items-center justify-center px-6`}>
+          <View style={tw`bg-amber-500/10 p-5 rounded-full border border-amber-500/20 mb-4 items-center justify-center`}>
+            <Ionicons name="document-text-outline" size={48} color="#f59e0b" />
+          </View>
+          <Text style={tw`text-xl font-bold text-white text-center font-mono mb-2`}>
+            No Blogs Found
+          </Text>
+          <Text style={tw`text-sm text-gray-400 text-center mb-6 leading-6 max-w-xs font-mono`}>
+            Currently don't have blog data loaded from database.
+          </Text>
+
+          <TouchableOpacity
+            style={tw`bg-white/10 border border-white/10 px-5 py-3 rounded-xl flex-row items-center gap-2`}
+            onPress={() => router.back()}
+            activeOpacity={0.8}
+          >
+            <Ionicons name="arrow-back-outline" size={18} color="white" />
+            <Text style={tw`text-white font-bold font-mono text-sm`}>Go Back</Text>
+          </TouchableOpacity>
         </View>
       </SafeScreen>
     );

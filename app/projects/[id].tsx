@@ -85,11 +85,25 @@ export default function ProjectDetails() {
   if (isError || !project) {
     return (
       <SafeScreen>
-        <View style={tw`flex-1 items-center justify-center p-6`}>
-          <Ionicons name="alert-circle-outline" size={60} color="#ef4444" />
-          <Text style={tw`text-xl text-white mt-4 font-bold text-center`}>Project not found</Text>
-          <Pressable onPress={() => router.back()} style={tw`mt-6 bg-purple-600 px-6 py-2 rounded-full`}>
-            <Text style={tw`text-white font-bold`}>Go Back</Text>
+        <View style={tw`flex-1 items-center justify-center px-6`}>
+          <View style={tw`bg-red-500/10 p-5 rounded-full border border-red-500/20 mb-4 items-center justify-center`}>
+            <Ionicons name="cloud-offline-outline" size={48} color="#ef4444" />
+          </View>
+
+          <Text style={tw`text-xl font-bold text-white text-center font-mono mb-2`}>
+            Project Details Unavailable
+          </Text>
+
+          <Text style={tw`text-sm text-gray-400 text-center mb-6 leading-6 max-w-xs font-mono`}>
+            Currently don't have data or failed to load from database. Please check your connection.
+          </Text>
+
+          <Pressable
+            onPress={() => router.back()}
+            style={tw`bg-purple-600 px-6 py-3 rounded-xl flex-row items-center gap-2 shadow-lg`}
+          >
+            <Ionicons name="arrow-back-outline" size={18} color="white" />
+            <Text style={tw`text-white font-bold font-mono text-sm`}>Go Back</Text>
           </Pressable>
         </View>
       </SafeScreen>

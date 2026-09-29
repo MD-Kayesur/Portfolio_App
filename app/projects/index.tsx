@@ -48,7 +48,7 @@ const getProjectImageSource = (imageStr: string) => {
 
 export default function ProjectList() {
     const router = useRouter();
-    const { data: projects, isLoading, isError } = useGetProjectsQuery();
+    const { data: projects, isLoading, isError, refetch } = useGetProjectsQuery();
     const [activeTab, setActiveTab] = useState('All');
 
     const scrollY = useRef(new Animated.Value(0)).current;
@@ -155,15 +155,38 @@ export default function ProjectList() {
     if (isError || !projects) {
         return (
             <SafeScreen>
-                <View style={styles.centerContainer}>
-                    <Ionicons name="alert-circle-outline" size={64} color="#ef4444" />
-                    <Text style={styles.errorText}>Oops! Failed to load projects</Text>
-                    <TouchableOpacity
-                        style={[styles.actionButton, tw`mt-6 px-8 bg-purple-600`]}
-                        onPress={() => router.back()}
-                    >
-                        <Text style={styles.actionButtonText}>Go Back</Text>
-                    </TouchableOpacity>
+                <View style={tw`flex-1 items-center justify-center px-6`}>
+                    <View style={tw`bg-red-500/10 p-5 rounded-full border border-red-500/20 mb-4 items-center justify-center`}>
+                        <Ionicons name="cloud-offline-outline" size={48} color="#ef4444" />
+                    </View>
+
+                    <Text style={tw`text-xl font-bold text-white text-center font-mono mb-2`}>
+                        Database Connection Failed
+                    </Text>
+
+                    <Text style={tw`text-sm text-gray-400 text-center mb-6 leading-6 max-w-xs font-mono`}>
+                        Currently don't have data or failed to load from database. Please check your network connection or server status.
+                    </Text>
+
+                    <View style={tw`flex-row items-center gap-3`}>
+                        <TouchableOpacity
+                            style={tw`bg-purple-600 px-5 py-3 rounded-xl flex-row items-center gap-2 shadow-lg`}
+                            onPress={() => refetch?.()}
+                            activeOpacity={0.8}
+                        >
+                            <Ionicons name="refresh-outline" size={18} color="white" />
+                            <Text style={tw`text-white font-bold font-mono text-sm`}>Retry</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity
+                            style={tw`bg-white/10 border border-white/10 px-5 py-3 rounded-xl flex-row items-center gap-2`}
+                            onPress={() => router.back()}
+                            activeOpacity={0.8}
+                        >
+                            <Ionicons name="arrow-back-outline" size={18} color="white" />
+                            <Text style={tw`text-white font-bold font-mono text-sm`}>Go Back</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
             </SafeScreen>
         );
