@@ -30,6 +30,12 @@ const familyData = [
     label: "MOTHER",
     nidFront: require('../../assets/images/family/ammu/AmmuNidFront.png'),
     nidBack: require('../../assets/images/family/ammu/AmmuNidBackround.png'),
+  },
+  {
+    title: "moklas",
+    label: "MOKLASUR",
+    photo1: require('../../assets/images/family/moklas/photo_2026-09-27_10-41-32.jpg'),
+    photo2: require('../../assets/images/family/moklas/photo_2026-09-27_10-41-44.png'),
   }
 ];
 
@@ -174,7 +180,7 @@ export default function Dashboard() {
   const renderPersonDocs = (person: any) => {
     return (
       <View style={tw`flex-col items-center mt-4`}>
-        {['nidFront', 'nidBack', 'ssc', 'hsc'].map((key) => {
+        {['nidFront', 'nidBack', 'ssc', 'hsc', 'photo1', 'photo2'].map((key) => {
           if (!person[key]) return null;
           
           let title = '';
@@ -182,6 +188,8 @@ export default function Dashboard() {
           if (key === 'nidBack') title = 'NID (Back)';
           if (key === 'ssc') title = 'SSC Certificate';
           if (key === 'hsc') title = 'HSC Certificate';
+          if (key === 'photo1') title = 'Photo / Document 1';
+          if (key === 'photo2') title = 'Photo / Document 2';
 
           const isMenuOpen = openMenuKey === `${person.title}_${key}`;
 
@@ -304,7 +312,7 @@ export default function Dashboard() {
               return (
                 <View key={person.title} style={tw`bg-white/5 p-4 rounded-3xl border border-white/10 mt-4 shadow-xl`}>
                   <Text style={tw`text-2xl font-bold text-purple-400 mb-2 capitalize font-mono text-center border-b border-white/10 pb-4`}>
-                    {person.title === "kayes" ? "MD. Kayesur Rahman" : person.title}
+                    {person.title === "kayes" ? "MD. Kayesur Rahman" : person.title === "moklas" ? "Moklasur Rahman" : person.title === "abbu" ? "Father (Abbu) Documents" : person.title === "ammu" ? "Mother (Ammu) Documents" : person.title}
                   </Text>
                   {renderPersonDocs(person)}
                 </View>
