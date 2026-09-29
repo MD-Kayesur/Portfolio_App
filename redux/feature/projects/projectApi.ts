@@ -18,18 +18,30 @@ export const projectApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
         getProjects: builder.query<Project[], void>({
             query: () => '/projects',
-            transformResponse: (response: { success: boolean; data: any[] }) => {
-                return response.data.map(item => ({
-                    _id: item._id,
-                    name: item.title,
-                    description: item.description,
-                    skills: item.tech || [],
-                    implementation: item.status || '',
-                    liveLink: item.live || '',
-                    codeLink: item.clientcode || '',
-                    serverCodeLink: item.servercode || '',
-                    image: item.img && item.img.length > 0 ? item.img[0] : '',
-                    images: item.img || []
+            transformResponse: (response: any) => {
+                let list: any[] = [];
+                if (Array.isArray(response)) {
+                    list = response;
+                } else if (response && Array.isArray(response.data)) {
+                    list = response.data;
+                } else if (response && response.data && Array.isArray(response.data.data)) {
+                    list = response.data.data;
+                } else if (response && typeof response === 'object') {
+                    const foundArr = Object.values(response).find(val => Array.isArray(val));
+                    if (foundArr) list = foundArr as any[];
+                }
+
+                return list.map(item => ({
+                    _id: item._id || item.id || String(Math.random()),
+                    name: item.title || item.name || 'Untitled Project',
+                    description: item.description || '',
+                    skills: item.tech || item.skills || [],
+                    implementation: item.status || item.implementation || '',
+                    liveLink: item.live || item.liveLink || '',
+                    codeLink: item.clientcode || item.codeLink || '',
+                    serverCodeLink: item.servercode || item.serverCodeLink || '',
+                    image: Array.isArray(item.img) && item.img.length > 0 ? item.img[0] : (item.image || item.img || ''),
+                    images: Array.isArray(item.img) ? item.img : [item.image || item.img].filter(Boolean)
                 }));
             },
             providesTags: ['Projects'],
@@ -37,19 +49,19 @@ export const projectApi = baseApi.injectEndpoints({
 
         getProjectById: builder.query<Project, string>({
             query: (id) => `/projects/${id}`,
-            transformResponse: (response: { success: boolean; data: any }) => {
-                const item = response.data;
+            transformResponse: (response: any) => {
+                const item = response?.data || response?.result || response || {};
                 return {
-                    _id: item._id,
-                    name: item.title,
-                    description: item.description,
-                    skills: item.tech || [],
-                    implementation: item.status || '',
-                    liveLink: item.live || '',
-                    codeLink: item.clientcode || '',
-                    serverCodeLink: item.servercode || '',
-                    image: item.img && item.img.length > 0 ? item.img[0] : '',
-                    images: item.img || []
+                    _id: item._id || item.id || '',
+                    name: item.title || item.name || 'Project Details',
+                    description: item.description || '',
+                    skills: item.tech || item.skills || [],
+                    implementation: item.status || item.implementation || '',
+                    liveLink: item.live || item.liveLink || '',
+                    codeLink: item.clientcode || item.codeLink || '',
+                    serverCodeLink: item.servercode || item.serverCodeLink || '',
+                    image: Array.isArray(item.img) && item.img.length > 0 ? item.img[0] : (item.image || item.img || ''),
+                    images: Array.isArray(item.img) ? item.img : [item.image || item.img].filter(Boolean)
                 };
             },
             providesTags: ['Projects'],
