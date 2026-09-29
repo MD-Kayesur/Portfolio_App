@@ -273,23 +273,29 @@ export default function Dashboard() {
             <Ionicons name="arrow-back" size={24} color="white" />
         </TouchableOpacity>
         
-        <View style={tw`px-6 pt-24 pb-4`}>
-          <Text style={tw`text-3xl font-bold text-white mb-6 text-center font-mono`}>Admin Dashboard</Text>
+        <View style={tw`pt-20 pb-4`}>
+          <Text style={tw`text-3xl font-bold text-white mb-6 text-center font-mono px-6`}>Admin Dashboard</Text>
           
           {/* Tabs */}
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={tw`flex-row justify-center w-full`}>
+          <ScrollView 
+            horizontal 
+            showsHorizontalScrollIndicator={false} 
+            style={tw`w-full`}
+            contentContainerStyle={tw`flex-row items-center px-6 py-1`}
+          >
             {familyData.map((person) => (
               <TouchableOpacity
                 key={person.title}
                 onPress={() => setActiveTab(person.title)}
                 style={[
-                  tw`px-4 py-2 mx-1 rounded-md transition-colors`,
-                  activeTab === person.title ? tw`bg-purple-600` : tw`bg-white/10`
+                  tw`px-4 py-2.5 mr-2.5 rounded-xl border border-white/10 shadow-md`,
+                  activeTab === person.title ? tw`bg-purple-600 border-purple-400` : tw`bg-white/10`
                 ]}
+                activeOpacity={0.8}
               >
                 <Text style={[
-                  tw`font-bold font-mono text-sm tracking-widest`,
-                  activeTab === person.title ? tw`text-white` : tw`text-gray-400`
+                  tw`font-bold font-mono text-xs tracking-widest`,
+                  activeTab === person.title ? tw`text-white` : tw`text-gray-300`
                 ]}>
                   {person.label}
                 </Text>
